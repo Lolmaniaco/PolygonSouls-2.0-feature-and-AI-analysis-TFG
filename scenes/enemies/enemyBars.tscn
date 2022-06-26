@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://img/healthEnemy.png" type="Texture" id=1]
+[ext_resource path="res://scenes/enemies/enemyBars.gd" type="Script" id=2]
+
+[node name="enemyBars" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+
+[node name="healthBar" type="TextureProgress" parent="."]
+modulate = Color( 1, 1, 1, 0.54902 )
+margin_right = 40.0
+margin_bottom = 40.0
+value = 100.0
+texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 1 )
+fill_mode = 4
+tint_under = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

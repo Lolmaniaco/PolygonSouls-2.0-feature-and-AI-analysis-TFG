@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/AAOCG - mIRC 6 x - KeyGen Sound - by Done.ogg-16ca937786044e065bf92703d4d720b7.oggstr"
+
+[deps]
+
+source_file="res://music/AAOCG - mIRC 6 x - KeyGen Sound - by Done.ogg"
+dest_files=[ "res://.import/AAOCG - mIRC 6 x - KeyGen Sound - by Done.ogg-16ca937786044e065bf92703d4d720b7.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

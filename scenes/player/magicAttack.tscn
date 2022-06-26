@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/player/magicAttack.gd" type="Script" id=1]
+[ext_resource path="res://img/magicAttack.png" type="Texture" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 20.0
+height = 12.0
+
+[sub_resource type="ParticlesMaterial" id=2]
+flag_disable_z = true
+spread = 15.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 500.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+
+[node name="magicProjectile" type="Node2D" groups=["pjBullets"]]
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+light_mask = 0
+position = Vector2( 0.438133, -4 )
+rotation = 3.14159
+scale = Vector2( 0.215554, 0.360395 )
+texture = ExtResource( 2 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 1, -10 )
+
+[node name="lifespanTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[node name="magicAttack" type="Area2D" parent="."]
+position = Vector2( 0, -64 )
+
+[node name="CollisionShape" type="CollisionShape2D" parent="magicAttack"]
+position = Vector2( 1, 56 )
+shape = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+position = Vector2( 1, -5 )
+rotation = 1.5708
+amount = 40
+lifetime = 0.5
+speed_scale = 0.62
+process_material = SubResource( 2 )
+
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="lifespanTimer" to="." method="_on_lifespanTimer_timeout"]
+[connection signal="area_entered" from="magicAttack" to="." method="_on_magicAttack_area_entered"]

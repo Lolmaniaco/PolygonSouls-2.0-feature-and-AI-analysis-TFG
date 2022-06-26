@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scenes/control/cryptEntrance.gd" type="Script" id=1]
+[ext_resource path="res://scenes/control/dialog.tscn" type="PackedScene" id=2]
+[ext_resource path="res://img/cryptStairs.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 11, 64 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 38.6784, 37.6994 )
+
+[node name="cryptEntrance" type="Position2D"]
+script = ExtResource( 1 )
+
+[node name="cryptStairs" type="Sprite" parent="."]
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -52.9197, 0 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 53.5143, 0 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 0, -53 )
+rotation = 1.5708
+shape = SubResource( 1 )
+
+[node name="cryptArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="cryptArea"]
+position = Vector2( 0, 0.3006 )
+shape = SubResource( 2 )
+
+[node name="dialog" parent="." instance=ExtResource( 2 )]
+margin_left = -210.0
+margin_top = 83.0
+margin_right = -170.0
+margin_bottom = 127.0
+
+[connection signal="body_entered" from="cryptArea" to="." method="_on_cryptArea_body_entered"]
+[connection signal="body_exited" from="cryptArea" to="." method="_on_cryptArea_body_exited"]
+[connection signal="input_event" from="cryptArea" to="." method="_on_cryptArea_input_event"]
+[connection signal="gui_input" from="dialog" to="." method="_on_dialog_gui_input"]

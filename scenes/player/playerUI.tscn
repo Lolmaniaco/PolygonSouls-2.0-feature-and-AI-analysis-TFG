@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://img/ringTexture.png" type="Texture" id=1]
+[ext_resource path="res://scenes/player/playerUI.gd" type="Script" id=2]
+
+[node name="playerUI" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="healthBar" type="TextureProgress" parent="."]
+modulate = Color( 0.952941, 0.952941, 0.952941, 1 )
+margin_left = 0.485962
+margin_top = 0.0891113
+margin_right = 96.486
+margin_bottom = 96.0891
+value = 100.0
+texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 1 )
+fill_mode = 4
+tint_under = Color( 0, 0, 0, 1 )
+tint_progress = Color( 1, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="staminaBar" type="TextureProgress" parent="."]
+modulate = Color( 0.952941, 0.952941, 0.952941, 1 )
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 108.0
+margin_bottom = 108.0
+rect_scale = Vector2( 0.75, 0.75 )
+value = 100.0
+texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 1 )
+fill_mode = 4
+tint_under = Color( 0, 0, 0, 1 )
+tint_progress = Color( 0, 0.709804, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

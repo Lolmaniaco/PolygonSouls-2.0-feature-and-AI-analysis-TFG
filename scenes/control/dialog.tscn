@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/control/dialog.gd" type="Script" id=2]
+[ext_resource path="res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres" type="DynamicFont" id=3]
+
+[node name="dialog" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="dialogBox" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": ""
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="dialogBox"]
+margin_left = 36.0
+margin_top = 17.0
+margin_right = 565.0
+margin_bottom = 187.0
+rect_scale = Vector2( 0.8, 0.8 )
+custom_fonts/normal_font = ExtResource( 3 )
+bbcode_enabled = true
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

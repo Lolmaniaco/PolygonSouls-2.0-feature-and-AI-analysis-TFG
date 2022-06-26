@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scenes/enemies/kamikaze.gd" type="Script" id=2]
+[ext_resource path="res://img/Kamikaze.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 16 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 9.77899, 12.6044 )
+
+[node name="kamikaze" type="KinematicBody2D" groups=["Enemies"]]
+position = Vector2( 1, -1 )
+scale = Vector2( 1.25, 1.25 )
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 17.6593, 0.792484 )
+scale = Vector2( 0.666667, 0.666667 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 16.0593, 0.79248 )
+shape = SubResource( 1 )
+
+[node name="kamikazeHitbox" type="Area2D" parent="."]
+
+[node name="hitBox" type="CollisionShape2D" parent="kamikazeHitbox"]
+position = Vector2( 19.2593, -0.0075202 )
+scale = Vector2( 2, 1.5 )
+shape = SubResource( 3 )
+
+[connection signal="area_entered" from="kamikazeHitbox" to="." method="_on_kamikazeHitbox_area_entered"]
