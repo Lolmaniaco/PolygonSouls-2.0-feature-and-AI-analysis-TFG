@@ -1,4 +1,5 @@
 extends Node2D
+
 #scene and code made by hiulit code here: https://github.com/hiulit/Godot-3-2D-Fake-Explosion-Particles
 @export var min_particles_number: int = 200
 @export var max_particles_number: int = 400
@@ -35,6 +36,7 @@ var particles_colors_with_weights = [
 
 var particles_timer
 
+
 func _ready():
 	# Add to a group so it can be found from anywhere.
 	add_to_group(group_name)
@@ -44,18 +46,16 @@ func _ready():
 
 	# Create a timer.
 	particles_timer = Timer.new()
-	particles_timer.one_shot = false
+	particles_timer.one_shot = true
 	particles_timer.wait_time = timer_wait_time
 	particles_timer.set_timer_process_callback(1)
-	particles_timer.connect("timeout", Callable(self, "_on_particles_timer_timeout"))
+	particles_timer.timeout.connect(_on_particles_timer_timeout)
 
 	add_child(particles_timer, true)
 
-	if start_timer: particles_timer.start()
+	particles_timer.start()
 
-func setup(pos):
-	self.position = pos
-	
+
 func _process(delta):
 	# If there are particles in the particles array and
 	# 'particles_explode' is 'true', make them explode.
@@ -64,11 +64,15 @@ func _process(delta):
 		_particles_explode(delta)
 
 		# Redraw the particles every frame.
-		update()
+		#update()
 
 	# If there are no particles in the particles array, free the node.
 	if particles.size() == 0 and not start_timer:
 		queue_free()
+
+
+func setup(pos):
+	position = pos
 
 
 func _draw():
@@ -89,7 +93,7 @@ func _particles_explode(delta):
 			# Fade out the particles.
 			if particle.color.a > 0:
 				particle.color.a -= particle.alpha * delta
-	
+
 				if particle.color.a < 0:
 					particle.color.a = 0
 
@@ -100,7 +104,7 @@ func _particles_explode(delta):
 				# ... find the particle in the particles array...
 				var i = particles.find(particle)
 				# ... and remove it from the particles array.
-				particles.remove(i)
+				particles.erase(i)
 
 
 func _create_particles():
@@ -153,15 +157,15 @@ func _get_random_color():
 func _get_random_gravity():
 	randomize()
 	var random_gravity = Vector2(
-							randf_range(
-								-randf_range(min_particles_gravity, max_particles_gravity),
-								randf_range(min_particles_gravity, max_particles_gravity)
-							),
-							randf_range(
-								randf_range(min_particles_gravity * 2, max_particles_gravity * 2),
-								randf_range(min_particles_gravity * 2, max_particles_gravity * 2)
-							)
-						)
+		randf_range(
+			- randf_range(min_particles_gravity, max_particles_gravity),
+			randf_range(min_particles_gravity, max_particles_gravity)
+		),
+		randf_range(
+			randf_range(min_particles_gravity * 2, max_particles_gravity * 2),
+			randf_range(min_particles_gravity * 2, max_particles_gravity * 2)
+		)
+	)
 	return random_gravity
 
 
@@ -189,15 +193,15 @@ func _get_random_size():
 func _get_random_velocity():
 	randomize()
 	var random_velocity = Vector2(
-							randf_range(
-								-randf_range(min_particles_velocity, max_particles_velocity),
-								randf_range(min_particles_velocity, max_particles_velocity)
-							),
-							randf_range(
-								-randf_range(min_particles_velocity * 2, max_particles_velocity * 2),
-								-randf_range(min_particles_velocity * 2, max_particles_velocity * 2)
-							)
-						)
+		randf_range(
+			- randf_range(min_particles_velocity, max_particles_velocity),
+			randf_range(min_particles_velocity, max_particles_velocity)
+		),
+		randf_range(
+			- randf_range(min_particles_velocity * 2, max_particles_velocity * 2),
+			- randf_range(min_particles_velocity * 2, max_particles_velocity * 2)
+		)
+	)
 	return random_velocity
 
 
@@ -214,8 +218,8 @@ func _get_random_time():
 
 
 func _rand_array(array):
-	# Code from @CowThing (https://pastebin.com/HhdBuUzT).
-	# Arrays must be [weight, value].
+# Code from @CowThing (https://pastebin.com/HhdBuUzT).
+# Arrays must be [weight, value].
 
 	var sum_of_weights = 0
 	for t in array:
@@ -226,11 +230,11 @@ func _rand_array(array):
 	var cumulative_weight = 0
 	for t in array:
 		cumulative_weight += t[0]
- 
+
 		if x < cumulative_weight:
 			return t[1]
 
 
 func _on_particles_timer_timeout():
 	# Create new particles every time the timer times out.
-	_create_particles()
+	queue_free()

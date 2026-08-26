@@ -1,11 +1,14 @@
 extends CharacterBody2D
 
+const PAmax = 10 # Max number of player attack saved
+
 @export var maxHealth: int = 100
 @export var maxStamina: int = 100
+
 var actualRoom = Vector2.ZERO
 var lastRoom = Vector2.ZERO
 var currentWeapon = 1
-var facingDir 
+var facingDir
 var directions = [Vector2.UP, Vector2(1, -1), Vector2.RIGHT, Vector2(1, 1), Vector2.DOWN, Vector2(-1, 1), Vector2.LEFT, Vector2(-1, -1)]
 
 var arrow = preload("res://scenes/player/rangedAttack.tscn")
@@ -19,46 +22,47 @@ var playerVol
 
 var inputIsDisabled = false
 var speed = 340
-var velocity = Vector2()
 var lastDir = Vector2()
 var hasRespawn = false
-var spawnPosition 
+var spawnPosition
 var costOfAttack = 10
 var PA = [] # Player Attacks
-const PAmax = 10 # Max number of player attack saved
-var PAP = {'C':0,'R':0, 'M':0}
+var PAP = { 'C': 0, 'R': 0, 'M': 0 }
 var PAsize = 07
 
 var godMode = false
 var attackDamage = 19
 var attackMultiplier = 1.0
 
-func setHealth(value):
-	$playerUI.setHealth(value)
-	
-func getHealth():
-	return $playerUI.getHealthValue()
+@onready var input_disabled: Timer = $inputDisabled
 
-func getPos():
-	return position
-	
-func setPos(pos):
-	self.position += pos
-	
-func getLastUsedDir():
-	return self.lastDir
-	
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.position = Vector2(400,400)
+	position = Vector2(400, 400)
 	playerOldPos = global_position
-	
+
 	$weapons.visible = false
 	$playerUI.maxHealthUpdate(maxHealth)
 	$playerUI.maxStaminaUpdate(maxStamina)
-	
+
 	$playerUI.setHealth(maxHealth)
 	$playerUI.setStamina(maxStamina)
+
+
+func _physics_process(delta):
+	playerVol = global_position - playerOldPos
+	playerOldPos = global_position
+
+	if godMode:
+		$playerUI.setHealth(maxHealth)
+		$playerUI.setStamina(maxStamina)
+
+	if !inputIsDisabled:
+		get_input()
+	move_and_collide(velocity * delta)
+	isDead()
+
 
 func _input(event):
 	if Input.is_action_just_pressed("godMode"):
@@ -66,6 +70,27 @@ func _input(event):
 			godMode = false
 		else:
 			godMode = true
+
+
+func setHealth(value):
+	$playerUI.setHealth(value)
+
+
+func getHealth():
+	return $playerUI.getHealthValue()
+
+
+func getPos():
+	return position
+
+
+func setPos(pos):
+	position += pos
+
+
+func getLastUsedDir():
+	return lastDir
+
 
 func get_input():
 	# Detect up/down/left/right keystate and only move when pressed.
@@ -78,47 +103,47 @@ func get_input():
 		velocity.y += 1
 	if Input.is_action_pressed('ui_up'):
 		velocity.y -= 1
-	
+
 	# Get last used direction
 	if velocity != Vector2.ZERO:
 		lastDir = velocity
-		
+
 	velocity = velocity.normalized() * speed
-	
+
 	if Input.is_key_pressed(KEY_7):
-		position = Vector2(11*1024-200, 11*640-200)
+		position = Vector2(11 * 1024 - 200, 11 * 640 - 200)
 	if Input.is_key_pressed(KEY_8):
-		position = Vector2(64,64)
-		
+		position = Vector2(64, 64)
+
 	if Input.is_action_just_pressed("prevWeapon"):
-		self.currentWeapon -= 1
+		currentWeapon -= 1
 		# 1: melee, 2: ranged, 3: magic
-		if self.currentWeapon < 1:
-			self.currentWeapon = 3
-			
+		if currentWeapon < 1:
+			currentWeapon = 3
+
 	if Input.is_action_just_pressed("nextWeapon"):
-		self.currentWeapon += 1
+		currentWeapon += 1
 		# 1: melee, 2: ranged, 3: magic
-		if self.currentWeapon > 3:
-			self.currentWeapon = 1
-	
+		if currentWeapon > 3:
+			currentWeapon = 1
+
 	if Input.is_action_just_pressed("nextWeapon") or Input.is_action_just_pressed("prevWeapon"):
-		match(self.currentWeapon):
-				1:
-					$meleeAttack.visible = true
-					$rangedAttack.visible = false
-					$magicAttack.visible = false
-					costOfAttack = 10
-				2:
-					$meleeAttack.visible = false
-					$rangedAttack.visible = true
-					$magicAttack.visible = false
-					costOfAttack = 10
-				3:
-					$meleeAttack.visible = false
-					$rangedAttack.visible = false
-					$magicAttack.visible = true
-					costOfAttack = 20
+		match(currentWeapon):
+			1:
+				$meleeAttack.visible = true
+				$rangedAttack.visible = false
+				$magicAttack.visible = false
+				costOfAttack = 10
+			2:
+				$meleeAttack.visible = false
+				$rangedAttack.visible = true
+				$magicAttack.visible = false
+				costOfAttack = 10
+			3:
+				$meleeAttack.visible = false
+				$rangedAttack.visible = false
+				$magicAttack.visible = true
+				costOfAttack = 20
 
 	if $playerUI/staminaBar.value >= costOfAttack:
 		if Input.is_action_pressed("attack") and $rangedReloadTimer.is_stopped() and $meleeReloadTimer.is_stopped() and $magicReloadTimer.is_stopped():
@@ -127,29 +152,16 @@ func get_input():
 			$staminaRecharge.start()
 			$playerUI.recoverStamina(false)
 
+
 func inputDisabled():
 	inputIsDisabled = true
-	$inputDisabled.start()
-	
-func _on_inputDisabled_timeout():
-	inputIsDisabled = false
+	input_disabled.start()
 
-func _physics_process(delta):
-	playerVol = global_position - playerOldPos
-	playerOldPos = global_position
-	
-	if godMode:
-		$playerUI.setHealth(maxHealth)
-		$playerUI.setStamina(maxStamina)
-		
-	if !inputIsDisabled:
-		get_input()
-	move_and_collide(velocity * delta)
-	isDead()
 
 func createSpawn(pos):
 	hasRespawn = true
 	spawnPosition = pos
+
 
 func getHasRespawn():
 	return hasRespawn
@@ -184,6 +196,7 @@ func addPlayerDeath():
 	file.close()
 """
 
+
 func isDead():
 	if $playerUI/healthBar.value <= 0:
 		if hasRespawn:
@@ -197,34 +210,35 @@ func isDead():
 			get_tree().change_scene_to_file("res://scenes/control/gameOverScreen.tscn")
 			$playerUI.setHealth(maxHealth)
 
+
 func attack():
 	if Input.is_action_pressed("attackUp"):
 		if Input.is_action_pressed("attackRight"):
-			$weapons.rotation_degrees = 45	
+			$weapons.rotation_degrees = 45
 			facingDir = directions[1]
 		elif Input.is_action_pressed("attackLeft"):
-			$weapons.rotation_degrees = 315	
+			$weapons.rotation_degrees = 315
 			facingDir = directions[7]
 		else:
-			$weapons.rotation_degrees = 0	
+			$weapons.rotation_degrees = 0
 			facingDir = directions[0]
 	elif Input.is_action_pressed("attackDown"):
 		if Input.is_action_pressed("attackRight"):
-			$weapons.rotation_degrees = 135	
+			$weapons.rotation_degrees = 135
 			facingDir = directions[3]
 		elif Input.is_action_pressed("attackLeft"):
-			$weapons.rotation_degrees = 225	
+			$weapons.rotation_degrees = 225
 			facingDir = directions[5]
 		else:
-			$weapons.rotation_degrees = 180	
+			$weapons.rotation_degrees = 180
 			facingDir = directions[4]
 	elif Input.is_action_pressed("attackRight"):
-		$weapons.rotation_degrees = 90	
+		$weapons.rotation_degrees = 90
 		facingDir = directions[2]
 	else: #Left
-		$weapons.rotation_degrees = 270	
+		$weapons.rotation_degrees = 270
 		facingDir = directions[6]
-		
+
 	match(currentWeapon):
 		1:
 			if $meleeReloadTimer.is_stopped():
@@ -250,39 +264,48 @@ func attack():
 				PA.append('M')
 	checkPA()
 	makePAP()
-	
+
+
 func checkPA():
 	if PA.size() > PAmax and $meleeReloadTimer.is_stopped() and $rangedReloadTimer.is_stopped() and $magicReloadTimer.is_stopped():
 		PA.pop_front()
-	
-		
+
+
 func makePAP():
 	PAsize = float(PA.size())
 
-	PAP['C'] = float(PA.count('C')) / PAsize 
-	PAP['R'] = float(PA.count('R')) / PAsize 
+	PAP['C'] = float(PA.count('C')) / PAsize
+	PAP['R'] = float(PA.count('R')) / PAsize
 	PAP['M'] = float(PA.count('M')) / PAsize
-	
+
+
 func getPAP():
 	return PAP
 
+
 func setActualRoom(room):
-	self.actualRoom = room.roomCoord
+	actualRoom = room.roomCoord
+
+
+func _on_inputDisabled_timeout():
+	inputIsDisabled = false
+
 
 func _on_pjHitbox_area_entered(area):
 	# Damage received by enemies to player
 	if "closeCombatHitbox" in area.name or "bossArrowHitbox" in area.name:
 		attackMultiplier = 1
-		$playerUI.healthUpdate(-attackDamage*attackMultiplier)
+		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
 	elif "bouncerArrow" in area.name or "turretArrow" in area.name:
 		attackMultiplier = 0.7
-		$playerUI.healthUpdate(-attackDamage*attackMultiplier)
+		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
 	elif "magicHitbox" in area.name:
 		attackMultiplier = 1.5
-		$playerUI.healthUpdate(-attackDamage*attackMultiplier)
+		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
 	elif "kamikazeHitbox" in area.name:
 		attackMultiplier = 2.5
-		$playerUI.healthUpdate(-attackDamage*attackMultiplier)
+		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
+
 
 func _on_staminaRecharge_timeout():
 	$playerUI.recoverStamina(true)

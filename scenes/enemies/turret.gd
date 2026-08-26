@@ -30,7 +30,7 @@ func _process(delta):
 			var aux = int(rotation) / 3
 			if aux != 0:
 				rotation -= 6*aux
-			self.dirToShoot = position.direction_to(targetPos)
+			dirToShoot = position.direction_to(targetPos)
 			shootProjectile()
 			#print("Se acaba de disparar")
 
@@ -42,7 +42,7 @@ func shootProjectile():
 	$chargeMeter.value = 0
 	var bullet = turretArrow.instantiate()
 	get_parent().add_child(bullet)
-	bullet.setup(position, rotation_degrees, self.dirToShoot, 700, 'R')
+	bullet.setup(position, rotation_degrees, dirToShoot, 700, 'R')
 
 func _on_enemyHitbox_area_entered(area):
 #	print(area.name)

@@ -1,41 +1,41 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene format=3 uid="uid://dnyctorhi3ttb"]
 
-[ext_resource path="res://img/Tarrow.png" type="Texture2D" id=1]
-[ext_resource path="res://scenes/enemies/turretArrow.gd" type="Script" id=2]
-[ext_resource path="res://img/pjCircle.png" type="Texture2D" id=3]
+[ext_resource type="Texture2D" uid="uid://yn2hji1tsyb5" path="res://img/Tarrow.png" id="1"]
+[ext_resource type="Script" uid="uid://bqma4n0awkgmp" path="res://scenes/enemies/turretArrow.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://71dx60cfh6rg" path="res://img/pjCircle.png" id="3"]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id="1"]
 radius = 10.3169
 
-[node name="turretArrow" type="Node2D"]
-script = ExtResource( 2 )
+[node name="turretArrow" type="Node2D" unique_id=466782571]
+script = ExtResource("2")
 
-[node name="magic" type="Sprite2D" parent="."]
+[node name="magic" type="Sprite2D" parent="." unique_id=1689487321]
 visible = false
-scale = Vector2( 3, 3 )
-texture = ExtResource( 3 )
+scale = Vector2(3, 3)
+texture = ExtResource("3")
 
-[node name="ranged" type="Sprite2D" parent="."]
+[node name="ranged" type="Sprite2D" parent="." unique_id=555009163]
 visible = false
-position = Vector2( -0.290671, 3.87677e-05 )
+position = Vector2(-0.290671, 3.87677e-05)
 rotation = 1.5708
-texture = ExtResource( 1 )
+texture = ExtResource("1")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2( 9.7093, -0.31498 )
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1613246971]
+position = Vector2(9.7093, -0.31498)
 
-[node name="turretArrow" type="Area2D" parent="."]
+[node name="turretArrow" type="Area2D" parent="." unique_id=58086289]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="turretArrow"]
-position = Vector2( 10.7093, -0.31498 )
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="turretArrow" unique_id=1360105487]
+position = Vector2(10.7093, -0.31498)
+shape = SubResource("1")
 disabled = true
 
-[node name="magicHitbox" type="Area2D" parent="."]
+[node name="magicHitbox" type="Area2D" parent="." unique_id=837929925]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="magicHitbox"]
-scale = Vector2( 4, 4 )
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="magicHitbox" unique_id=357616568]
+scale = Vector2(4, 4)
+shape = SubResource("1")
 disabled = true
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

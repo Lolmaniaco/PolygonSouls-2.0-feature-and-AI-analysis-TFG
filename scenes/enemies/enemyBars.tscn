@@ -7,6 +7,9 @@
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="healthBar" type="TextureProgressBar" parent="."]
 modulate = Color( 1, 1, 1, 0.54902 )

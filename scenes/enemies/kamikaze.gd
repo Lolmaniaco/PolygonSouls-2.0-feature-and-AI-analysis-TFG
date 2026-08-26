@@ -11,7 +11,7 @@ func _ready():
 
 func _process(delta):
 	playerPos = player.getPos()
-	directionToPlayer = self.position.direction_to(playerPos)
+	directionToPlayer = position.direction_to(playerPos)
 	
 	targetPos = player.getPos()
 	rotation = targetPos.angle_to_point(position)

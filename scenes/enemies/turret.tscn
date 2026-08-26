@@ -1,48 +1,45 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene format=3 uid="uid://d6hqfkgirjyl"]
 
-[ext_resource path="res://img/Tshooter.png" type="Texture2D" id=1]
-[ext_resource path="res://scenes/enemies/turret.gd" type="Script" id=2]
-[ext_resource path="res://img/chargeBar.png" type="Texture2D" id=3]
+[ext_resource type="Texture2D" uid="uid://dfst8x7q5e5in" path="res://img/Tshooter.png" id="1"]
+[ext_resource type="Script" uid="uid://cp2smr8k7l1vb" path="res://scenes/enemies/turret.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://dvffv68cf3cd5" path="res://img/chargeBar.png" id="3"]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 6, 24.5 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(12, 49)
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 14.0
+[sub_resource type="CapsuleShape2D" id="2"]
+radius = 4.881
 height = 9.762
 
-[node name="turret" type="CharacterBody2D" groups=["Enemies"]]
-script = ExtResource( 2 )
+[node name="turret" type="CharacterBody2D" unique_id=1073330204 groups=["Enemies"]]
+script = ExtResource("2")
 
-[node name="Tshooter" type="Sprite2D" parent="."]
+[node name="Tshooter" type="Sprite2D" parent="." unique_id=993901807]
 rotation = 1.5708
-texture = ExtResource( 1 )
+texture = ExtResource("1")
 
-[node name="chargeMeter" type="TextureProgressBar" parent="."]
+[node name="chargeMeter" type="TextureProgressBar" parent="." unique_id=309454869]
 offset_left = -17.0
 offset_top = -6.0
 offset_right = 24.0
 offset_bottom = 6.0
-texture_under = ExtResource( 3 )
-texture_progress = ExtResource( 3 )
-tint_under = Color( 0, 0, 0, 1 )
-tint_progress = Color( 1, 0.847059, 0.0941176, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture_under = ExtResource("3")
+texture_progress = ExtResource("3")
+tint_under = Color(0, 0, 0, 1)
+tint_progress = Color(1, 0.847059, 0.0941176, 1)
 
-[node name="shieldHitBox" type="Area2D" parent="."]
+[node name="shieldHitBox" type="Area2D" parent="." unique_id=828047949]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="shieldHitBox"]
-position = Vector2( 18, -0.5 )
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="shieldHitBox" unique_id=1228805344]
+position = Vector2(18, -0.5)
+shape = SubResource("1")
 
-[node name="enemyHitbox" type="Area2D" parent="."]
+[node name="enemyHitbox" type="Area2D" parent="." unique_id=2047985771]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyHitbox"]
-position = Vector2( -4.881, 0 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyHitbox" unique_id=1468786034]
+position = Vector2(-4.881, 0)
 rotation = 1.5708
-shape = SubResource( 2 )
+shape = SubResource("2")
 
 [connection signal="area_entered" from="shieldHitBox" to="." method="_on_shieldHitBox_area_entered"]
 [connection signal="area_entered" from="enemyHitbox" to="." method="_on_enemyHitbox_area_entered"]

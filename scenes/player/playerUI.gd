@@ -12,7 +12,7 @@ func getHealthValue():
 	return healthBar.value
 	
 func recoverStamina(boolean):
-	self.recoveringStamina = boolean
+	recoveringStamina = boolean
 
 func setHealth(health):
 	healthBar.value = health

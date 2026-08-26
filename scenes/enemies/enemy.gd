@@ -19,9 +19,9 @@ func _ready():
 
 func spawn():
 	randomize()
-	self.posX = randf_range(self.roomX[0], self.roomX[1])
-	self.posY = randf_range(self.roomY[0], self.roomY[1])
-	position = Vector2(self.posX, self.posY)
+	posX = randf_range(roomX[0], roomX[1])
+	posY = randf_range(roomY[0], roomY[1])
+	position = Vector2(posX, posY)
 
 	# Spawn enemy at another random position if player and enemy are 
 	if ((player.getPos() - position).abs() < safeDistance):
@@ -29,8 +29,8 @@ func spawn():
 
 func setupSpawn(xMinMaxRoom, yMinMaxRoom):
 
-	self.roomX = xMinMaxRoom
-	self.roomY = yMinMaxRoom
+	roomX = xMinMaxRoom
+	roomY = yMinMaxRoom
 	spawn()
 	
 

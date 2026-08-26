@@ -1,33 +1,26 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene format=3 uid="uid://b8klvkimc6px1"]
 
-[ext_resource path="res://scenes/control/dialog.gd" type="Script" id=2]
-[ext_resource path="res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres" type="FontFile" id=3]
+[ext_resource type="Script" uid="uid://c6fqj5qr1md27" path="res://scenes/control/dialog.gd" id="2"]
+[ext_resource type="FontFile" path="res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres" id="3"]
 
-[node name="dialog" type="Control"]
+[node name="dialog" type="Control" unique_id=54620617]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("2")
 
-[node name="dialogBox" type="Control" parent="."]
+[node name="dialogBox" type="Control" parent="." unique_id=539738512]
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": ""
-}
 
-[node name="RichTextLabel" type="RichTextLabel" parent="dialogBox"]
+[node name="RichTextLabel" type="RichTextLabel" parent="dialogBox" unique_id=1039701368]
+layout_mode = 0
 offset_left = 36.0
 offset_top = 17.0
 offset_right = 565.0
 offset_bottom = 187.0
-scale = Vector2( 0.8, 0.8 )
-theme_override_fonts/normal_font = ExtResource( 3 )
+scale = Vector2(0.8, 0.8)
+theme_override_fonts/normal_font = ExtResource("3")
 bbcode_enabled = true
-fit_content_height = true
-__meta__ = {
-"_edit_use_anchors_": false
-}

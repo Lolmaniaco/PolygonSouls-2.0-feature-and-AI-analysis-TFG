@@ -1,27 +1,27 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene format=3 uid="uid://st7c67tetpq2"]
 
-[ext_resource path="res://img/Barrow.png" type="Texture2D" id=1]
-[ext_resource path="res://scenes/enemies/bouncerArrow.gd" type="Script" id=2]
+[ext_resource type="Script" uid="uid://6664opjlik4j" path="res://scenes/enemies/bouncerArrow.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://370aeh7lt0to" path="res://img/bouncerArrow.png" id="2_jvjuj"]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id="1"]
 radius = 15.0333
 
-[node name="bouncerArrow" type="Node2D"]
-script = ExtResource( 2 )
+[node name="bouncerArrow" type="Node2D" unique_id=1659821321]
+script = ExtResource("2")
 
-[node name="ranged" type="Sprite2D" parent="."]
-position = Vector2( -0.290671, 3.87677e-05 )
+[node name="ranged" type="Sprite2D" parent="." unique_id=487310216]
+position = Vector2(-0.290671, 3.87677e-05)
 rotation = 1.5708
-texture = ExtResource( 1 )
+texture = ExtResource("2_jvjuj")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2( 9.7093, -0.31498 )
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=2117905572]
+position = Vector2(9.7093, -0.31498)
 
-[node name="bouncerArrow" type="Area2D" parent="."]
+[node name="bouncerArrow" type="Area2D" parent="." unique_id=689637286]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="bouncerArrow"]
-position = Vector2( 10, 0 )
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bouncerArrow" unique_id=1218667598]
+position = Vector2(10, 0)
+shape = SubResource("1")
 
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="area_entered" from="bouncerArrow" to="." method="_on_hitbox_area_entered"]

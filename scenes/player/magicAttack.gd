@@ -8,9 +8,9 @@ var destroyProjective = false
 var fadeOutDeath = 1
 
 func setup(pos, rot, dir):
-	self.position = pos
-	self.rotation_degrees += rot
-	self.facingDirection = dir
+	position = pos
+	rotation_degrees += rot
+	facingDirection = dir
 
 func _physics_process(delta):
 	position += facingDirection * speed

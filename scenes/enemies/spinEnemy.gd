@@ -64,17 +64,17 @@ func _physics_process(delta):
 		else:
 			waitUntilStartHealing = 1
 			$healingActivated.emitting = false
-			directionToPlayer = self.position.direction_to(player.getPos())
+			directionToPlayer = position.direction_to(player.getPos())
 			movement = directionToPlayer * speed * 2 * delta
 			if healthBar.getHealth() < 50:
-				directionToPlayer = -self.position.direction_to(player.getPos())
+				directionToPlayer = -position.direction_to(player.getPos())
 				if !flee:
 					weakened()
 				movement = directionToPlayer * speed * delta
 		
 		targetPos = player.getPos()
 		$centerPosition.rotation = targetPos.angle_to_point(position)
-		self.dirToShoot = position.direction_to(targetPos).normalized()
+		dirToShoot = position.direction_to(targetPos).normalized()
 
 		# Attack patterns
 		match(currentAttack):
@@ -194,11 +194,11 @@ func shootProjectile(currentAttack):
 		'R':
 			var rangedArrow = arrow.instantiate()
 			get_parent().add_child(rangedArrow)
-			rangedArrow.setup(position, $centerPosition.rotation_degrees, self.dirToShoot, 500, currentAttack)
+			rangedArrow.setup(position, $centerPosition.rotation_degrees, dirToShoot, 500, currentAttack)
 		'M':
 			var magicArrow = arrow.instantiate()
 			get_parent().add_child(magicArrow)
-			magicArrow.setup(position, $centerPosition.rotation_degrees, self.dirToShoot, 250, currentAttack)
+			magicArrow.setup(position, $centerPosition.rotation_degrees, dirToShoot, 250, currentAttack)
 
 func _on_processEAP_timeout():
 	rPAP = player.getPAP()

@@ -1,173 +1,179 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene format=3 uid="uid://jeixy66kq2jx"]
 
-[ext_resource path="res://img/rangedAttack.png" type="Texture2D" id=1]
-[ext_resource path="res://scenes/player/player.gd" type="Script" id=2]
-[ext_resource path="res://img/magicAttack.png" type="Texture2D" id=3]
-[ext_resource path="res://img/sword.png" type="Texture2D" id=4]
-[ext_resource path="res://img/meleeAttack.png" type="Texture2D" id=5]
-[ext_resource path="res://scenes/player/playerUI.tscn" type="PackedScene" id=6]
-[ext_resource path="res://img/pjCircle.png" type="Texture2D" id=7]
+[ext_resource type="Texture2D" uid="uid://di0he57eb2q6t" path="res://img/rangedAttack.png" id="1"]
+[ext_resource type="Script" uid="uid://xbuhksxkrij2" path="res://scenes/player/player.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://n0x1o10oc22o" path="res://img/magicAttack.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://c0vm7qhvrs64c" path="res://img/meleeAttack.png" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/player/playerUI.tscn" id="6"]
+[ext_resource type="Texture2D" uid="uid://71dx60cfh6rg" path="res://img/pjCircle.png" id="7"]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id="1"]
 radius = 19.1017
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id="2"]
 radius = 17.3573
 
-[sub_resource type="CapsuleShape2D" id=3]
+[sub_resource type="CapsuleShape2D" id="3"]
 radius = 4.0
 height = 70.0
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id="5"]
 resource_name = "lowHealth"
 tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("playerUI:self_modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"times": PackedFloat32Array( 1 ),
-"transitions": PackedFloat32Array( 1 ),
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [ Color( 0, 0, 0, 1 ) ]
+"values": [Color(0, 0, 0, 1)]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id="4"]
 length = 0.4
 tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("weapons/sword:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"times": PackedFloat32Array( 0, 0.2 ),
-"transitions": PackedFloat32Array( 1, 1 ),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [ -90.0, 0.0 ]
+"values": [-90.0, 0.0]
 }
 tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
 tracks/1/path = NodePath("weapons/sword:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
 tracks/1/keys = {
-"times": PackedFloat32Array( 0, 0.2 ),
-"transitions": PackedFloat32Array( 1, 1 ),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [ true, false ]
+"values": [true, false]
 }
 tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
 tracks/2/path = NodePath("weapons/sword/nearAttack/CollisionShape2D2:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
 tracks/2/keys = {
-"times": PackedFloat32Array( 0, 0.2 ),
-"transitions": PackedFloat32Array( 1, 1 ),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [ false, true ]
+"values": [false, true]
 }
 tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
 tracks/3/path = NodePath(".:canAttack")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
 tracks/3/keys = {
-"times": PackedFloat32Array( 0, 0.4 ),
-"transitions": PackedFloat32Array( 1, 1 ),
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [ false, true ]
+"values": [false, true]
 }
 
-[node name="player" type="CharacterBody2D"]
-script = ExtResource( 2 )
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_75vfm"]
+_data = {
+&"lowHealth": SubResource("5"),
+&"meleeAttack": SubResource("4")
+}
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+[node name="player" type="CharacterBody2D" unique_id=1181376105]
+script = ExtResource("2")
 
-[node name="pjHitbox" type="Area2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=742816128]
+shape = SubResource("1")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="pjHitbox"]
-shape = SubResource( 2 )
+[node name="pjHitbox" type="Area2D" parent="." unique_id=1010249322]
 
-[node name="pjSrpite" type="Sprite2D" parent="."]
-scale = Vector2( 1.5, 1.5 )
-texture = ExtResource( 7 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pjHitbox" unique_id=1471063511]
+shape = SubResource("2")
 
-[node name="playerUI" parent="." instance=ExtResource( 6 )]
-self_modulate = Color( 0, 0, 0, 1 )
+[node name="pjSrpite" type="Sprite2D" parent="." unique_id=702973418]
+visible = false
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("7")
+
+[node name="playerUI" parent="." unique_id=1351724349 instance=ExtResource("6")]
+self_modulate = Color(0, 0, 0, 1)
+layout_mode = 3
+anchors_preset = 0
 offset_left = -47.9754
 offset_top = -48.3431
 offset_right = -7.97539
 offset_bottom = -8.34308
 
-[node name="weapons" type="Node2D" parent="."]
-visible = false
-position = Vector2( -0.529724, 0.707108 )
+[node name="weapons" type="Node2D" parent="." unique_id=864535724]
+position = Vector2(-0.529724, 0.707108)
 
-[node name="sword" type="Node2D" parent="weapons"]
+[node name="sword" type="Node2D" parent="weapons" unique_id=1866457075]
 rotation = -1.5708
 
-[node name="Sprite2D" type="Sprite2D" parent="weapons/sword"]
-position = Vector2( 44.7251, -44.5477 )
+[node name="Sprite2D" type="Sprite2D" parent="weapons/sword" unique_id=549550801]
+position = Vector2(44.7251, -44.5477)
 rotation = 0.785398
-scale = Vector2( 0.15, 0.1 )
-texture = ExtResource( 5 )
+scale = Vector2(0.15, 0.1)
+texture = ExtResource("5")
 
-[node name="nearAttack" type="Area2D" parent="weapons/sword"]
-position = Vector2( 45.832, -45.5001 )
+[node name="nearAttack" type="Area2D" parent="weapons/sword" unique_id=501105498]
+position = Vector2(45.832, -45.5001)
 rotation = 0.785398
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="weapons/sword/nearAttack"]
-shape = SubResource( 3 )
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="weapons/sword/nearAttack" unique_id=413853535]
+shape = SubResource("3")
 disabled = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/lowHealth = SubResource( 5 )
-anims/meleeAttack = SubResource( 4 )
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1165632210]
+libraries/ = SubResource("AnimationLibrary_75vfm")
 
-[node name="magicReloadTimer" type="Timer" parent="."]
+[node name="magicReloadTimer" type="Timer" parent="." unique_id=902854203]
 wait_time = 0.1
 one_shot = true
 
-[node name="meleeReloadTimer" type="Timer" parent="."]
+[node name="meleeReloadTimer" type="Timer" parent="." unique_id=1138931732]
 wait_time = 0.4
 one_shot = true
 
-[node name="rangedReloadTimer" type="Timer" parent="."]
+[node name="rangedReloadTimer" type="Timer" parent="." unique_id=988461557]
 wait_time = 0.3
 one_shot = true
 
-[node name="inputDisabled" type="Timer" parent="."]
+[node name="inputDisabled" type="Timer" parent="." unique_id=1208684070]
 wait_time = 0.2
 one_shot = true
 
-[node name="magicAttack" type="Sprite2D" parent="."]
+[node name="magicAttack" type="Sprite2D" parent="." unique_id=2054232105]
 visible = false
-self_modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 0, -0.999998 )
-scale = Vector2( 0.227499, 0.225 )
-texture = ExtResource( 3 )
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(0, -0.999998)
+scale = Vector2(0.227499, 0.225)
+texture = ExtResource("3")
 
-[node name="rangedAttack" type="Sprite2D" parent="."]
+[node name="rangedAttack" type="Sprite2D" parent="." unique_id=489569579]
 visible = false
-position = Vector2( -1.00001, 0 )
-scale = Vector2( 0.18, 0.175 )
-texture = ExtResource( 1 )
+position = Vector2(-1.00001, 0)
+scale = Vector2(0.18, 0.175)
+texture = ExtResource("1")
 
-[node name="meleeAttack" type="Sprite2D" parent="."]
-self_modulate = Color( 0, 0, 0, 1 )
-position = Vector2( 0.176778, -0.176778 )
+[node name="meleeAttack" type="Sprite2D" parent="." unique_id=1091209071]
+self_modulate = Color(0, 0, 0, 1)
+position = Vector2(0.176778, -0.176778)
 rotation = 0.785398
-scale = Vector2( 0.066018, 0.0546014 )
-texture = ExtResource( 4 )
+scale = Vector2(0.066018, 0.0546014)
+texture = ExtResource("5")
 
-[node name="staminaRecharge" type="Timer" parent="."]
+[node name="staminaRecharge" type="Timer" parent="." unique_id=1724263771]
 one_shot = true
 
 [connection signal="area_entered" from="pjHitbox" to="." method="_on_pjHitbox_area_entered"]

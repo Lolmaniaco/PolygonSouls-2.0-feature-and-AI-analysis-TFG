@@ -1,43 +1,51 @@
 extends Node2D
 
+@export var bullet_speed: float = 10.0
+
 var dirToShoot
-@export var velocity: float = 10.0
 var explosion = preload("res://particles/fake_explosion_particles.tscn")
 var notCollide = ["turret", "spinEnemy", "player", "bouncer", "finalBoss"]
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
-func setup(pos, rot, direction, velocity, typeOfProjectile):
-	position = pos
-	rotation_degrees += rot
-	self.dirToShoot = direction
-	self.velocity = velocity
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	position += self.dirToShoot * self.velocity * delta
-	
+	position += dirToShoot * bullet_speed * delta
+
+
+func setup(pos, rot, direction, new_speed, _typeOfProjectile):
+	position = pos
+	rotation_degrees += rot
+	dirToShoot = direction
+	bullet_speed = new_speed
+
+
 func createExplosion():
-	var newExp =  explosion.instantiate()
+	var newExp = explosion.instantiate()
 	newExp.setup(position)
 	get_parent().add_child(newExp)
 	newExp.particles_explode = true
 
+
 func _on_hitbox_body_entered(body):
-	var explosion = true
+	var explode = true
 #	print(body.name)
 	for obj in notCollide:
 		if obj in body.name:
-			explosion = false
+			explode = false
 
-	if explosion:
+	if explode:
 		createExplosion()
 		queue_free()
-		
+
+
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
+
 
 func _on_hitbox_area_entered(area):
 	if area.name == "pjHitbox":
