@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/enemies/kamikaze.gd" type="Script" id=2]
-[ext_resource path="res://img/Kamikaze.png" type="Texture" id=3]
+[ext_resource path="res://img/Kamikaze.png" type="Texture2D" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
@@ -9,12 +9,12 @@ extents = Vector2( 16, 16 )
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 9.77899, 12.6044 )
 
-[node name="kamikaze" type="KinematicBody2D" groups=["Enemies"]]
+[node name="kamikaze" type="CharacterBody2D" groups=["Enemies"]]
 position = Vector2( 1, -1 )
 scale = Vector2( 1.25, 1.25 )
 script = ExtResource( 2 )
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2( 17.6593, 0.792484 )
 scale = Vector2( 0.666667, 0.666667 )
 texture = ExtResource( 3 )

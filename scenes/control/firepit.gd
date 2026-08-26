@@ -1,4 +1,4 @@
-extends Position2D
+extends Marker2D
 
 
 # Declare member variables here. Examples:
@@ -6,8 +6,8 @@ extends Position2D
 # var b = "text"
 
 var active  = false
-onready var player = get_node("../../../player")
-onready var roomCam = get_node("../../../cameras/roomCam")
+@onready var player = get_node("../../../player")
+@onready var roomCam = get_node("../../../cameras/roomCam")
 var actionButton = "F"
 var actionAltButton = "G"
 var healingPrice = 200

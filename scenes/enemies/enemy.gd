@@ -1,9 +1,9 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 var directionToPlayer
 var speed = 100
-onready var player = get_node("../../../player")
-onready var roomCam = get_node("../../../cameras/roomCam")
+@onready var player = get_node("../../../player")
+@onready var roomCam = get_node("../../../cameras/roomCam")
 var explosion = preload("res://particles/fake_explosion_particles.tscn")
 var movement
 var posX
@@ -19,8 +19,8 @@ func _ready():
 
 func spawn():
 	randomize()
-	self.posX = rand_range(self.roomX[0], self.roomX[1])
-	self.posY = rand_range(self.roomY[0], self.roomY[1])
+	self.posX = randf_range(self.roomX[0], self.roomX[1])
+	self.posY = randf_range(self.roomY[0], self.roomY[1])
 	position = Vector2(self.posX, self.posY)
 
 	# Spawn enemy at another random position if player and enemy are 
@@ -35,7 +35,7 @@ func setupSpawn(xMinMaxRoom, yMinMaxRoom):
 	
 
 func createExplosion():
-	var newExp =  explosion.instance()
+	var newExp =  explosion.instantiate()
 	newExp.setup(position)
 	get_parent().get_parent().add_child(newExp)
 	newExp.particles_explode = true

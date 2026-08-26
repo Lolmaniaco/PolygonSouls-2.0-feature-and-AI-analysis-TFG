@@ -7,17 +7,17 @@
 script = ExtResource( 2 )
 
 [node name="gameOver" parent="." instance=ExtResource( 1 )]
-margin_left = 355.0
-margin_top = 155.0
-margin_right = 465.0
-margin_bottom = 174.0
-rect_scale = Vector2( 3, 3 )
+offset_left = 355.0
+offset_top = 155.0
+offset_right = 465.0
+offset_bottom = 174.0
+scale = Vector2( 3, 3 )
 
 [node name="rToRetry" parent="." instance=ExtResource( 1 )]
-margin_left = 219.0
-margin_top = 277.0
-margin_right = 519.0
-margin_bottom = 362.0
+offset_left = 219.0
+offset_top = 277.0
+offset_right = 519.0
+offset_bottom = 362.0
 text = "¡No puedes rendirte!
 Tienes que volver a intentarlo
 

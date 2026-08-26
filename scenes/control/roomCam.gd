@@ -1,6 +1,6 @@
 extends Camera2D
 
-export (int) var maxRooms = 12
+@export var maxRooms: int = 12
 
 var NW = Vector2(0,0)
 var SE = Vector2(1024, 640)
@@ -31,8 +31,8 @@ func gameWon():
 	t.set_one_shot(true)
 	self.add_child(t)
 	t.start()
-	yield(t, "timeout")
-	get_tree().change_scene("res://scenes/control/gameFinished.tscn")
+	await t.timeout
+	get_tree().change_scene_to_file("res://scenes/control/gameFinished.tscn")
 	#$timeComplete.text = "El mal ha sido purgado en " + $gameTime.text + " minutos."
 	#$timeComplete.visible = true
 	#$gameTime.visible = false

@@ -10,7 +10,7 @@ var bouncer = preload("res://scenes/enemies/bouncer.tscn")
 var baseEnemies = [kamikaze, turret, bouncer]
 var hardEnemies = [kamikaze, turret, spinEnemy, bouncer]
 
-onready var healthPoints = $stateBody/healthPoints
+@onready var healthPoints = $stateBody/healthPoints
 var currentHealth
 var maxHealth = 10
 var active = false
@@ -58,29 +58,29 @@ func _ready():
 	
 	$AnimationPlayer.play("talking")
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	$bossDialogs.set_bbcode("[center] BIENVENIDO, PALADIN DE LA LUZ")
 	
 	t.set_wait_time(2)
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	$bossDialogs.set_bbcode("[center] ESTA SERA TU TUMBA DENTRO DE MUY POCO")
 	
 	t.set_wait_time(2)
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	$bossDialogs.visible = false
 	$AnimationPlayer.stop(true)
 
 func _physics_process(delta):
 	if active:
 		$protectiveAura/CollisionShape2D.disabled = true
-		$protectiveAura/Sprite.visible = false
+		$protectiveAura/Sprite2D.visible = false
 		
 		if global_position.y > 6900:
-			$bossDialogs.rect_position.y = -115
+			$bossDialogs.position.y = -115
 		else:
-			$bossDialogs.rect_position.y = 75
+			$bossDialogs.position.y = 75
 		if phase == 0:
 			$blockBody/blockBodyHitbox.shape.radius = 11.855
 			$blockBody/blockBodyHitbox.shape.height = 8.4
@@ -250,10 +250,10 @@ func spawnEnemies():
 	var enemyObj
 	
 	if hardEnemy:
-		enemyObj = hardEnemies[randi()%4].instance()
+		enemyObj = hardEnemies[randi()%4].instantiate()
 		hardEnemy = false
 	else:
-		enemyObj = baseEnemies[randi()%3].instance()
+		enemyObj = baseEnemies[randi()%3].instantiate()
 		hardEnemy = true
 		
 	add_child(enemyObj)
@@ -268,15 +268,15 @@ func tripleAroundAttack():
 	self.add_child(t)
 	
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	shootAroundProjectiles()
 	
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	shootAroundProjectiles()
 	
 	t.start()
-	yield(t, "timeout")
+	await t.timeout
 	shootAroundProjectiles()
 	
 	t.queue_free()
@@ -284,20 +284,20 @@ func tripleAroundAttack():
 
 func shootFocusedToPlayerProjectile():
 	for i in range(3):
-		var bossArrow = arrow.instance()
+		var bossArrow = arrow.instantiate()
 		get_parent().add_child(bossArrow)
 		var direction = global_position.direction_to(player.global_position)
 		if i == 0:
 			direction *= 0.9
 		elif i == 2:
 			direction *= 1.1
-		bossArrow.setup(self.position, rand_range(0,200), direction, 600)
+		bossArrow.setup(self.position, randf_range(0,200), direction, 600)
 
 func shootAroundProjectiles():
 	for i in range(0, maxHealth+1):
 		var angle = i * 36 + $firingPoint.rotation_degrees
 		var direction = Vector2(cos(angle), sin(angle))
-		var bossArrow = arrow.instance()
+		var bossArrow = arrow.instantiate()
 		get_parent().add_child(bossArrow)
 		bossArrow.setup(position, rotation_degrees+i * 36, direction, 400)
 	$firingPoint.rotation_degrees += 10

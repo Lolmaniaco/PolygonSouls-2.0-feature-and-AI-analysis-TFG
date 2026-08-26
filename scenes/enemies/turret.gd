@@ -1,7 +1,7 @@
 extends "res://scenes/enemies/enemy.gd"
 
 var turretArrow = preload("res://scenes/enemies/turretArrow.tscn")
-export (int) var chargeSpeed = 80
+@export var chargeSpeed: int = 80
 var targetPos
 var actualPlayerPos
 var actualPlayerPosSector
@@ -26,7 +26,7 @@ func _process(delta):
 		else:
 			rotation += 0.1
 
-		if stepify(rotation, 0.1) == stepify(actualPlayerPos, 0.1):
+		if snapped(rotation, 0.1) == snapped(actualPlayerPos, 0.1):
 			var aux = int(rotation) / 3
 			if aux != 0:
 				rotation -= 6*aux
@@ -40,7 +40,7 @@ func chargeUpdate(chargePoints):
 func shootProjectile():
 #	print("shoot!")
 	$chargeMeter.value = 0
-	var bullet = turretArrow.instance()
+	var bullet = turretArrow.instantiate()
 	get_parent().add_child(bullet)
 	bullet.setup(position, rotation_degrees, self.dirToShoot, 700, 'R')
 

@@ -1,7 +1,7 @@
 extends Node2D
 
 var dirToShoot
-export (float) var velocity = 10.0
+@export var velocity: float = 10.0
 var explosion = preload("res://particles/fake_explosion_particles.tscn")
 var notCollide = ["turret", "spinEnemy", "player", "bouncer", "finalBoss"]
 
@@ -27,7 +27,7 @@ func _physics_process(delta):
 	position += self.dirToShoot * self.velocity * delta
 	
 func createExplosion():
-	var newExp =  explosion.instance()
+	var newExp =  explosion.instantiate()
 	newExp.setup(position)
 	get_parent().add_child(newExp)
 	newExp.particles_explode = true

@@ -1,7 +1,7 @@
 extends Node2D
 
 #EXPORTS
-export (float) var speed = 10.0
+@export var speed: float = 10.0
 var facingDirection
 var speedSide
 

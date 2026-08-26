@@ -1,8 +1,8 @@
-extends Position2D
+extends Marker2D
 
 
-onready var roomCam = get_node("../../../cameras/roomCam")
-onready var player = get_node("../../../player")
+@onready var roomCam = get_node("../../../cameras/roomCam")
+@onready var player = get_node("../../../player")
 
 var active = false
 var actionButton = "F"

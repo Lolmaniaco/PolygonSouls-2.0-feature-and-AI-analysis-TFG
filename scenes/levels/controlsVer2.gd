@@ -1,4 +1,4 @@
-extends Sprite
+extends Sprite2D
 
 
 var initialRoomController = preload("res://img/controlsVer2 Controller.png")

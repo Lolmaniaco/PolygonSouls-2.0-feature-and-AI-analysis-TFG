@@ -29,7 +29,7 @@ func _process(delta):
 func _on_kamikazeHitbox_area_entered(area):
 	if "Attack" in area.name:
 		tankedHits += 1;
-		$Sprite.scale *= 1.4
+		$Sprite2D.scale *= 1.4
 		#$kamikazeHitbox/hitBox.scale *= 1.2
 		
 	if(tankedHits == 3):

@@ -1,7 +1,7 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
-export (int) var maxHealth = 100
-export (int) var maxStamina = 100
+@export var maxHealth: int = 100
+@export var maxStamina: int = 100
 var actualRoom = Vector2.ZERO
 var lastRoom = Vector2.ZERO
 var currentWeapon = 1
@@ -194,7 +194,7 @@ func isDead():
 			#addPlayerDeath()
 			GlobalVariables.deathCounter += 1
 			print("Muertes: ", GlobalVariables.deathCounter)
-			get_tree().change_scene("res://scenes/control/gameOverScreen.tscn")
+			get_tree().change_scene_to_file("res://scenes/control/gameOverScreen.tscn")
 			$playerUI.setHealth(maxHealth)
 
 func attack():
@@ -237,14 +237,14 @@ func attack():
 		2:
 			if $rangedReloadTimer.is_stopped():
 				$rangedReloadTimer.start()
-				var bullet = arrow.instance()
+				var bullet = arrow.instantiate()
 				bullet.setup(position, $weapons.rotation_degrees, facingDir)
 				get_parent().add_child(bullet)
 				PA.append('R')
 		3:
 			if $magicReloadTimer.is_stopped():
 				$magicReloadTimer.start()
-				var bullet = fireball.instance()
+				var bullet = fireball.instantiate()
 				bullet.setup(position, $weapons.rotation_degrees, facingDir)
 				get_parent().add_child(bullet)
 				PA.append('M')

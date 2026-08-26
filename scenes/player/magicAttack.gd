@@ -1,7 +1,7 @@
 extends Node2D
 
 #EXPORTS
-export (float) var speed = 10.0
+@export var speed: float = 10.0
 var facingDirection
 var speedSide
 var destroyProjective = false
@@ -35,7 +35,7 @@ func _on_magicAttack_area_entered(area):
 
 
 func _on_lifespanTimer_timeout():
-	$magicAttack/CollisionShape.disabled = true
-	$Sprite.visible = false
-	$Particles2D.emitting = false
+	$magicAttack/CollisionShape3D.disabled = true
+	$Sprite2D.visible = false
+	$GPUParticles2D.emitting = false
 	destroyProjective = true

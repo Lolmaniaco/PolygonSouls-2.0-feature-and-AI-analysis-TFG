@@ -22,7 +22,7 @@ var doorNodes = []
 var enemyNodes
 
 
-onready var camera = get_node("../../cameras/roomCam")
+@onready var camera = get_node("../../cameras/roomCam")
 var kamikaze = preload("res://scenes/enemies/kamikaze.tscn")
 var turret = preload("res://scenes/enemies/turret.tscn")
 var spinEnemy = preload("res://scenes/enemies/spinEnemy.tscn")
@@ -163,7 +163,7 @@ func makeCorridor(windowsSizeInBlocks):
 func makeDoors():
 	for corridor in corridors:	
 		
-		var doorObj = door.instance()
+		var doorObj = door.instantiate()
 		add_child(doorObj)
 		doorObj.setup(corridor[0], corridor[1])
 		
@@ -216,17 +216,17 @@ func _on_roomArea_body_entered(body):
 			createEnemies(enemyPressence, minimumEnemies, maximumEnemies) # default: create enemies between 1 and 4
 			closeDoors()
 		elif typeOfRoom == "cryptEntrance" and cryptNotCreated:
-			var cryptObj = cryptStairs.instance()
+			var cryptObj = cryptStairs.instantiate()
 			add_child(cryptObj)
 			cryptObj.setup(roomCenterPoint)
 			cryptNotCreated = false
 		elif typeOfRoom == "firepitRoom" and firepitNotCreated:
-			var firepitObj = firepit.instance()
+			var firepitObj = firepit.instantiate()
 			add_child(firepitObj)
 			firepitObj.setup(roomCenterPoint)
 			firepitNotCreated = false
 		elif typeOfRoom == "final":
-			var finalBoss1 = finalBoss.instance()
+			var finalBoss1 = finalBoss.instantiate()
 			add_child(finalBoss1)
 			finalBoss1.setup(roomCenterPoint)
 			enteredFinalBossRoom = true
@@ -272,9 +272,9 @@ func createEnemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 	for enemyToCreate in enemiesToCreate:
 		var enemyObj
 		if enemyPressence > 2.5:
-			enemyObj = hardEnemies[randi()%4].instance()
+			enemyObj = hardEnemies[randi()%4].instantiate()
 		else:
-			enemyObj = baseEnemies[randi()%3].instance()
+			enemyObj = baseEnemies[randi()%3].instantiate()
 			
 		add_child(enemyObj)
 		var xMinMaxRoom = [NWinPixels.x+64, SEinPixels.x-96]

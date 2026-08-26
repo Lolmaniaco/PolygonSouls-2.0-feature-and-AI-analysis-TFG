@@ -5,7 +5,7 @@ extends Control
 # var a = 2
 # var b = "text"
 
-onready var healthBar = $healthBar
+@onready var healthBar = $healthBar
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

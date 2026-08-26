@@ -1,7 +1,7 @@
 extends Node2D
 
 #Cantidad de salas exportada a la interfaz
-export (int) var maxRooms = 12
+@export var maxRooms: int = 12
 
 #Array de habitaciones
 var roomGlobal = []
@@ -25,7 +25,7 @@ func _ready():
 	############################################################################
 	
 	#Se crea la sala inicial
-	var roomInit = classRoom.instance()
+	var roomInit = classRoom.instantiate()
 	
 	#Se añade la sala inicial al array de salas local(arrayRooms) y global(roomGlobal)
 	$rooms.add_child(roomInit)
@@ -39,7 +39,7 @@ func _ready():
 	var cellSize = roomInit.getCellSize()
 	
 	#Obtiene el tamaño de la pantalla y lo divide por el tamaño de una sala
-	var windowsSizeInBlocks = OS.get_window_size()/cellSize
+	var windowsSizeInBlocks = get_window().get_size()/cellSize
 	
 	#Detecta las esquinas de la sala y devuelve en formato [ESQUINA, ESQUINA2]
 	var initCorners = roomInit.getsetCorners(windowsSizeInBlocks, cellSize)
@@ -51,7 +51,7 @@ func _ready():
 	roomInit.drawRoom(initPos, windowsSizeInBlocks) # Main room
 	
 	#Se crea la sala del jefe de nivel
-	var finalRoom = classRoom.instance()
+	var finalRoom = classRoom.instantiate()
 	
 	#Se añade la sala final al array de salas local (arrayRooms)
 	$rooms.add_child(finalRoom)
@@ -103,7 +103,7 @@ func _ready():
 			nearRoom = arrayRooms[roomIndex] + dirTemp[dirs]
 			
 			if !arrayRooms.has(nearRoom) and numRooms < maxRooms:
-				var room = classRoom.instance()
+				var room = classRoom.instantiate()
 				
 				room.setCoord(nearRoom)
 				var corners = room.getsetCorners(windowsSizeInBlocks, cellSize)
@@ -196,7 +196,7 @@ func _ready():
 	tempRoomGlobal.erase(firepitRoom)
 
 	# Instance node player in this scene
-	var pj = player.instance()
+	var pj = player.instantiate()
 	add_child(pj)
 
 #	pj.setActualRoom()

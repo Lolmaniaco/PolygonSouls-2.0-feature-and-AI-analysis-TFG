@@ -10,5 +10,5 @@ func weakenedEnemy():
 	
 func _process(delta):
 	randomize()
-	wait_time = fireRate * rand_range(0.6, 1.1)
+	wait_time = fireRate * randf_range(0.6, 1.1)
 	

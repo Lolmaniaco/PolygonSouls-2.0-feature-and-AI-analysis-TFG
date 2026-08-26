@@ -64,7 +64,7 @@ func _on_Area2D_area_entered(area):
 
 func shootProjectile():
 #	print("shoot!")
-	var bullet = arrow.instance()
+	var bullet = arrow.instantiate()
 	get_parent().add_child(bullet)
 	
 	if dirAttack == "left":

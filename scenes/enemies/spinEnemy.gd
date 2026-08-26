@@ -1,9 +1,9 @@
 extends "res://scenes/enemies/enemy.gd"
 
 var arrow = preload("res://scenes/enemies/turretArrow.tscn")
-onready var healthBar = $enemyBars
-onready var spikesCenterPoint = $enemyCenterPos
-export (int) var turnDegrees = 2 
+@onready var healthBar = $enemyBars
+@onready var spikesCenterPoint = $enemyCenterPos
+@export var turnDegrees: int = 2 
 
 var regenerating = false
 var canRegenerate = true
@@ -35,7 +35,7 @@ func _ready():
 	healingTicTimer = Timer.new()
 	healingTicTimer.set_one_shot(true)
 	healingTicTimer.set_wait_time(0.05)
-	healingTicTimer.connect("timeout", self, "_on_healingTicTimer_timeout")
+	healingTicTimer.connect("timeout", Callable(self, "_on_healingTicTimer_timeout"))
 	add_child(healingTicTimer)
 	
 func _physics_process(delta):
@@ -192,11 +192,11 @@ func hasProtection():
 func shootProjectile(currentAttack):
 	match(currentAttack):
 		'R':
-			var rangedArrow = arrow.instance()
+			var rangedArrow = arrow.instantiate()
 			get_parent().add_child(rangedArrow)
 			rangedArrow.setup(position, $centerPosition.rotation_degrees, self.dirToShoot, 500, currentAttack)
 		'M':
-			var magicArrow = arrow.instance()
+			var magicArrow = arrow.instantiate()
 			get_parent().add_child(magicArrow)
 			magicArrow.setup(position, $centerPosition.rotation_degrees, self.dirToShoot, 250, currentAttack)
 
@@ -216,7 +216,7 @@ func _on_processEAP_timeout():
 
 	if shields <= 0:
 		randomize()
-		var newAttack = rand_range(0,1)
+		var newAttack = randf_range(0,1)
 		if newAttack == 0:
 			currentAttack = 'M'
 		else:
@@ -231,7 +231,7 @@ func initProbabilities():
 
 func pickObject():
 	randomize()
-	var roll: float = rand_range(0.0, 1.0)
+	var roll: float = randf_range(0.0, 1.0)
 
 	for obj_type in object_types:
 		if (obj_type.acc_weight > roll):

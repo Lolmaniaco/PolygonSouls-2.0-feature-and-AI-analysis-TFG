@@ -4,8 +4,8 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var healthBar = $healthBar
-onready var staminaBar = $staminaBar
+@onready var healthBar = $healthBar
+@onready var staminaBar = $staminaBar
 var recoveringStamina = false
 
 func getHealthValue():
