@@ -32,7 +32,6 @@ func _process(delta):
 func setCorners(pNW, pSE):
 	NW = pNW
 	SE = pSE
-
 	position = NW
 
 

@@ -20,9 +20,6 @@ func _ready():
 	var arrayRoomsIndex = []
 	#Carga la escena de la sala inicial y de jugador
 
-	#Cantidad de salas especiales
-	var _specialRooms = 2
-
 	############################################################################
 	#				INICIALIZACIÓN DE LA SALA INICIAL Y DE JEFE				   #
 	############################################################################
@@ -44,14 +41,11 @@ func _ready():
 	#Obtiene el tamaño de la pantalla y lo divide por el tamaño de una sala
 	var windowsSizeInBlocks = get_window().get_size() / Vector2i(cellSize)
 
-	#Detecta las esquinas de la sala y devuelve en formato [ESQUINA, ESQUINA2]
 	var _initCorners = roomInit.getsetCorners(windowsSizeInBlocks, cellSize)
-	#Guarda en arrayRooms las coordenadas de la primera sala
 	arrayRooms.append(roomInit.getCoord())
 
 	#Se dibuja la sala inicial
-	var initPos = Vector2.ZERO
-	roomInit.drawRoom(initPos, windowsSizeInBlocks) # Main room
+	roomInit.drawRoom(Vector2.ZERO, windowsSizeInBlocks) # Main room
 
 	#Se crea la sala del jefe de nivel
 	var finalRoom: RoomHandler = room.instantiate()
@@ -63,10 +57,7 @@ func _ready():
 	finalRoom.setCoord(Vector2(10, 10))
 	finalRoom.setTypeOfRoom("final")
 
-	#Se dibuja la sala final
-	var finalRoomCorners = finalRoom.getsetCorners(windowsSizeInBlocks, cellSize)
-	finalRoom.drawRoom(initPos, windowsSizeInBlocks) # Draw room from top-left to down-right 
-
+	finalRoom.drawRoom(Vector2.ZERO, windowsSizeInBlocks) # Draw room from top-left to down-right 
 	############################################################################
 	#						CREACIÓN DE SALAS COMUNES						   #
 	############################################################################
@@ -110,8 +101,7 @@ func _ready():
 				new_room.name = "Room " + str(numRooms)
 				room_node.add_child(new_room)
 
-				new_room.drawRoom(initPos, windowsSizeInBlocks) # Draw room from top-left to down-right 
-				new_room.visible = false
+				new_room.drawRoom(Vector2.ZERO, windowsSizeInBlocks) # Draw room from top-left to down-right 
 
 				roomArray.append(new_room)
 				arrayRooms.append(nearRoom) # Append room in room list
@@ -119,7 +109,7 @@ func _ready():
 		roomIndex += 1
 
 	for roomNode: RoomHandler in roomArray:
-#		print(roomNode)
+		#print(roomNode)
 		for dir in directions:
 			nearRoom = roomNode.getCoord() + dir
 

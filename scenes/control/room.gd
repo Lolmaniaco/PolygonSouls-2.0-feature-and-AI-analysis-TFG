@@ -139,27 +139,27 @@ func makeCorridor(sizeInBlocks):
 		dir = roomCoord.direction_to(neighbor)
 
 		if dir == Vector2.LEFT:
-			initCorridor = Vector2(roomCoord.x, roomCoord.y + 9)
-			finCorridor = Vector2(roomCoord.x, roomCoord.y + 12)
+			initCorridor = Vector2(0, 8)
+			finCorridor = Vector2(0, 12)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(16, 320), 0])
 #			print(corridors["L"])
 
-		if dir == Vector2.RIGHT:
-			initCorridor = Vector2(roomCoord.x + sizeInBlocks.x - 1, roomCoord.y + 8)
-			finCorridor = Vector2(roomCoord.x + sizeInBlocks.x - 1, roomCoord.y + 12)
+		elif dir == Vector2.RIGHT:
+			initCorridor = Vector2(35, 8)
+			finCorridor = Vector2(35, 12)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(1136, 320), 0])
 
-		if dir == Vector2.DOWN:
-			initCorridor = Vector2(16, 20)
-			finCorridor = Vector2(20, 20)
+		elif dir == Vector2.DOWN:
+			initCorridor = Vector2(16, 19)
+			finCorridor = Vector2(20, 19)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(576, 624), -90])
 
-		if dir == Vector2.UP:
-			initCorridor = Vector2(roomCoord.x + 16, roomCoord.y)
-			finCorridor = Vector2(roomCoord.x + 20, roomCoord.y)
+		elif dir == Vector2.UP:
+			initCorridor = Vector2(16, 0)
+			finCorridor = Vector2(20, 0)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(576, 16), -90])
 
