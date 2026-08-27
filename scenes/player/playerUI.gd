@@ -45,4 +45,3 @@ func _process(delta):
 	if recoveringStamina:
 		staminaUpdate(1)
 		
-

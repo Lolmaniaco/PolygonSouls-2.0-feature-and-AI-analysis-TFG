@@ -1,25 +1,22 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene format=3 uid="uid://bw7t5dlo1dbfs"]
 
-[ext_resource path="res://img/healthEnemy.png" type="Texture2D" id=1]
-[ext_resource path="res://scenes/enemies/enemyBars.gd" type="Script" id=2]
+[ext_resource type="Texture2D" uid="uid://bkrr2agvogyje" path="res://img/healthEnemy.png" id="1"]
+[ext_resource type="Script" uid="uid://b0j5k5vo2x51s" path="res://scenes/enemies/enemyBars.gd" id="2"]
 
-[node name="enemyBars" type="Control"]
+[node name="enemyBars" type="Control" unique_id=650284291]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("2")
 
-[node name="healthBar" type="TextureProgressBar" parent="."]
-modulate = Color( 1, 1, 1, 0.54902 )
+[node name="healthBar" type="TextureProgressBar" parent="." unique_id=462279083]
+modulate = Color(1, 1, 1, 0.54902)
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 value = 100.0
-texture_under = ExtResource( 1 )
-texture_progress = ExtResource( 1 )
 fill_mode = 4
-tint_under = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+texture_under = ExtResource("1")
+texture_progress = ExtResource("1")
+tint_under = Color(0, 0, 0, 1)

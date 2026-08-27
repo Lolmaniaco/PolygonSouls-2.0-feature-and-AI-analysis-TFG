@@ -1,3 +1,4 @@
+class_name Player
 extends CharacterBody2D
 
 const PAmax = 10 # Max number of player attack saved
@@ -81,7 +82,7 @@ func getHealth():
 
 
 func getPos():
-	return position
+	return global_position
 
 
 func setPos(pos):

@@ -215,16 +215,16 @@ func createEnemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 	print("")
 
 	for enemyToCreate in enemiesToCreate:
-		var enemyObj
+		var enemyObj: Enemy
 		if enemyPressence > 2.5:
 			enemyObj = hardEnemies[randi() % 4].instantiate()
 		else:
-			enemyObj = baseEnemies[randi() % 3].instantiate()
+			var idx: int = randi() % 3
+			enemyObj = baseEnemies[idx].instantiate()
 
-		add_child(enemyObj)
-		var xMinMaxRoom = [64, 1152 - 64]
-		var yMinMaxRoom = [64, 640 - 96]
-
+		var xMinMaxRoom = [128, 1152 - 128]
+		var yMinMaxRoom = [128, 640 - 128]
+		call_deferred("add_child", enemyObj)
 		enemyObj.setupSpawn(xMinMaxRoom, yMinMaxRoom)
 
 

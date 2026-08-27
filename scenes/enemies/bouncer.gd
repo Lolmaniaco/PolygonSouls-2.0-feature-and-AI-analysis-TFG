@@ -1,4 +1,5 @@
-extends "res://scenes/enemies/enemy.gd"
+class_name Bouncer
+extends Enemy
 
 var arrow = preload("res://scenes/enemies/bouncerArrow.tscn")
 var targetPos
@@ -15,47 +16,44 @@ var bounce = 1
 
 
 func _ready():
+	_start_delay()
+
 	speed *= 0.04
-	var rng = RandomNumberGenerator.new()
-	rng.randomize()
-	direction = rng.randi_range(1, 2)
+	direction = randi_range(1, 2)
 
 
-func _process(delta):
-	if waitTime > 0:
-		waitTime -= delta
-	else:
-		if direction == 1:
-			if bounce % 2 == 0:
-				collision = move_and_collide(Vector2.UP * speed)
-			else:
-				collision = move_and_collide(Vector2.DOWN * speed)
-			if collision != null:
-				bounce += 1
+func _physics_process(delta: float) -> void:
+	if direction == 1:
+		if bounce % 2 == 0:
+			collision = move_and_collide(Vector2.UP * speed)
 		else:
-			if bounce % 2 == 0:
-				collision = move_and_collide(Vector2.RIGHT * speed)
-			else:
-				collision = move_and_collide(Vector2.LEFT * speed)
-			if collision != null:
-				bounce += 1
+			collision = move_and_collide(Vector2.DOWN * speed)
+		if collision != null:
+			bounce += 1
+	else:
+		if bounce % 2 == 0:
+			collision = move_and_collide(Vector2.RIGHT * speed)
+		else:
+			collision = move_and_collide(Vector2.LEFT * speed)
+		if collision != null:
+			bounce += 1
 
-		if dirAttack == "left" and playerOnSight and canShoot:
-			canShoot = false
-			dirToShoot = Vector2.LEFT
-			shootProjectile()
-		elif dirAttack == "right" and playerOnSight and canShoot:
-			canShoot = false
-			dirToShoot = Vector2.RIGHT
-			shootProjectile()
-		elif dirAttack == "up" and playerOnSight and canShoot:
-			canShoot = false
-			dirToShoot = Vector2.UP
-			shootProjectile()
-		elif dirAttack == "down" and playerOnSight and canShoot:
-			canShoot = false
-			dirToShoot = Vector2.DOWN
-			shootProjectile()
+	if dirAttack == "left" and playerOnSight and canShoot:
+		canShoot = false
+		dirToShoot = Vector2.LEFT
+		shootProjectile()
+	elif dirAttack == "right" and playerOnSight and canShoot:
+		canShoot = false
+		dirToShoot = Vector2.RIGHT
+		shootProjectile()
+	elif dirAttack == "up" and playerOnSight and canShoot:
+		canShoot = false
+		dirToShoot = Vector2.UP
+		shootProjectile()
+	elif dirAttack == "down" and playerOnSight and canShoot:
+		canShoot = false
+		dirToShoot = Vector2.DOWN
+		shootProjectile()
 
 
 func shootProjectile():

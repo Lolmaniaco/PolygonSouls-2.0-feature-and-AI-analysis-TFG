@@ -3,6 +3,17 @@ extends Marker2D
 
 
 func setup(initPos, doorRotation):
+	if initPos.x == 576:
+		if initPos.y == 16:
+			name = "Upper Door"
+		else:
+			name = "Down Door"
+	else:
+		if initPos.x == 16:
+			name = "Left Door"
+		else:
+			name = "Right Door"
+
 	position = initPos
 	rotation_degrees = doorRotation
 

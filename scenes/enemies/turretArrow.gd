@@ -1,3 +1,4 @@
+class_name TurretArrow
 extends Node2D
 
 @export var bullet_speed: float = 10.0
@@ -7,17 +8,13 @@ var explosion = preload("res://particles/fake_explosion_particles.tscn")
 var notCollide = ["turret", "spinEnemy", "player", "bouncer", "finalBoss"]
 
 
-func _ready():
-	pass # Replace with function body.
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
-	position += dirToShoot * bullet_speed * delta
+	global_position += dirToShoot * bullet_speed * delta
 
 
 func setup(pos, rot, direction, new_speed, typeOfProjectile):
-	position = pos
+	global_position = pos
 	rotation_degrees += rot
 	dirToShoot = direction
 	bullet_speed = new_speed

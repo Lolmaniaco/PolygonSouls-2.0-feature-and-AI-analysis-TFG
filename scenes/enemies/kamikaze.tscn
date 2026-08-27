@@ -1,33 +1,34 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene format=3 uid="uid://cbocpuwmn6qsf"]
 
-[ext_resource path="res://scenes/enemies/kamikaze.gd" type="Script" id=2]
-[ext_resource path="res://img/Kamikaze.png" type="Texture2D" id=3]
+[ext_resource type="Script" uid="uid://d28xo07kr1rnl" path="res://scenes/enemies/kamikaze.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://0hpec7ufdbv7" path="res://img/Kamikaze.png" id="3"]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(32, 32)
 
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 9.77899, 12.6044 )
+[sub_resource type="RectangleShape2D" id="3"]
+size = Vector2(19.55798, 25.2088)
 
-[node name="kamikaze" type="CharacterBody2D" groups=["Enemies"]]
-position = Vector2( 19.9259, 20.0094 )
-scale = Vector2( 1.25, 1.25 )
-script = ExtResource( 2 )
+[node name="kamikaze" type="CharacterBody2D" unique_id=1123500305 groups=["Enemies"]]
+position = Vector2(19.9259, 20.0094)
+scale = Vector2(1.25, 1.25)
+script = ExtResource("2")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2( 0.0592804, -15.2075 )
-scale = Vector2( 0.666667, 0.666667 )
-texture = ExtResource( 3 )
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=598438575]
+texture_filter = 1
+position = Vector2(0.0592804, -16.007517)
+scale = Vector2(0.666667, 0.666667)
+texture = ExtResource("3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0.0592804, -15.2075 )
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1939408541]
+position = Vector2(0.059280396, -16.007519)
+shape = SubResource("1")
 
-[node name="kamikazeHitbox" type="Area2D" parent="."]
+[node name="kamikazeHitbox" type="Area2D" parent="." unique_id=2080948963]
 
-[node name="hitBox" type="CollisionShape2D" parent="kamikazeHitbox"]
-position = Vector2( 2.45928, -13.6075 )
-scale = Vector2( 2, 1.5 )
-shape = SubResource( 3 )
+[node name="hitBox" type="CollisionShape2D" parent="kamikazeHitbox" unique_id=2048630505]
+position = Vector2(3.2592812, -16.007523)
+scale = Vector2(2, 1.5)
+shape = SubResource("3")
 
 [connection signal="area_entered" from="kamikazeHitbox" to="." method="_on_kamikazeHitbox_area_entered"]

@@ -1,6 +1,6 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1787769598
-default_env.tres::Environment::4912591832604433032::1787757494::0::1::::<><><>0<>0<><>::
+::res://::1787817299
+default_env.tres::Environment::4912591832604433032::1787776705::0::1::::<><><>0<>0<><>::
 export_presets.cfg::TextFile::-1::1787734138::0::1::::<><><>0<>0<><>::
 globalVariables.gd::GDScript::8322576392727618996::1787734199::0::1::::<>Node<><>0<>0<><>::
 icon.png::CompressedTexture2D::3901585444524551929::1787734138::1787734713::1::::<><><>0<>0<>f5bd4a418993dec0da5c0ca03c18d93b<>res://.godot/imported/icon.png-487276ed1e3a0c39cad0279d744ee560.ctex::
@@ -71,7 +71,7 @@ AAOCG - mIRC 6 x - KeyGen Sound - by Done.ogg::AudioStreamOggVorbis::28234667041
 fake_explosion_particles.gd::GDScript::2523738789743516730::1787755067::0::1::::<>Node2D<><>0<>0<><>::
 fake_explosion_particles.tscn::PackedScene::5970743487153078713::1787755229::0::1::::<><><>0<>0<><>::uid://bb7ruyf2mdf2y::::res://particles/fake_explosion_particles.gd
 ::res://scenes/::1787734139
-::res://scenes/control/::1787756953
+::res://scenes/control/::1787776350
 cameras.gd::GDScript::8168736678689600362::1787738699::0::1::::<>Node2D<><>0<>0<><>::
 cryptEntrance.gd::GDScript::1499033912448644181::1787736199::0::1::::<>Marker2D<><>0<>0<><>::
 cryptEntrance.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://scenes/control/cryptEntrance.gd<>res://scenes/control/dialog.tscn<>res://img/cryptStairs.png
@@ -88,9 +88,9 @@ gameOverScreen.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://
 labelWithFont.tscn::PackedScene::7580072009458785968::1787744625::0::1::::<><><>0<>0<><>::uid://djw3genaxnshs::::res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf
 musicPlayer.gd::GDScript::8285262165165218989::1787731503::0::1::::<>Node2D<><>0<>0<><>::
 musicPlayer.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://scenes/control/musicPlayer.gd
-room.gd::GDScript::2401183417330240947::1787756953::0::1::::RoomHandler<>Node2D<><>0<>0<><>::
-room.tscn::PackedScene::7730172214135298302::1787755698::0::1::::<><><>0<>0<><>::uid://bahfe06forvxj::::res://scenes/control/room.gd<>uid://c4rpgd7ftynhg::::res://scenes/levels/TileMap.tscn
-roomCam.gd::GDScript::2037072956294082778::1787740989::0::1::::RoomCamera<>Camera2D<><>0<>0<><>::
+room.gd::GDScript::2401183417330240947::1787776350::0::1::::RoomHandler<>Node2D<><>0<>0<><>::
+room.tscn::PackedScene::7730172214135298302::1787772185::0::1::::<><><>0<>0<><>::uid://bahfe06forvxj::::res://scenes/control/room.gd<>uid://c4rpgd7ftynhg::::res://scenes/levels/TileMap.tscn
+roomCam.gd::GDScript::2037072956294082778::1787775379::0::1::::RoomCamera<>Camera2D<><>0<>0<><>::
 roomCam.tscn::PackedScene::536683562093286922::1787750534::0::1::::<><><>0<>0<><>::uid://4a1j83g2hvc1::::res://scenes/control/roomCam.gd<>uid://djw3genaxnshs::::res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf<>res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres
 wall.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::
 zoomCamera.gd::GDScript::8634513334920163882::1787731503::0::1::::<>Camera2D<><>0<>0<><>::
@@ -116,7 +116,7 @@ turret.gd::GDScript::5882527501086035211::1787734088::0::1::::<>CharacterBody2D<
 turret.tscn::PackedScene::275016111290571303::1787735724::0::1::::<><><>0<>0<><>::uid://dfst8x7q5e5in::::res://img/Tshooter.png<>uid://cp2smr8k7l1vb::::res://scenes/enemies/turret.gd<>uid://dvffv68cf3cd5::::res://img/chargeBar.png
 turretArrow.gd::GDScript::3534267224427040559::1787735661::0::1::::<>Node2D<><>0<>0<><>::
 turretArrow.tscn::PackedScene::8121418210459323603::1787735717::0::1::::<><><>0<>0<><>::uid://yn2hji1tsyb5::::res://img/Tarrow.png<>uid://bqma4n0awkgmp::::res://scenes/enemies/turretArrow.gd<>uid://71dx60cfh6rg::::res://img/pjCircle.png
-::res://scenes/levels/::1787757494
+::res://scenes/levels/::1787776705
 basicScene00.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://scenes/levels/TileMap.tscn<>res://scenes/player/player.tscn
 basicScene01.gd::GDScript::4779538204538432829::1787735357::0::1::::<>Node2D<><>0<>0<><>::
 basicScene01.tscn::PackedScene::-1::1787735370::0::1::::<><><>0<>0<><>::res://scenes/levels/TileMap.tscn<>res://scenes/player/player.tscn<>res://scenes/enemies/turret.tscn<>res://scenes/levels/basicScene01.gd<>res://scenes/enemies/finalBoss.tscn<>res://scenes/enemies/kamikaze.tscn<>res://scenes/enemies/bouncer.tscn<>res://scenes/enemies/spinEnemy.tscn
@@ -125,8 +125,8 @@ basicScene02.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://sc
 basicScene03.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://scenes/levels/TileMap.tscn<>res://scenes/player/player.tscn<>res://scenes/control/cryptEntrance.tscn<>res://scenes/levels/basicScene02.gd<>res://scenes/control/firepit.tscn
 controlsVer2.gd::GDScript::5102690662476603202::1787748968::0::1::::<>Sprite2D<><>0<>0<><>::
 finalScene.tscn::PackedScene::-1::1787731503::0::1::::<><><>0<>0<><>::res://scenes/levels/TileMap.tscn<>res://scenes/enemies/finalBoss.tscn<>res://scenes/player/player.tscn<>res://scenes/levels/basicScene02.gd
-proceduralGeneration.gd::GDScript::5075611477196730332::1787753963::0::1::::<>Node2D<><>0<>0<><>::
-proceduralGeneration.tscn::PackedScene::8381851447713941063::1787757494::0::1::::<><><>0<>0<><>::uid://djw3genaxnshs::::res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf<>uid://hv8dno12o1ys::::res://scenes/control/roomCam.tscn<>res://scenes/control/zoomCamera.tscn<>res://scenes/control/musicPlayer.tscn<>uid://cekwtx4vbwq1i::::res://scenes/levels/proceduralGeneration.gd<>uid://dom85t8c3fcwo::::res://scenes/control/cameras.gd<>uid://cex1tmtoxlwqc::::res://scenes/levels/controlsVer2.gd
+proceduralGeneration.gd::GDScript::5075611477196730332::1787775495::0::1::::<>Node2D<><>0<>0<><>::
+proceduralGeneration.tscn::PackedScene::8381851447713941063::1787776705::0::1::::<><><>0<>0<><>::uid://djw3genaxnshs::::res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf<>uid://hv8dno12o1ys::::res://scenes/control/roomCam.tscn<>res://scenes/control/zoomCamera.tscn<>res://scenes/control/musicPlayer.tscn<>uid://cekwtx4vbwq1i::::res://scenes/levels/proceduralGeneration.gd<>uid://dom85t8c3fcwo::::res://scenes/control/cameras.gd<>uid://cex1tmtoxlwqc::::res://scenes/levels/controlsVer2.gd
 TileMap.tscn::PackedScene::6844333931620401592::1787739625::0::1::::<><><>0<>0<><>::uid://bo5agcu7w5phl::::res://img/whiteAndTransparent.png
 ::res://scenes/player/::1787755584
 magicAttack.gd::GDScript::2859756369952732709::1787734088::0::1::::<>Node2D<><>0<>0<><>::

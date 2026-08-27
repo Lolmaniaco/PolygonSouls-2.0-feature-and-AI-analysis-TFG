@@ -191,9 +191,6 @@ func _ready():
 	pj.position = Vector2(576, 320)
 	add_child(pj)
 
-#	pj.setActualRoom()
-	roomInit.makeDoors()
-
 
 func randomElement(array):
 	return array[randi() % array.size()]
