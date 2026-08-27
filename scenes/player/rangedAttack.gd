@@ -1,10 +1,9 @@
-extends Node2D
+extends Area2D
 
 #EXPORTS
 @export var speed: float = 10.0
 
 var facingDirection
-var speedSide
 
 
 func _physics_process(_delta):
@@ -17,17 +16,13 @@ func setup(pos, rot, dir):
 	facingDirection = dir
 
 
-func _on_destroyTimer_timeout():
-	queue_free()
-	pass
-
-
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
-	pass
 
 
-func _on_rangedAttack_area_entered(area):
-	if area.name == "kamikazeHitbox" or area.name == "shieldHitBox" or area.name == "bouncerArrow" or area.name == "protectiveAura" or area.name == "blockBody":
+func _on_body_entered(body: Node) -> void:
+	if body is TileMapLayer:
 		queue_free()
-	pass
+	elif body is Enemy:
+		body.take_hit()
+		queue_free()

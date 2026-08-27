@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c7dq5i3oueuk"]
 
 [ext_resource type="Texture2D" uid="uid://bobpk14vwwjc6" path="res://img/baseEnemy.png" id="1"]
-[ext_resource type="PackedScene" path="res://scenes/enemies/enemyBars.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://bw7t5dlo1dbfs" path="res://scenes/enemies/enemyBars.tscn" id="2"]
 [ext_resource type="Script" uid="uid://bkf6ss5oyands" path="res://scenes/enemies/spinEnemy.gd" id="3"]
 [ext_resource type="Texture2D" uid="uid://dc30uhgi34unt" path="res://img/enemyWeapon.png" id="4"]
 [ext_resource type="FontFile" uid="uid://djw3genaxnshs" path="res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf" id="5"]
@@ -110,8 +110,14 @@ emission_point_count = 1
 gravity = Vector3(0, 0, 0)
 color_ramp = SubResource("12")
 
-[node name="spinEnemy" type="CharacterBody2D" unique_id=1853769267 groups=["Enemies"]]
+[node name="spinEnemy" type="RigidBody2D" unique_id=734987806 groups=["Enemies"]]
 self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
+collision_layer = 3
+collision_mask = 3
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 1
 script = ExtResource("3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1241234656]
@@ -119,6 +125,7 @@ shape = SubResource("1")
 
 [node name="hitbox" type="Area2D" parent="." unique_id=1138286001]
 position = Vector2(-36, -36)
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1733866455]
 position = Vector2(36, 36)
@@ -137,8 +144,6 @@ offset = Vector2(-24, -24)
 
 [node name="enemyBars" parent="." unique_id=1174244625 instance=ExtResource("2")]
 modulate = Color(0.129412, 0.580392, 0.780392, 1)
-layout_mode = 3
-anchors_preset = 0
 offset_left = -36.0
 offset_top = -36.0
 offset_right = 4.0
@@ -159,7 +164,7 @@ texture = ExtResource("9")
 
 [node name="meleeAttack" type="Sprite2D" parent="." unique_id=2134326463]
 position = Vector2(0.999999, -2)
-rotation = 0.785398
+rotation = 0.78539795
 scale = Vector2(0.066018, 0.0546014)
 texture = ExtResource("6_8gp72")
 

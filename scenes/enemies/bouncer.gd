@@ -22,7 +22,7 @@ func _ready():
 	direction = randi_range(1, 2)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if direction == 1:
 		if bounce % 2 == 0:
 			collision = move_and_collide(Vector2.UP * speed)
@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 
 func shootProjectile():
 #	print("shoot!")
-	var bullet = arrow.instantiate()
+	var bullet: BouncerArrow = arrow.instantiate()
 	get_parent().add_child(bullet)
 
 	if dirAttack == "left":
@@ -69,6 +69,16 @@ func shootProjectile():
 		bullet.setup(position, 0, dirToShoot, 500, 'R')
 	elif dirAttack == "down":
 		bullet.setup(position, 90, dirToShoot, 500, 'R')
+
+
+func take_hit():
+	trigger_death()
+
+
+func trigger_death():
+	createExplosion()
+	updatePlayerSouls(30)
+	queue_free()
 
 
 func _on_Area2D_area_entered(_area):
@@ -130,6 +140,11 @@ func _on_crossDetectorUp_area_exited(area):
 func _on_bouncerHitbox_area_entered(area):
 	if "Attack" in area.name:
 #		print(area.name)
-		createExplosion()
-		updatePlayerSouls(30)
-		queue_free()
+		trigger_death()
+
+
+func _on_bouncer_hitbox_body_entered(body: Node2D) -> void:
+	if not body.is_in_group("pjBullets"):
+		return
+
+	trigger_death()

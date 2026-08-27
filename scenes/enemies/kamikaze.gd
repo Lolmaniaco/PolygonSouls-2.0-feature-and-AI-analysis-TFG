@@ -1,6 +1,8 @@
 class_name Kamikaze
 extends Enemy
 
+const POWER: int = 47
+
 var tankedHits = 0
 
 
@@ -17,20 +19,24 @@ func _physics_process(delta: float) -> void:
 	move_and_collide(movement)
 
 
-func _on_kamikazeHitbox_area_entered(area):
-	if "Attack" in area.name:
-		tankedHits += 1;
-		$Sprite2D.scale *= 1.4
-		#$kamikazeHitbox/hitBox.scale *= 1.2
+func trigger_death():
+	createExplosion()
+	createExplosion()
+	createExplosion()
+	updatePlayerSouls(50)
+	queue_free()
+
+
+func take_hit():
+	tankedHits += 1;
+	$Sprite2D.scale *= 1.4
 
 	if tankedHits == 3:
-		createExplosion()
-		createExplosion()
-		createExplosion()
-		updatePlayerSouls(50)
-		queue_free()
+		trigger_death()
 
-	if "pjHitbox" in area.name:
-		speed = 0
+
+func _on_body_entered(body: Node) -> void:
+	if body is Player:
 		createExplosion()
+		body.receive_damage(POWER)
 		queue_free()

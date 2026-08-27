@@ -168,7 +168,16 @@ func pickObject():
 			return obj_type.attackType
 
 
+func trigger_death():
+	createExplosion()
+	updatePlayerSouls(100)
+	queue_free()
+
+
 func _on_hitbox_area_entered(area):
+	if not area.is_in_group("pjBullets") or area.name == "nearAttack":
+		return
+
 	# Damage received by enemies to player
 	if "nearAttack" in area.name:
 		match(currentAttack):
@@ -187,7 +196,7 @@ func _on_hitbox_area_entered(area):
 
 		if hasProtection():
 			healthBar.healthUpdate(-attackDamage * attackMultiplier)
-	elif "rangedAttack" in area.name:
+	elif "rangedProjectile" in area.name:
 		match(currentAttack):
 			# Close Combat: C
 			'C':
@@ -204,7 +213,7 @@ func _on_hitbox_area_entered(area):
 
 		if hasProtection():
 			healthBar.healthUpdate(-attackDamage * attackMultiplier)
-	elif "magicAttack" in area.name:
+	elif "magicProjectile" in area.name:
 		match(currentAttack):
 			# Close Combat: C
 			'C':
@@ -223,9 +232,7 @@ func _on_hitbox_area_entered(area):
 			healthBar.healthUpdate(-attackDamage * attackMultiplier)
 
 	if healthBar.getHealth() <= 0:
-		createExplosion()
-		updatePlayerSouls(100)
-		queue_free()
+		trigger_death()
 
 
 func _on_processEAP_timeout():

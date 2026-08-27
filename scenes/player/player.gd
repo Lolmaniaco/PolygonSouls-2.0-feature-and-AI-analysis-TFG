@@ -288,6 +288,10 @@ func setActualRoom(room):
 	actualRoom = room.roomCoord
 
 
+func receive_damage(lost_life: int):
+	$playerUI.healthUpdate(-lost_life)
+
+
 func _on_inputDisabled_timeout():
 	inputIsDisabled = false
 
@@ -303,10 +307,13 @@ func _on_pjHitbox_area_entered(area):
 	elif "magicHitbox" in area.name:
 		attackMultiplier = 1.5
 		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
-	elif "kamikazeHitbox" in area.name:
-		attackMultiplier = 2.5
-		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
+
 
 
 func _on_staminaRecharge_timeout():
 	$playerUI.recoverStamina(true)
+
+
+func _on_near_attack_body_entered(body: Node2D) -> void:
+	if body is Enemy:
+		body.take_hit()

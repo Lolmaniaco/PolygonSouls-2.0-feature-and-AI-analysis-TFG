@@ -90,6 +90,7 @@ _data = {
 }
 
 [node name="player" type="CharacterBody2D" unique_id=1181376105]
+collision_mask = 5
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=742816128]
@@ -129,6 +130,8 @@ texture = ExtResource("5")
 [node name="nearAttack" type="Area2D" parent="weapons/sword" unique_id=501105498]
 position = Vector2(45.832, -45.5001)
 rotation = 0.785398
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="weapons/sword/nearAttack" unique_id=413853535]
 shape = SubResource("3")
@@ -177,5 +180,6 @@ texture = ExtResource("5")
 one_shot = true
 
 [connection signal="area_entered" from="pjHitbox" to="." method="_on_pjHitbox_area_entered"]
+[connection signal="body_entered" from="weapons/sword/nearAttack" to="." method="_on_near_attack_body_entered"]
 [connection signal="timeout" from="inputDisabled" to="." method="_on_inputDisabled_timeout"]
 [connection signal="timeout" from="staminaRecharge" to="." method="_on_staminaRecharge_timeout"]

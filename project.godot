@@ -37,6 +37,10 @@ enabled=PackedStringArray("res://addons/simple_gdscript_formatter/plugin.cfg")
 
 singleton=true
 
+[global_group]
+
+pjBullets=""
+
 [input]
 
 ui_accept={

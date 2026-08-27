@@ -1,5 +1,5 @@
 class_name BouncerArrow
-extends Node2D
+extends Area2D
 
 @export var bullet_speed: float = 10.0
 
@@ -27,26 +27,23 @@ func createExplosion():
 	newExp.particles_explode = true
 
 
-func _on_hitbox_body_entered(body):
-	var explode = true
-#	print(body.name)
-	for obj in notCollide:
-		if obj in body.name:
-			explode = false
-
-	if explode:
-		createExplosion()
-		queue_free()
-
-
 func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
 
-func _on_hitbox_area_entered(area):
-	if area.name == "pjHitbox":
+func _on_body_entered(body: Node2D) -> void:
+
+
+	if not body is Player:
+		return
+
+	body.receive_damage(15)
+	createExplosion()
+	queue_free()
+
+
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("pjBullets"):
 		createExplosion()
-		queue_free()
-	elif area.name == "magicAttack" or area.name == "rangedAttack" or area.name == "nearAttack":
-		createExplosion()
+		area.queue_free()
 		queue_free()

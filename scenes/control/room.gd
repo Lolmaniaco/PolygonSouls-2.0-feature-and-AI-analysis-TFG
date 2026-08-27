@@ -217,9 +217,9 @@ func createEnemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 	for enemyToCreate in enemiesToCreate:
 		var enemyObj: Enemy
 		if enemyPressence > 2.5:
-			enemyObj = hardEnemies[randi() % 4].instantiate()
+			enemyObj = hardEnemies[randi_range(0, 3)].instantiate()
 		else:
-			var idx: int = randi() % 3
+			var idx: int = randi_range(0, 2)
 			enemyObj = baseEnemies[idx].instantiate()
 
 		var xMinMaxRoom = [128, 1152 - 128]

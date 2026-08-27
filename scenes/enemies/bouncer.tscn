@@ -21,8 +21,12 @@ size = Vector2(20, 800)
 [sub_resource type="CircleShape2D" id="7"]
 radius = 22.2036
 
-[node name="bouncer" type="CharacterBody2D" unique_id=1144433623 groups=["Enemies"]]
+[node name="bouncer" type="RigidBody2D" unique_id=1042574860 groups=["Enemies"]]
 z_index = 1
+collision_layer = 3
+collision_mask = 3
+freeze = true
+freeze_mode = 1
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1876769506]
@@ -63,6 +67,8 @@ wait_time = 1.5
 autostart = true
 
 [node name="bouncerHitbox" type="Area2D" parent="." unique_id=165839591]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="bouncerHitbox" unique_id=1833827707]
 shape = SubResource("7")
@@ -77,3 +83,4 @@ shape = SubResource("7")
 [connection signal="area_exited" from="crossDetectorDown" to="." method="_on_crossDetectorDown_area_exited"]
 [connection signal="timeout" from="reloadTimer" to="." method="_on_reloadTimer_timeout"]
 [connection signal="area_entered" from="bouncerHitbox" to="." method="_on_bouncerHitbox_area_entered"]
+[connection signal="body_entered" from="bouncerHitbox" to="." method="_on_bouncer_hitbox_body_entered"]

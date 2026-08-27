@@ -1,5 +1,5 @@
 class_name TurretArrow
-extends Node2D
+extends Area2D
 
 @export var bullet_speed: float = 10.0
 
@@ -22,10 +22,10 @@ func setup(pos, rot, direction, new_speed, typeOfProjectile):
 	match(typeOfProjectile):
 		'R':
 			$ranged.visible = true
-			$turretArrow/CollisionShape2D.disabled = false
+			$CollisionShape2D.disabled = false
 		'M':
 			$magic.visible = true
-			$magicHitbox/CollisionShape2D.disabled = false
+			$CollisionShape2D.disabled = false
 
 
 func createExplosion():
@@ -39,19 +39,10 @@ func _on_VisibilityNotifier2D_screen_exited():
 	queue_free()
 
 
-func _on_hitbox_body_entered(body):
-	var explode = true
-#	print(body.name)
-	for obj in notCollide:
-		if obj in body.name:
-			explode = false
+func _on_body_entered(body: Node2D) -> void:
+	if not body is Player:
+		return
 
-	if explode:
-		createExplosion()
-		queue_free()
-
-
-func _on_hitbox_area_entered(area):
-	if area.name == "pjHitbox":
-		createExplosion()
-		queue_free()
+	body.receive_damage(15)
+	createExplosion()
+	queue_free()

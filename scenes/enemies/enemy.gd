@@ -1,5 +1,5 @@
 class_name Enemy
-extends CharacterBody2D
+extends RigidBody2D
 
 var directionToPlayer
 var speed = 100
@@ -21,6 +21,10 @@ func _ready() -> void:
 	_start_delay()
 
 
+func trigger_death():
+	pass
+
+
 func spawn():
 	posX = randf_range(roomX[0], roomX[1])
 	posY = randf_range(roomY[0], roomY[1])
@@ -31,6 +35,10 @@ func spawn():
 func setupSpawn(xMinMaxRoom, yMinMaxRoom):
 	roomX = xMinMaxRoom
 	roomY = yMinMaxRoom
+
+
+func take_hit():
+	pass
 
 
 func createExplosion():
@@ -46,7 +54,7 @@ func updatePlayerSouls(amount):
 
 func _start_delay() -> void:
 	spawn()
-	
+
 	set_physics_process(false)
 	await get_tree().create_timer(0.25).timeout
 	set_physics_process(true)

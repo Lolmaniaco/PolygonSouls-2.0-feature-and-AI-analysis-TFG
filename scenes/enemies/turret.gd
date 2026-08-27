@@ -24,6 +24,16 @@ func chargeUpdate(chargePoints):
 	$chargeMeter.value += chargePoints
 
 
+func take_hit():
+	trigger_death()
+
+
+func trigger_death():
+	createExplosion()
+	updatePlayerSouls(30)
+	queue_free()
+
+
 func shootProjectile():
 #	print("shoot!")
 	$chargeMeter.value = 0
@@ -32,14 +42,13 @@ func shootProjectile():
 	bullet.setup(global_position, rotation_degrees, dirToShoot, 700, 'R')
 
 
-func _on_enemyHitbox_area_entered(area):
-#	print(area.name)
-	if "Attack" in area.name:
-#		print(area.name)
-		createExplosion()
-		updatePlayerSouls(30)
-		queue_free()
+func _on_body_entered(body: Node) -> void:
+	if not body.is_in_group("pjBullets"):
+		return
+
+	trigger_death()
 
 
-func _on_shieldHitBox_area_entered(area):
-	pass # Replace with function body.
+func _on_shield_hit_box_area_entered(area: Area2D) -> void:
+	if area.is_in_group("pjBullets"):
+		area.queue_free()
