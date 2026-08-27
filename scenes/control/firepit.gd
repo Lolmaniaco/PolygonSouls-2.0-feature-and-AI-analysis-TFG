@@ -15,10 +15,6 @@ var spawnAlreadyCreated = false
 @onready var roomCam = get_node("../../../cameras/roomCam")
 
 
-func _ready():
-	pass # Replace with function body.
-
-
 func _input(_event):
 	if active:
 		# Create spawn

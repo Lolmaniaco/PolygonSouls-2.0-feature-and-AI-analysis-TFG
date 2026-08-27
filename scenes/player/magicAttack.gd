@@ -1,3 +1,4 @@
+class_name MagicProjectile
 extends Area2D
 
 #EXPORTS

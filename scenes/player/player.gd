@@ -296,20 +296,6 @@ func _on_inputDisabled_timeout():
 	inputIsDisabled = false
 
 
-func _on_pjHitbox_area_entered(area):
-	# Damage received by enemies to player
-	if "closeCombatHitbox" in area.name or "bossArrowHitbox" in area.name:
-		attackMultiplier = 1
-		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
-	elif "bouncerArrow" in area.name or "turretArrow" in area.name:
-		attackMultiplier = 0.7
-		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
-	elif "magicHitbox" in area.name:
-		attackMultiplier = 1.5
-		$playerUI.healthUpdate(-attackDamage * attackMultiplier)
-
-
-
 func _on_staminaRecharge_timeout():
 	$playerUI.recoverStamina(true)
 

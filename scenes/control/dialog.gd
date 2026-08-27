@@ -6,4 +6,4 @@ func _ready():
 
 
 func setText(text):
-	$dialogBox/RichTextLabel.set_bbcode(text)
+	$dialogBox/RichTextLabel.text = text

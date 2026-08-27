@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://droh4si7to168"]
 
 [ext_resource type="FontFile" uid="uid://djw3genaxnshs" path="res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf" id="1"]
+[ext_resource type="Texture2D" uid="uid://cuefxxc41y8x8" path="res://img/controlsVer2.png" id="2_o2ytf"]
 [ext_resource type="PackedScene" uid="uid://hv8dno12o1ys" path="res://scenes/control/roomCam.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://scenes/control/zoomCamera.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/control/musicPlayer.tscn" id="5"]
@@ -26,10 +27,10 @@ cache/0/16/0/underline_thickness = 0.0
 cache/0/16/0/scale = 1.0
 
 [node name="proceduralGeneration" type="Node2D" unique_id=1596741187]
-position = Vector2(1, 0)
 script = ExtResource("6")
 
 [node name="controlsVer2" type="Sprite2D" parent="." unique_id=256459446]
+texture = ExtResource("2_o2ytf")
 centered = false
 script = ExtResource("8")
 

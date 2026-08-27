@@ -2,58 +2,53 @@ class_name Bouncer
 extends Enemy
 
 var arrow = preload("res://scenes/enemies/bouncerArrow.tscn")
-var targetPos
-var hitWall = false;
-var collision
 var dirToShoot = Vector2(0, 1)
 var canShoot = true
 var playerOnSight = false
 var dirAttack
-var waitTime = 0.5
 
-var direction
 var bounce = 1
+var movement_direction: Vector2
+
+@onready var ray_down: RayCast2D = $RayCastDown
+@onready var ray_right: RayCast2D = $RayCastRight
+@onready var ray_left: RayCast2D = $RayCastLeft
+@onready var ray_up: RayCast2D = $RayCastUp
+@onready var reload_timer: Timer = $reloadTimer
 
 
 func _ready():
 	_start_delay()
+	speed = randi_range(200, 300)
+	movement_direction = Vector2(randf(), randf()).normalized()
 
-	speed *= 0.04
-	direction = randi_range(1, 2)
 
+func _physics_process(delta: float) -> void:
+	var collision := move_and_collide(movement_direction * speed * delta)
 
-func _physics_process(_delta: float) -> void:
-	if direction == 1:
-		if bounce % 2 == 0:
-			collision = move_and_collide(Vector2.UP * speed)
-		else:
-			collision = move_and_collide(Vector2.DOWN * speed)
-		if collision != null:
-			bounce += 1
-	else:
-		if bounce % 2 == 0:
-			collision = move_and_collide(Vector2.RIGHT * speed)
-		else:
-			collision = move_and_collide(Vector2.LEFT * speed)
-		if collision != null:
-			bounce += 1
+	if collision:
+		movement_direction = movement_direction.bounce(collision.get_normal()).normalized()
 
-	if dirAttack == "left" and playerOnSight and canShoot:
-		canShoot = false
-		dirToShoot = Vector2.LEFT
-		shootProjectile()
-	elif dirAttack == "right" and playerOnSight and canShoot:
-		canShoot = false
-		dirToShoot = Vector2.RIGHT
-		shootProjectile()
-	elif dirAttack == "up" and playerOnSight and canShoot:
-		canShoot = false
-		dirToShoot = Vector2.UP
-		shootProjectile()
-	elif dirAttack == "down" and playerOnSight and canShoot:
-		canShoot = false
-		dirToShoot = Vector2.DOWN
-		shootProjectile()
+	if canShoot:
+		dirToShoot = Vector2.ZERO
+		var down_hit = ray_down.get_collider()
+		var right_hit = ray_right.get_collider()
+		var left_hit = ray_left.get_collider()
+		var up_hit = ray_up.get_collider()
+
+		if down_hit is Player:
+			dirToShoot = Vector2.DOWN
+		elif right_hit is Player:
+			dirToShoot = Vector2.RIGHT
+		elif left_hit is Player:
+			dirToShoot = Vector2.LEFT
+		elif up_hit is Player:
+			dirToShoot = Vector2.UP
+
+		if dirToShoot != Vector2.ZERO:
+			canShoot = false
+			reload_timer.start()
+			shootProjectile()
 
 
 func shootProjectile():
@@ -61,14 +56,11 @@ func shootProjectile():
 	var bullet: BouncerArrow = arrow.instantiate()
 	get_parent().add_child(bullet)
 
-	if dirAttack == "left":
-		bullet.setup(position, 180, dirToShoot, 500, 'R')
-	elif dirAttack == "up":
-		bullet.setup(position, -90, dirToShoot, 500, 'R')
-	elif dirAttack == "right":
-		bullet.setup(position, 0, dirToShoot, 500, 'R')
-	elif dirAttack == "down":
-		bullet.setup(position, 90, dirToShoot, 500, 'R')
+	match dirToShoot:
+		Vector2.DOWN: bullet.setup(position, 90, dirToShoot, 500, 'R')
+		Vector2.RIGHT: bullet.setup(position, 0, dirToShoot, 500, 'R')
+		Vector2.LEFT: bullet.setup(position, 180, dirToShoot, 500, 'R')
+		Vector2.UP: bullet.setup(position, -90, dirToShoot, 500, 'R')
 
 
 func take_hit():
@@ -79,14 +71,6 @@ func trigger_death():
 	createExplosion()
 	updatePlayerSouls(30)
 	queue_free()
-
-
-func _on_Area2D_area_entered(_area):
-	if collision:
-		var result = collision.collider is TileMap
-		if collision.collider is TileMap:
-			speed = 100
-		print("resultado: ", result)
 
 
 func _on_reloadTimer_timeout():
@@ -143,7 +127,8 @@ func _on_bouncerHitbox_area_entered(area):
 		trigger_death()
 
 
-func _on_bouncer_hitbox_body_entered(body: Node2D) -> void:
+func _on_body_entered(body: Node) -> void:
+	print("DETECTED")
 	if not body.is_in_group("pjBullets"):
 		return
 

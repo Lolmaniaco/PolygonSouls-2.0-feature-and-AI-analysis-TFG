@@ -257,7 +257,6 @@ radius = 0.0
 height = 0.0
 
 [node name="finalBoss" type="CharacterBody2D" unique_id=440768600 groups=["Enemies"]]
-position = Vector2(1, -2)
 script = ExtResource("2")
 
 [node name="finalBossBody" type="CollisionShape2D" parent="." unique_id=1809278876]

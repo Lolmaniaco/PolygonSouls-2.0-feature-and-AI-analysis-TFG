@@ -19,7 +19,6 @@ var object_types = [{ 'attackType': 'C', 'roll_weight': 0, 'acc_weight': 0 } ,
 var accWeight = 0
 
 var currentAttack = 'C'
-var targetPos
 var dirToShoot
 var canShoot = true
 
@@ -28,7 +27,6 @@ var attackDamage = 30
 var shields = 3
 var healingTicTimer
 var waitUntilStartHealing
-var waitTime = 0.5
 
 @onready var healthBar = $enemyBars
 @onready var spikesCenterPoint = $enemyCenterPos
@@ -175,10 +173,9 @@ func trigger_death():
 
 
 func _on_hitbox_area_entered(area):
-	if not area.is_in_group("pjBullets") or area.name == "nearAttack":
+	if not area.is_in_group("pjBullets") and not area.name == "nearAttack":
 		return
 
-	# Damage received by enemies to player
 	if "nearAttack" in area.name:
 		match(currentAttack):
 			# Close Combat: C
@@ -194,9 +191,7 @@ func _on_hitbox_area_entered(area):
 				# Lose vs M
 				attackMultiplier = 0.5
 
-		if hasProtection():
-			healthBar.healthUpdate(-attackDamage * attackMultiplier)
-	elif "rangedProjectile" in area.name:
+	elif area is RangedProjectile:
 		match(currentAttack):
 			# Close Combat: C
 			'C':
@@ -211,9 +206,7 @@ func _on_hitbox_area_entered(area):
 				# Wins vs M
 				attackMultiplier = 1.5
 
-		if hasProtection():
-			healthBar.healthUpdate(-attackDamage * attackMultiplier)
-	elif "magicProjectile" in area.name:
+	elif area is MagicProjectile:
 		match(currentAttack):
 			# Close Combat: C
 			'C':
@@ -228,8 +221,8 @@ func _on_hitbox_area_entered(area):
 				# Draw vs M
 				attackMultiplier = 1
 
-		if hasProtection():
-			healthBar.healthUpdate(-attackDamage * attackMultiplier)
+	if hasProtection():
+		healthBar.healthUpdate(-attackDamage * attackMultiplier)
 
 	if healthBar.getHealth() <= 0:
 		trigger_death()
@@ -262,15 +255,15 @@ func _on_reloadTimer_timeout():
 	canShoot = true
 
 
-func _on_Area2D_area_exited(area):
-	if "pjHitbox" in area.name and flee == true:
-		regenerating = true
+func _on_healingTicTimer_timeout():
+	canRegenerate = true
 
 
-func _on_Area2D_area_entered(area):
-	if "pjHitbox" in area.name:
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body is Player:
 		regenerating = false
 
 
-func _on_healingTicTimer_timeout():
-	canRegenerate = true
+func _on_area_2d_body_exited(body: Node2D) -> void:
+	if flee and body is Player:
+		regenerating = true

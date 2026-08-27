@@ -15,8 +15,6 @@ var NWinPixels
 var SEinPixels
 var windowsSizeInBlocks
 
-var roomCenterPoint
-
 var cellSize
 
 var doorNodes = []
@@ -69,26 +67,14 @@ func getCoord():
 
 
 func getsetCorners(sizeInBlocks, new_cellSize):
-	#Esquina North/West y South/East de tipo vector2
 	NW = Vector2(sizeInBlocks.x * roomCoord.x, sizeInBlocks.y * roomCoord.y)
 	SE = Vector2(sizeInBlocks.x * roomCoord.x + sizeInBlocks.x, sizeInBlocks.y * roomCoord.y + sizeInBlocks.y)
 
 	NWinPixels = NW * new_cellSize
 	SEinPixels = SE * new_cellSize
 
-	#El punto central de la sala es la suma de ambas esquinas (en Vector2) y dividirlo entre 2.
-	roomCenterPoint = (NWinPixels + SEinPixels) / 2
-
 	$NW.position = NWinPixels
 	$SE.position = SEinPixels
-
-#	print("roomCord: ", roomCoord)
-#	print("roomCorners-> NW: ", NWinPixels, " SE: ", SEinPixels  )
-
-#	# To make bigger rooms, need implemntation!
-#	var middlePosition = Vector2(roomCoord.x*(SEinPixels.x-NWinPixels.x)*0.5, roomCoord.y*(SEinPixels.y-NWinPixels.y)*0.5)
-#	print("midPos: ", middlePosition)
-#	$Area2D/CollisionShape2D.scale = middlePosition*0.1
 
 	return [NW, SE]
 
@@ -222,16 +208,21 @@ func createEnemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 			var idx: int = randi_range(0, 2)
 			enemyObj = baseEnemies[idx].instantiate()
 
-		var xMinMaxRoom = [128, 1152 - 128]
-		var yMinMaxRoom = [128, 640 - 128]
+		var x_spawn = randi_range(192, 960)
+		var y_spawn = randi_range(192, 448)
 		call_deferred("add_child", enemyObj)
-		enemyObj.setupSpawn(xMinMaxRoom, yMinMaxRoom)
+		enemyObj.setupSpawn(x_spawn, y_spawn)
+
+		var spawn_point: ColorRect = ColorRect.new()
+		spawn_point.size = Vector2(10, 10)
+		spawn_point.color = Color.WHITE
+		add_child(spawn_point)
+		spawn_point.position = Vector2(x_spawn, y_spawn)
 
 
 func _on_roomArea_body_entered(body):
 	# when player node enters room area do:
 	if body.name == "player":
-		print("ENTERING ", name)
 		body.setActualRoom(self) # set player actual room
 		camera.setCorners(NWinPixels, SEinPixels) # set camera corners 
 		visible = true # room is now visible
@@ -243,22 +234,22 @@ func _on_roomArea_body_entered(body):
 			var enemyPressence = float((-50 - x) / float(y + 12)) + 6
 			var minimumEnemies = clamp(enemyPressence * 0.90, 2, 7)
 			var maximumEnemies = clamp(enemyPressence * 1.4, 2, 7)
-			createEnemies(enemyPressence, minimumEnemies, maximumEnemies) # default: create enemies between 1 and 4
+			createEnemies(3, minimumEnemies, maximumEnemies) # default: create enemies between 1 and 4
 			closeDoors()
 		elif typeOfRoom == "cryptEntrance" and cryptNotCreated:
 			var cryptObj = cryptStairs.instantiate()
 			add_child(cryptObj)
-			cryptObj.setup(roomCenterPoint)
+			cryptObj.setup(Vector2(576, 320))
 			cryptNotCreated = false
 		elif typeOfRoom == "firepitRoom" and firepitNotCreated:
 			var firepitObj = firepit.instantiate()
 			add_child(firepitObj)
-			firepitObj.setup(roomCenterPoint)
+			firepitObj.setup(Vector2(576, 320))
 			firepitNotCreated = false
 		elif typeOfRoom == "final":
 			var finalBoss1 = finalBoss.instantiate()
 			add_child(finalBoss1)
-			finalBoss1.setup(roomCenterPoint)
+			finalBoss1.setup(Vector2(576, 320))
 			enteredFinalBossRoom = true
 		else:
 			pass
@@ -268,7 +259,6 @@ func _on_roomArea_body_entered(body):
 
 func _on_roomArea_body_exited(body):
 	if body.name == "player":
-		print("EXITING ", name)
 		# Used only when player dies 
 		if enemyNodes != null:
 			if enemyNodes.size() > 0:
@@ -280,7 +270,6 @@ func _on_roomArea_body_exited(body):
 					openDoors()
 
 		if isPlayerDead == false:
-			print("Tipo de Sala: ", typeOfRoom)
 			if typeOfRoom != "enemiesKilled" and typeOfRoom != "cryptEntrance" and typeOfRoom != "initial":
 				camera.updateRoomsCleared(1)
 				camera.updateRoomsLabel()

@@ -8,11 +8,6 @@ var movement
 var posX
 var posY
 
-var roomX
-var roomY
-
-var safeDistance = Vector2(200, 200)
-
 @onready var player: Player = $"../../../player"
 @onready var roomCam: Camera2D = $"../../../cameras/roomCam"
 
@@ -26,15 +21,12 @@ func trigger_death():
 
 
 func spawn():
-	posX = randf_range(roomX[0], roomX[1])
-	posY = randf_range(roomY[0], roomY[1])
 	position = Vector2(posX, posY)
-	print("Enemy spawned at: ", posX, ", ", posY)
 
 
-func setupSpawn(xMinMaxRoom, yMinMaxRoom):
-	roomX = xMinMaxRoom
-	roomY = yMinMaxRoom
+func setupSpawn(x, y):
+	posX = x
+	posY = y
 
 
 func take_hit():
@@ -56,5 +48,5 @@ func _start_delay() -> void:
 	spawn()
 
 	set_physics_process(false)
-	await get_tree().create_timer(0.25).timeout
+	await get_tree().create_timer(0.4).timeout
 	set_physics_process(true)

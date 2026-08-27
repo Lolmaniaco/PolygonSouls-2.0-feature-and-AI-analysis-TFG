@@ -233,7 +233,6 @@ autostart = true
 [node name="centerPosition" type="Marker2D" parent="." unique_id=353788705]
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1880836059]
-visible = false
 
 [node name="regenerationDetector" type="CollisionShape2D" parent="Area2D" unique_id=551868500]
 shape = SubResource("7")
@@ -248,5 +247,5 @@ process_material = SubResource("10")
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="reloadTimer" to="." method="_on_reloadTimer_timeout"]
 [connection signal="timeout" from="processEAP" to="." method="_on_processEAP_timeout"]
-[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
-[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

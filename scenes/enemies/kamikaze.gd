@@ -5,16 +5,18 @@ const POWER: int = 47
 
 var tankedHits = 0
 
+@onready var col_shape: CollisionShape2D = $CollisionShape2D
+@onready var sprite: Sprite2D = $Sprite2D
+
 
 func _physics_process(delta: float) -> void:
-	var playerPos = player.global_position
-	directionToPlayer = global_position.direction_to(playerPos)
-	rotation = global_position.angle_to_point(playerPos)
+	directionToPlayer = global_position.direction_to(player.global_position)
+	rotation = global_position.angle_to_point(player.global_position)
 
 	match(tankedHits):
-		1: movement = directionToPlayer * speed * 2 * delta
-		2: movement = directionToPlayer * speed * 3 * delta
-		_: movement = directionToPlayer * speed * delta
+		1: movement = directionToPlayer * speed * 2.5 * delta
+		2: movement = directionToPlayer * speed * 3.5 * delta
+		_: movement = directionToPlayer * speed * 2 * delta
 
 	move_and_collide(movement)
 
@@ -29,13 +31,15 @@ func trigger_death():
 
 func take_hit():
 	tankedHits += 1;
-	$Sprite2D.scale *= 1.4
+	sprite.scale *= 1.4
+	col_shape.scale *= 1.2
 
 	if tankedHits == 3:
 		trigger_death()
 
 
 func _on_body_entered(body: Node) -> void:
+	print("Body: ", body.name)
 	if body is Player:
 		createExplosion()
 		body.receive_damage(POWER)

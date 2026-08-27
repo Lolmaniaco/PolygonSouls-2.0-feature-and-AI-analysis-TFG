@@ -1,25 +1,25 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene format=3 uid="uid://cf1jgsbpl4471"]
 
-[ext_resource path="res://scenes/control/firepit.gd" type="Script" id=2]
-[ext_resource path="res://scenes/control/dialog.tscn" type="PackedScene" id=3]
-[ext_resource path="res://img/firepitVer2.png" type="Texture2D" id=4]
+[ext_resource type="Script" uid="uid://b1kh3nongk8nm" path="res://scenes/control/firepit.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://b8klvkimc6px1" path="res://scenes/control/dialog.tscn" id="3"]
+[ext_resource type="Texture2D" uid="uid://du74a0dof73ke" path="res://img/firepitVer2.png" id="4"]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id="1"]
 radius = 63.0079
 
-[node name="firepit" type="Marker2D"]
-script = ExtResource( 2 )
+[node name="firepit" type="Marker2D" unique_id=1378420152]
+script = ExtResource("2")
 
-[node name="firepitVer2" type="Sprite2D" parent="."]
-modulate = Color( 0, 0, 0, 1 )
-texture = ExtResource( 4 )
+[node name="firepitVer2" type="Sprite2D" parent="." unique_id=1429063221]
+modulate = Color(0, 0, 0, 1)
+texture = ExtResource("4")
 
-[node name="firepitCenterArea" type="Area2D" parent="."]
+[node name="firepitCenterArea" type="Area2D" parent="." unique_id=1939621626]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="firepitCenterArea"]
-shape = SubResource( 1 )
+[node name="CollisionShape2D" type="CollisionShape2D" parent="firepitCenterArea" unique_id=409315359]
+shape = SubResource("1")
 
-[node name="dialog" parent="." instance=ExtResource( 3 )]
+[node name="dialog" parent="." unique_id=1626238377 instance=ExtResource("3")]
 offset_left = -204.953
 offset_top = 110.377
 offset_right = -164.953

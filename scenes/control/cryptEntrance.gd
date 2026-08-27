@@ -33,7 +33,7 @@ func _input(_event):
 					actionButton = "RT"
 				else:
 					actionButton = "F"
-				$dialog.setText("Fantasma de la Cripta:\n\nLo siento, paladín de la luz. Parece que aún no es el momento para combatir.\n\n[color=red]Vuelve cuando hayas superado " + String(objectiveRooms) + " salas.[/color]")
+				$dialog.setText("Fantasma de la Cripta:\n\nLo siento, paladín de la luz. Parece que aún no es el momento para combatir.\n\n[color=red]Vuelve cuando hayas superado " + str(objectiveRooms) + " salas.[/color]")
 
 
 func setup(pos):
@@ -51,9 +51,9 @@ func _on_cryptArea_body_entered(_body):
 	$dialog.visible = true
 	if !cryptAccessGranted:
 		if roomCam.getRoomsCleared() < objectiveRooms:
-			$dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=red](Limpia " + String(objectiveRooms) + " salas)[/color]\n\nQUIERO PELEAR (" + actionButton + ")")
+			$dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=red](Limpia " + str(objectiveRooms) + " salas)[/color]\n\nQUIERO PELEAR (" + actionButton + ")")
 		else:
-			$dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=#3990d6](Limpia " + String(objectiveRooms) + " salas)[/color]\n\nQUIERO PELEAR (" + actionButton + ")")
+			$dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=#3990d6](Limpia " + str(objectiveRooms) + " salas)[/color]\n\nQUIERO PELEAR (" + actionButton + ")")
 	else:
 		$dialog.setText("Fantasma de la Cripta:\n\nBuena suerte, paladín de la luz.\n\nENTRAR A LA CRIPTA (" + actionButton + ")")
 

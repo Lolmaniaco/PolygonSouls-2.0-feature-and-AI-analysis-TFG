@@ -1,3 +1,4 @@
+class_name RangedProjectile
 extends Area2D
 
 #EXPORTS
