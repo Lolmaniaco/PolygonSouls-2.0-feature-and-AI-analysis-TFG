@@ -25,14 +25,8 @@ func _process(delta):
 	time += delta
 	var seconds = fmod(time, 60)
 	var minutes = fmod(time, 3600) / 60
-	GlobalVariables.time = "%02d:%02d" % [minutes, seconds]
-	$gameTime.text = str(GlobalVariables.time)
-
-
-func setCorners(pNW, pSE):
-	NW = pNW
-	SE = pSE
-	position = NW
+	Global.time = "%02d:%02d" % [minutes, seconds]
+	$gameTime.text = str(Global.time)
 
 
 func getCamPos():

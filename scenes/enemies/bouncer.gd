@@ -52,15 +52,14 @@ func _physics_process(delta: float) -> void:
 
 
 func shootProjectile():
-#	print("shoot!")
 	var bullet: BouncerArrow = arrow.instantiate()
-	get_parent().add_child(bullet)
+	add_sibling(bullet)
 
 	match dirToShoot:
-		Vector2.DOWN: bullet.setup(position, 90, dirToShoot, 500, 'R')
+		Vector2.DOWN: bullet.setup(position, PI / 2, dirToShoot, 500, 'R')
 		Vector2.RIGHT: bullet.setup(position, 0, dirToShoot, 500, 'R')
-		Vector2.LEFT: bullet.setup(position, 180, dirToShoot, 500, 'R')
-		Vector2.UP: bullet.setup(position, -90, dirToShoot, 500, 'R')
+		Vector2.LEFT: bullet.setup(position, PI, dirToShoot, 500, 'R')
+		Vector2.UP: bullet.setup(position, -PI / 2, dirToShoot, 500, 'R')
 
 
 func take_hit():

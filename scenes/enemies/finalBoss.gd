@@ -1,4 +1,4 @@
-extends "res://scenes/enemies/enemy.gd"
+extends Enemy
 
 var arrow = preload("res://scenes/enemies/bossArrow.tscn")
 
@@ -8,7 +8,7 @@ var spinEnemy = preload("res://scenes/enemies/spinEnemy.tscn")
 var bouncer = preload("res://scenes/enemies/bouncer.tscn")
 
 var baseEnemies = [kamikaze, turret, bouncer]
-var hardEnemies = [kamikaze, turret, spinEnemy, bouncer]
+var hardEnemies = [kamikaze, turret, bouncer, spinEnemy]
 var currentHealth
 var maxHealth = 10
 var active = false

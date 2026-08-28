@@ -230,8 +230,6 @@ script = ExtResource("6")
 [node name="processEAP" type="Timer" parent="." unique_id=670623771]
 autostart = true
 
-[node name="centerPosition" type="Marker2D" parent="." unique_id=353788705]
-
 [node name="Area2D" type="Area2D" parent="." unique_id=1880836059]
 
 [node name="regenerationDetector" type="CollisionShape2D" parent="Area2D" unique_id=551868500]

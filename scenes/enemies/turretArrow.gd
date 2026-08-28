@@ -15,7 +15,7 @@ func _physics_process(delta):
 
 func setup(pos, rot, direction, new_speed, typeOfProjectile):
 	global_position = pos
-	rotation_degrees += rot
+	rotation += rot
 	dirToShoot = direction
 	bullet_speed = new_speed
 

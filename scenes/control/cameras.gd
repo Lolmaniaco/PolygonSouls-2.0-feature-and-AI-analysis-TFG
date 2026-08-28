@@ -8,7 +8,7 @@ func _ready():
 	$paused.visible = false
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	get_input()
 
 

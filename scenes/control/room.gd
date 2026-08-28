@@ -5,14 +5,10 @@ var roomCoord = Vector2(0, 0)
 var neighbors = []
 var corridors = []
 
-var NW
-var SE
 var dir
 var initCorridor
 var finCorridor
 
-var NWinPixels
-var SEinPixels
 var windowsSizeInBlocks
 
 var cellSize
@@ -51,11 +47,6 @@ func setTypeOfRoom(newRoom):
 	typeOfRoom = newRoom
 
 
-func getCellSize():
-	cellSize = Vector2(tile_map.tile_set.tile_size)
-	return cellSize
-
-
 func setCoord(coordPos):
 	roomCoord = coordPos
 	position = coordPos * Vector2(1152, 640)
@@ -64,19 +55,6 @@ func setCoord(coordPos):
 func getCoord():
 #	return [coordX, coordY]
 	return roomCoord
-
-
-func getsetCorners(sizeInBlocks, new_cellSize):
-	NW = Vector2(sizeInBlocks.x * roomCoord.x, sizeInBlocks.y * roomCoord.y)
-	SE = Vector2(sizeInBlocks.x * roomCoord.x + sizeInBlocks.x, sizeInBlocks.y * roomCoord.y + sizeInBlocks.y)
-
-	NWinPixels = NW * new_cellSize
-	SEinPixels = SE * new_cellSize
-
-	$NW.position = NWinPixels
-	$SE.position = SEinPixels
-
-	return [NW, SE]
 
 
 func drawBlockLine(startPosLine, finalPosLine, blockIndex): # only works form left-right or up-down, not in diagonal
@@ -120,7 +98,7 @@ func addNeighbor(neighbor):
 	neighbors.append(neighbor)
 
 
-func makeCorridor(sizeInBlocks):
+func makeCorridor(_sizeInBlocks):
 	for neighbor in neighbors:
 		dir = roomCoord.direction_to(neighbor)
 
@@ -175,13 +153,12 @@ func closeDoors():
 func getPlayerDeaths():
 	var user_file = "res://score.txt"
 	var f = FileAccess.open(user_file, FileAccess.READ)
-	var aux
 	var lastNumberDeaths
 
 	var index = 1
 	while index != 3: # iterate through all lines until the end of file is reached
 		if index == 1:
-			aux = int(f.get_line())
+			f.get_line()
 		elif index == 2:
 			lastNumberDeaths = int(f.get_line())
 		index += 1
@@ -224,7 +201,7 @@ func _on_roomArea_body_entered(body):
 	# when player node enters room area do:
 	if body.name == "player":
 		body.setActualRoom(self) # set player actual room
-		camera.setCorners(NWinPixels, SEinPixels) # set camera corners 
+		camera.position = roomCoord * Vector2(1152, 640)
 		visible = true # room is now visible
 
 		if typeOfRoom == "withEnemies":
@@ -238,17 +215,17 @@ func _on_roomArea_body_entered(body):
 			closeDoors()
 		elif typeOfRoom == "cryptEntrance" and cryptNotCreated:
 			var cryptObj = cryptStairs.instantiate()
-			add_child(cryptObj)
+			call_deferred("add_child", cryptObj)
 			cryptObj.setup(Vector2(576, 320))
 			cryptNotCreated = false
 		elif typeOfRoom == "firepitRoom" and firepitNotCreated:
 			var firepitObj = firepit.instantiate()
-			add_child(firepitObj)
+			call_deferred("add_child", firepitObj)
 			firepitObj.setup(Vector2(576, 320))
 			firepitNotCreated = false
 		elif typeOfRoom == "final":
 			var finalBoss1 = finalBoss.instantiate()
-			add_child(finalBoss1)
+			call_deferred("add_child", finalBoss1)
 			finalBoss1.setup(Vector2(576, 320))
 			enteredFinalBossRoom = true
 		else:

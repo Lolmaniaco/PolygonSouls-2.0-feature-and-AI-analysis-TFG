@@ -256,7 +256,7 @@ color_ramp = SubResource("14")
 radius = 0.0
 height = 0.0
 
-[node name="finalBoss" type="CharacterBody2D" unique_id=440768600 groups=["Enemies"]]
+[node name="finalBoss" type="RigidBody2D" unique_id=848329245 groups=["Enemies"]]
 script = ExtResource("2")
 
 [node name="finalBossBody" type="CollisionShape2D" parent="." unique_id=1809278876]

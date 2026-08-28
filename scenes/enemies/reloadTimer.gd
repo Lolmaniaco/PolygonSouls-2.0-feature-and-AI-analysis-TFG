@@ -8,7 +8,7 @@ func _ready():
 func weakenedEnemy():
 	fireRate = 2
 	
-func _process(delta):
+func _process(_delta):
 	randomize()
 	wait_time = fireRate * randf_range(0.6, 1.1)
 	

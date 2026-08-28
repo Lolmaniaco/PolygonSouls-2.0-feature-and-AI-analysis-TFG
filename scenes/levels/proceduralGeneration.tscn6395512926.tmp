@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" path="res://scenes/control/musicPlayer.tscn" id="5"]
 [ext_resource type="Script" uid="uid://cekwtx4vbwq1i" path="res://scenes/levels/proceduralGeneration.gd" id="6"]
 [ext_resource type="Script" uid="uid://dom85t8c3fcwo" path="res://scenes/control/cameras.gd" id="7"]
-[ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://scenes/player/player.tscn" id="8_o2ytf"]
 
 [sub_resource type="FontFile" id="1"]
 fallbacks = Array[Font]([ExtResource("1")])
@@ -64,6 +63,3 @@ horizontal_alignment = 1
 [node name="Rooms" type="Node2D" parent="." unique_id=827832661]
 
 [node name="musicPlayer" parent="." unique_id=916578299 instance=ExtResource("5")]
-
-[node name="player" parent="." unique_id=1181376105 instance=ExtResource("8_o2ytf")]
-position = Vector2(576, 320)

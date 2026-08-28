@@ -65,7 +65,7 @@ func _physics_process(delta):
 	isDead()
 
 
-func _input(event):
+func _input(_event):
 	if Input.is_action_just_pressed("godMode"):
 		if godMode:
 			godMode = false
@@ -206,8 +206,8 @@ func isDead():
 			hasRespawn = false
 		else:
 			#addPlayerDeath()
-			GlobalVariables.deathCounter += 1
-			print("Muertes: ", GlobalVariables.deathCounter)
+			Global.deathCounter += 1
+			print("Muertes: ", Global.deathCounter)
 			get_tree().change_scene_to_file("res://scenes/control/gameOverScreen.tscn")
 			$playerUI.setHealth(maxHealth)
 

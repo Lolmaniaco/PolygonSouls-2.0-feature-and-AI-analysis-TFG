@@ -18,7 +18,8 @@ config/icon="res://img/PolygonSouls.png"
 
 [autoload]
 
-GlobalVariables="*res://globalVariables.gd"
+Global="*res://singleton/global.gd"
+Utils="*uid://i41d7r5yv036"
 
 [debug]
 

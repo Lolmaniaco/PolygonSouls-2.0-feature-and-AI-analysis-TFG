@@ -39,7 +39,7 @@ func shootProjectile():
 	$chargeMeter.value = 0
 	var bullet: TurretArrow = turretArrow.instantiate()
 	add_sibling(bullet)
-	bullet.setup(global_position, rotation_degrees, dirToShoot, 700, 'R')
+	bullet.setup(global_position, rotation, dirToShoot, 700, 'R')
 
 
 func _on_body_entered(body: Node) -> void:

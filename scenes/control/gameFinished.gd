@@ -2,7 +2,7 @@ extends Node2D
 
 
 func _ready():
-	$TimeMessage.text = "Has completado PolygonSouls 2.0 en " + GlobalVariables.time + " minutos"
+	$TimeMessage.text = "Has completado PolygonSouls 2.0 en " + Global.time + " minutos"
 
 
 func _input(event):

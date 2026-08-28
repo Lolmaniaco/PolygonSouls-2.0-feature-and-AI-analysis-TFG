@@ -15,7 +15,7 @@ func _physics_process(delta):
 
 func setup(pos, rot, direction, new_speed, _typeOfProjectile):
 	position = pos
-	rotation_degrees += rot
+	rotation += rot
 	dirToShoot = direction
 	bullet_speed = new_speed
 
@@ -32,7 +32,6 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 
 func _on_body_entered(body: Node2D) -> void:
-
 
 	if not body is Player:
 		return

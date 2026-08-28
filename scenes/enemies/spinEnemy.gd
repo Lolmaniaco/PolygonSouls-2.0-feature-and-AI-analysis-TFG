@@ -13,7 +13,8 @@ var rPAP # received PAP
 var EAPs = { 'C': 0, 'R': 0, 'M': 0 } # Enemy attack patterns
 var accEAPs = { 'C': 0, 'R': 0, 'M': 0 } # Accumulated weight percentatges
 
-var object_types = [{ 'attackType': 'C', 'roll_weight': 0, 'acc_weight': 0 } ,
+var object_types = [
+	{ 'attackType': 'C', 'roll_weight': 0, 'acc_weight': 0 } ,
 	{ 'attackType': 'R', 'roll_weight': 0, 'acc_weight': 0 } ,
 	{ 'attackType': 'M', 'roll_weight': 0, 'acc_weight': 0 }]
 var accWeight = 0
@@ -75,7 +76,6 @@ func _physics_process(delta):
 				weakened()
 			movement = directionToPlayer * speed * delta
 
-	$centerPosition.rotation = global_position.angle_to_point(player.global_position)
 	dirToShoot = global_position.direction_to(player.global_position).normalized()
 
 	# Attack patterns
@@ -138,15 +138,10 @@ func hasProtection():
 
 
 func shootProjectile():
-	match(currentAttack):
-		'R':
-			var rangedArrow = arrow.instantiate()
-			add_sibling(rangedArrow)
-			rangedArrow.setup(global_position, $centerPosition.rotation_degrees, dirToShoot, 500, currentAttack)
-		'M':
-			var magicArrow = arrow.instantiate()
-			add_sibling(magicArrow)
-			magicArrow.setup(global_position, $centerPosition.rotation_degrees, dirToShoot, 250, currentAttack)
+	var projectile: TurretArrow = arrow.instantiate()
+	add_sibling(projectile)
+	projectile.setup(global_position, global_position.angle_to_point(player.global_position),
+		dirToShoot, 500 if currentAttack == 'R' else 250, currentAttack)
 
 
 func initProbabilities():
@@ -159,7 +154,7 @@ func initProbabilities():
 
 func pickObject():
 	randomize()
-	var roll: float = randf_range(0.0, 1.0)
+	var roll: float = randf()
 
 	for obj_type in object_types:
 		if obj_type.acc_weight > roll:
