@@ -47,7 +47,6 @@ var concentratedAttackCounter = 2
 
 
 func _ready():
-	movement = Vector2.LEFT * 6
 	currentHealth = maxHealth
 	speed *= 3
 	t.set_wait_time(0.5)
@@ -72,6 +71,7 @@ func _ready():
 
 
 func _physics_process(delta):
+	var movement: Vector2 = Vector2.ZERO
 	if active:
 		$protectiveAura/CollisionShape2D.disabled = true
 		$protectiveAura/Sprite2D.visible = false

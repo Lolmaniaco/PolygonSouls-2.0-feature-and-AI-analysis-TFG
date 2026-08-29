@@ -4,10 +4,6 @@ extends Enemy
 @export var chargeSpeed: int = 80
 
 var turretArrow = preload("res://scenes/enemies/turretArrow.tscn")
-var targetPos
-var currentPlayerPos
-var currentPlayerPosSector
-var rotationSector
 var dirToShoot
 
 
@@ -35,7 +31,6 @@ func trigger_death():
 
 
 func shootProjectile():
-#	print("shoot!")
 	$chargeMeter.value = 0
 	var bullet: TurretArrow = turretArrow.instantiate()
 	add_sibling(bullet)

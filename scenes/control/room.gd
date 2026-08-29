@@ -5,46 +5,34 @@ var roomCoord = Vector2(0, 0)
 var neighbors = []
 var corridors = []
 
-var dir
-var initCorridor
-var finCorridor
-
-var windowsSizeInBlocks
-
-var cellSize
-
 var doorNodes = []
 var enemyNodes
-var kamikaze = preload("res://scenes/enemies/kamikaze.tscn")
-var turret = preload("res://scenes/enemies/turret.tscn")
-var spinEnemy = preload("res://scenes/enemies/spinEnemy.tscn")
-var bouncer = preload("res://scenes/enemies/bouncer.tscn")
-var finalBoss = preload("res://scenes/enemies/finalBoss.tscn")
 
-var baseEnemies = [kamikaze, turret, bouncer]
-var hardEnemies = [kamikaze, turret, spinEnemy, bouncer]
-
-var door = preload("res://scenes/control/door.tscn")
-var cryptStairs = preload("res://scenes/control/cryptEntrance.tscn")
-var firepit = preload("res://scenes/control/firepit.tscn")
-
-var enemiesToCreate
-var typeOfRoom = "withEnemies"
+var typeOfRoom = "common"
 var doorsClosed = true
 
 var cryptNotCreated = true
 var firepitNotCreated = true
 var isPlayerDead = false
-var roomsCleared = 0
 var enteredFinalBossRoom = false
 
-@onready var camera: RoomCamera = get_node("../../cameras/roomCam")
+@onready var kamikaze = preload("res://scenes/enemies/kamikaze.tscn")
+@onready var turret = preload("res://scenes/enemies/turret.tscn")
+@onready var spinEnemy = preload("res://scenes/enemies/spinEnemy.tscn")
+@onready var bouncer = preload("res://scenes/enemies/bouncer.tscn")
+@onready var finalBoss = preload("res://scenes/enemies/finalBoss.tscn")
 
+@onready var baseEnemies = [kamikaze, kamikaze, kamikaze]
+@onready var hardEnemies = [kamikaze, turret, spinEnemy, bouncer]
+
+@onready var door = preload("res://scenes/control/door.tscn")
+@onready var camera: RoomCamera = get_node("../../cameras/roomCam")
 @onready var tile_map: TileMapLayer = $TileMap
 
 
 func setTypeOfRoom(newRoom):
 	typeOfRoom = newRoom
+	name = newRoom + " Room"
 
 
 func setCoord(coordPos):
@@ -99,8 +87,11 @@ func addNeighbor(neighbor):
 
 
 func makeCorridor(_sizeInBlocks):
+	var initCorridor: Vector2
+	var finCorridor: Vector2
+
 	for neighbor in neighbors:
-		dir = roomCoord.direction_to(neighbor)
+		var dir = roomCoord.direction_to(neighbor)
 
 		if dir == Vector2.LEFT:
 			initCorridor = Vector2(0, 8)
@@ -168,60 +159,46 @@ func getPlayerDeaths():
 
 
 func createEnemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
-	var random = RandomNumberGenerator.new()
-	random.randomize()
-	enemiesToCreate = random.randi_range(minNumEnemies, maxNumEnemies)
-	print("")
-	print("Salas limpiadas: ", camera.getRoomsCleared())
-	print("enemyPressence: ", enemyPressence, ". min: ", minNumEnemies, ". max: ", maxNumEnemies)
-	print("Enemigos a crear: ", enemiesToCreate)
-	print("")
+	var enemiesToCreate: int = randi_range(minNumEnemies, maxNumEnemies)
 
-	for enemyToCreate in enemiesToCreate:
+	for i in enemiesToCreate:
 		var enemyObj: Enemy
+		var idx: int
 		if enemyPressence > 2.5:
-			enemyObj = hardEnemies[randi_range(0, 3)].instantiate()
+			idx = randi_range(0, 3)
+			enemyObj = hardEnemies[idx].instantiate()
 		else:
-			var idx: int = randi_range(0, 2)
+			idx = randi_range(0, 2)
 			enemyObj = baseEnemies[idx].instantiate()
 
-		var x_spawn = randi_range(192, 960)
-		var y_spawn = randi_range(192, 448)
+		enemyObj.position = Vector2(randi_range(192, 960), randi_range(192, 448))
 		call_deferred("add_child", enemyObj)
-		enemyObj.setupSpawn(x_spawn, y_spawn)
 
 		var spawn_point: ColorRect = ColorRect.new()
 		spawn_point.size = Vector2(10, 10)
 		spawn_point.color = Color.WHITE
-		add_child(spawn_point)
-		spawn_point.position = Vector2(x_spawn, y_spawn)
+		call_deferred("add_child", spawn_point)
+		spawn_point.position = enemyObj.position
 
 
 func _on_roomArea_body_entered(body):
 	# when player node enters room area do:
 	if body.name == "player":
-		body.setActualRoom(self) # set player actual room
 		camera.position = roomCoord * Vector2(1152, 640)
 		visible = true # room is now visible
 
-		if typeOfRoom == "withEnemies":
+		if typeOfRoom == "common":
 			var playerDeaths = float(getPlayerDeaths())
 			var x = playerDeaths / 3
 			var y = float(camera.getRoomsCleared())
 			var enemyPressence = float((-50 - x) / float(y + 12)) + 6
 			var minimumEnemies = clamp(enemyPressence * 0.90, 2, 7)
 			var maximumEnemies = clamp(enemyPressence * 1.4, 2, 7)
-			createEnemies(3, minimumEnemies, maximumEnemies) # default: create enemies between 1 and 4
+			createEnemies(enemyPressence, minimumEnemies, maximumEnemies) # default: create enemies between 1 and 4
 			closeDoors()
-		elif typeOfRoom == "cryptEntrance" and cryptNotCreated:
-			var cryptObj = cryptStairs.instantiate()
-			call_deferred("add_child", cryptObj)
-			cryptObj.setup(Vector2(576, 320))
+		elif typeOfRoom == "boss" and cryptNotCreated:
 			cryptNotCreated = false
-		elif typeOfRoom == "firepitRoom" and firepitNotCreated:
-			var firepitObj = firepit.instantiate()
-			call_deferred("add_child", firepitObj)
-			firepitObj.setup(Vector2(576, 320))
+		elif typeOfRoom == "firepit" and firepitNotCreated:
 			firepitNotCreated = false
 		elif typeOfRoom == "final":
 			var finalBoss1 = finalBoss.instantiate()
@@ -247,14 +224,13 @@ func _on_roomArea_body_exited(body):
 					openDoors()
 
 		if isPlayerDead == false:
-			if typeOfRoom != "enemiesKilled" and typeOfRoom != "cryptEntrance" and typeOfRoom != "initial":
+			if typeOfRoom != "enemiesKilled" and typeOfRoom != "boss" and typeOfRoom != "initial":
 				camera.updateRoomsCleared(1)
 				camera.updateRoomsLabel()
 			typeOfRoom = "enemiesKilled"
 
 			body.inputDisabled()
-			var lastDir = body.getLastUsedDir().normalized()
-			body.setPos(lastDir * 43)
+
 		isPlayerDead = false
 
 

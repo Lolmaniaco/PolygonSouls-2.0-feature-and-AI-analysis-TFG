@@ -1,39 +1,35 @@
 extends Marker2D
 
-var active = false
-var actionButton = "F"
-var cryptEntranceFee = 1000
-var cryptAccessGranted = false
-var objectiveRooms
+var active: bool = false
+var actionButton: String = "F"
+var access_granted: bool = false
+var target_rooms: int = 0
 
-@onready var roomCam = get_node("../../../cameras/roomCam")
-@onready var player = get_node("../../../player")
+@onready var roomCam: RoomCamera = $"../../../cameras/roomCam"
+@onready var player: Player = $"../../../player"
 
 
 func _ready():
-	objectiveRooms = int(roomCam.getMaxRooms() * 0.7)
+	target_rooms = int(roomCam.getMaxRooms() * 0.7)
 
 
 func _input(_event):
 	if active:
 		if Input.is_action_just_pressed("actionButton"):
-			if cryptAccessGranted:
+			if access_granted:
 				player.position = Vector2(11 * 1024 - 200, 11 * 640 - 200)
 
-			if roomCam.getRoomsCleared() >= objectiveRooms:
-				if roomCam.isControllerConnected():
-					actionButton = "RT"
-				else:
-					actionButton = "F"
+			actionButton = "F" if roomCam.isControllerConnected() else "RT"
 
-				cryptAccessGranted = true
-				$dialog.setText("Fantasma de la Cripta:\n\nBuena suerte, paladín de la luz. Eres nuestra última esperanza.\n\nENTRAR A LA CRIPTA (" + actionButton + ")")
+			if roomCam.getRoomsCleared() >= target_rooms:
+				access_granted = true
+				$dialog.setText("Fantasma de la Cripta:\n\n
+				Buena suerte, paladín de la luz. Eres nuestra última esperanza.\n\n
+				ENTRAR A LA CRIPTA (" + actionButton + ")")
 			else:
-				if roomCam.isControllerConnected():
-					actionButton = "RT"
-				else:
-					actionButton = "F"
-				$dialog.setText("Fantasma de la Cripta:\n\nLo siento, paladín de la luz. Parece que aún no es el momento para combatir.\n\n[color=red]Vuelve cuando hayas superado " + str(objectiveRooms) + " salas.[/color]")
+				$dialog.setText("Fantasma de la Cripta:\n\n
+				Lo siento, paladín de la luz. Parece que aún no es el momento para combatir.\n\n
+				[color=red]Vuelve cuando hayas superado " + str(target_rooms) + " salas.[/color]")
 
 
 func setup(pos):
@@ -42,26 +38,29 @@ func setup(pos):
 
 func _on_cryptArea_body_entered(_body):
 	roomCam.activateColorInfo()
-	if roomCam.getRoomsCleared() >= 7:
-		if roomCam.isControllerConnected():
-			actionButton = "RT"
-		else:
-			actionButton = "F"
+	if roomCam.getRoomsCleared() >= target_rooms:
+		actionButton = "F" if roomCam.isControllerConnected() else "RT"
 	active = true
 	$dialog.visible = true
-	if !cryptAccessGranted:
-		if roomCam.getRoomsCleared() < objectiveRooms:
-			$dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=red](Limpia " + str(objectiveRooms) + " salas)[/color]\n\nQUIERO PELEAR (" + actionButton + ")")
+
+	if !access_granted:
+		if roomCam.getRoomsCleared() < target_rooms:
+			$dialog.setText("Fantasma de la Cripta:\n\n
+			¿Podrás vencer a la oscuridad que puebla estas tierras?\n
+			[color=red](Limpia " + str(target_rooms) + " salas)[/color]\n\n
+			QUIERO PELEAR(" + actionButton + ")")
 		else:
-			$dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=#3990d6](Limpia " + str(objectiveRooms) + " salas)[/color]\n\nQUIERO PELEAR (" + actionButton + ")")
+			$dialog.setText("Fantasma de la Cripta:\n\n
+			¿Podrás vencer a la oscuridad que puebla estas tierras?\n
+			[color=#3990d6](Limpia " + str(target_rooms) + " salas)[/color]\n\n
+			QUIERO PELEAR(" + actionButton + ")")
 	else:
-		$dialog.setText("Fantasma de la Cripta:\n\nBuena suerte, paladín de la luz.\n\nENTRAR A LA CRIPTA (" + actionButton + ")")
+		$dialog.setText("Fantasma de la Cripta:\n\n
+		Buena suerte, paladín de la luz.\n\n
+		ENTRAR A LA CRIPTA (" + actionButton + ")")
 
 
-func _on_cryptArea_body_exited(_body):
-	active = false
-	$dialog.visible = false
-
-
-func _on_dialog_gui_input(_event):
-	pass
+func _on_cryptArea_body_exited(body):
+	if body is Player:
+		active = false
+		$dialog.visible = false

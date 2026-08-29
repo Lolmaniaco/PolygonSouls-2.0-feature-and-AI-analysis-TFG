@@ -2,6 +2,7 @@ class_name Kamikaze
 extends Enemy
 
 const POWER: int = 47
+const ROTATION_SPEED := 10.0 # radianes por segundo
 
 var tankedHits = 0
 
@@ -9,9 +10,16 @@ var tankedHits = 0
 @onready var sprite: Sprite2D = $Sprite2D
 
 
+func _ready() -> void:
+	set_physics_process(false)
+	await rotate_to_player()
+	set_physics_process(true)
+
+
 func _physics_process(delta: float) -> void:
-	directionToPlayer = global_position.direction_to(player.global_position)
-	rotation = global_position.angle_to_point(player.global_position)
+	var movement: Vector2
+	var directionToPlayer = global_position.direction_to(player.global_position)
+	look_at(player.global_position)
 
 	match(tankedHits):
 		1: movement = directionToPlayer * speed * 2.5 * delta
@@ -19,6 +27,24 @@ func _physics_process(delta: float) -> void:
 		_: movement = directionToPlayer * speed * 2 * delta
 
 	move_and_collide(movement)
+
+
+func rotate_to_player() -> void:
+	while true:
+		var direction := global_position.direction_to(player.global_position)
+		var target_angle := direction.angle()
+
+		rotation = rotate_toward(
+			rotation,
+			target_angle,
+			ROTATION_SPEED * get_process_delta_time()
+		)
+
+		if is_equal_approx(rotation, target_angle):
+			rotation = target_angle
+			break
+
+		await get_tree().process_frame
 
 
 func trigger_death():
@@ -30,16 +56,16 @@ func trigger_death():
 
 
 func take_hit():
-	tankedHits += 1;
-	sprite.scale *= 1.4
+	var tween = get_tree().create_tween()
+	tween.tween_property(sprite, "scale", sprite.scale * 1.4, 0.2)
 	col_shape.scale *= 1.2
 
+	tankedHits += 1;
 	if tankedHits == 3:
 		trigger_death()
 
 
 func _on_body_entered(body: Node) -> void:
-	print("Body: ", body.name)
 	if body is Player:
 		createExplosion()
 		body.receive_damage(POWER)

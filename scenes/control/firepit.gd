@@ -22,7 +22,6 @@ func _input(_event):
 			if Input.is_action_just_pressed("actionButtonAlternative"):
 				if roomCam.getPlayerSouls() >= spawnPointPrice:
 					roomCam.updateSoulsValue(-spawnPointPrice)
-					#print("New spawn created")
 					player.createSpawn(position)
 					$firepitVer2.modulate = Color("ffffff")
 					spawnAlreadyCreated = true
@@ -42,7 +41,7 @@ func setup(pos):
 
 
 func _on_firepitCenterArea_body_entered(_body):
-	if player.getHasRespawn():
+	if player.has_respawn():
 		spawnAlreadyCreated = false
 		$firepitVer2.modulate = Color("000000")
 

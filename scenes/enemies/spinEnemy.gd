@@ -46,6 +46,7 @@ func _ready():
 
 
 func _physics_process(delta):
+	var movement
 	if regenerating:
 		movement = Vector2(0, 0)
 		canShoot = false
@@ -68,7 +69,7 @@ func _physics_process(delta):
 	else:
 		waitUntilStartHealing = 1
 		$healingActivated.emitting = false
-		directionToPlayer = global_position.direction_to(player.global_position)
+		var directionToPlayer = global_position.direction_to(player.global_position)
 		movement = directionToPlayer * speed * 2 * delta
 		if healthBar.getHealth() < 50:
 			directionToPlayer = -global_position.direction_to(player.global_position)
