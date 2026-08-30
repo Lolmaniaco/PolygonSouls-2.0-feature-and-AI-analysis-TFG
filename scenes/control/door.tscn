@@ -55,7 +55,7 @@ _data = {
 &"open": SubResource("2")
 }
 
-[node name="doorPosition2D" type="Marker2D" unique_id=2072594242 groups=["Doors"]]
+[node name="doorPosition2D" type="Node2D" unique_id=39315597 groups=["Doors"]]
 script = ExtResource("2")
 
 [node name="doorUp" type="Sprite2D" parent="." unique_id=37300555]

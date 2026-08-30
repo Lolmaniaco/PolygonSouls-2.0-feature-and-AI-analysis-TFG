@@ -10,17 +10,12 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("2")
 
-[node name="dialogBox" type="Control" parent="." unique_id=539738512]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="RichTextLabel" type="RichTextLabel" parent="dialogBox" unique_id=1039701368]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1039701368]
 layout_mode = 0
 offset_left = 36.0
 offset_top = 17.0
-offset_right = 565.0
-offset_bottom = 187.0
+offset_right = 700.99994
+offset_bottom = 264.49997
 scale = Vector2(0.8, 0.8)
 theme_override_fonts/normal_font = ExtResource("3")
 bbcode_enabled = true

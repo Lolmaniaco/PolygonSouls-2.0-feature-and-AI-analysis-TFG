@@ -7,49 +7,58 @@ enum Weapon {
 	MAGIC,
 }
 
-const PAmax = 10 # Max number of player attack saved
+const PAmax = 10
+const MELEE_TEXTURE = preload("uid://bwjnr8upy4j35")
+const RANGED_TEXTURE = preload("uid://yx8af2m77rnq")
+const MAGIC_TEXTURE = preload("uid://do2suxjm4qq3j")
+
+const MELEE_ATTACK = preload("uid://ct8hk6tgjt503")
+const RANGED_ATTACK = preload("uid://cpkds4nrxak5s")
+const MAGIC_ATTACK = preload("uid://ckf0fqbdq4342")
 
 @export var maxHealth: int = 100
 @export var maxStamina: int = 100
 @export var speed = 340
 
+var attack_cost: int = 10
+var regenerate_stamina: bool = false
 var current_weapon: Weapon = Weapon.MELEE
 var directions = [Vector2.UP, Vector2(1, -1), Vector2.RIGHT, Vector2(1, 1), Vector2.DOWN, Vector2(-1, 1), Vector2.LEFT, Vector2(-1, -1)]
 
-var player_control: bool = false
-
-var lastDir: Vector2 = Vector2.ZERO
-var respawn: bool = false
+var has_respawn: bool = false
 var respawn_pos: Vector2 = Vector2.ZERO
-var attack_cost: int = 10
-var PA = [] # Player Attacks
-var PAP = { 'C': 0, 'R': 0, 'M': 0 }
-var PAsize = 07
+var lost_control: bool = false
+
+var last_attacks = [] # Player Attacks
+var last_attacks_tracker = { 'C': 0, 'R': 0, 'M': 0 }
 
 var god_mode: bool = false
 
-@onready var user_file = "res://score.txt"
-@onready var arrow = preload("res://scenes/player/rangedAttack.tscn")
-@onready var fireball = preload("res://scenes/player/magicAttack.tscn")
-
+@onready var user_file = "user://score.txt"
 @onready var input_disabled: Timer = $inputDisabled
+@onready var attack_type: Sprite2D = $AttackType
+
+@onready var attack_reload: Timer = $AttackReload
+@onready var health_bar: TextureProgressBar = $healthBar
+@onready var stamina_bar: TextureProgressBar = $staminaBar
 
 
 func _ready():
-	position = Vector2(400, 400)
+	health_bar.max_value = maxHealth
+	stamina_bar.max_value = maxStamina
 
-	$playerUI.maxHealthUpdate(maxHealth)
-	$playerUI.maxStaminaUpdate(maxStamina)
-
-	$playerUI.setHealth(maxHealth)
-	$playerUI.setStamina(maxStamina)
+	health_bar.value = maxHealth
+	stamina_bar.value = maxStamina
 
 
 func _physics_process(delta):
-	if not player_control:
+	if regenerate_stamina:
+		stamina_bar.value += 1
+
+	if not lost_control:
 		get_input()
 	move_and_collide(velocity * delta)
-	isDead()
+	is_player_dead()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -58,27 +67,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			god_mode = false
 		else:
 			god_mode = true
-			$playerUI.setHealth(maxHealth)
-			$playerUI.setStamina(maxStamina)
+			health_bar.value = maxHealth
+			stamina_bar.value = maxStamina
 		print("GOD MODE TO ", god_mode)
 
 
-func setHealth(value):
-	$playerUI.setHealth(value)
+func restore_health() -> void:
+	health_bar.value = health_bar.max_value
 
 
 func getHealth():
-	return $playerUI.getHealthValue()
+	return health_bar.value
 
 
 func get_input():
-	# Detect up/down/left/right keystate and only move when pressed.
 	velocity = Vector2.ZERO
 	var direction = Input.get_vector("left", "right", "up", "down")
-
-	# Get last used direction
-	if velocity != Vector2.ZERO:
-		lastDir = direction
 
 	velocity = direction * speed
 
@@ -87,13 +91,14 @@ func get_input():
 	elif Input.is_action_just_pressed("nextWeapon"):
 		change_weapon(1)
 
-	if $playerUI/staminaBar.value >= attack_cost:
-		if Input.is_action_pressed("attack") and $rangedReloadTimer.is_stopped() and $meleeReloadTimer.is_stopped() and $magicReloadTimer.is_stopped():
-			attack()
-			if not god_mode:
-				$playerUI.staminaUpdate(-attack_cost)
-				$staminaRecharge.start()
-				$playerUI.recoverStamina(false)
+	if stamina_bar.value >= attack_cost:
+		if Input.is_action_pressed("attack"):
+			if attack_reload.is_stopped():
+				attack()
+				if not god_mode:
+					stamina_bar.value -= attack_cost
+					$staminaRecharge.start()
+					regenerate_stamina = false
 
 
 func change_weapon(direction: int) -> void:
@@ -104,48 +109,43 @@ func change_weapon(direction: int) -> void:
 func swap_weapons() -> void:
 	match(current_weapon):
 		Weapon.MELEE:
-			$meleeAttack.visible = true
-			$rangedAttack.visible = false
-			$magicAttack.visible = false
+			attack_reload.wait_time = 0.4
+			attack_type.texture = MELEE_TEXTURE
 			attack_cost = 10
 		Weapon.RANGED:
-			$meleeAttack.visible = false
-			$rangedAttack.visible = true
-			$magicAttack.visible = false
+			attack_reload.wait_time = 0.3
+			attack_type.texture = RANGED_TEXTURE
 			attack_cost = 10
 		Weapon.MAGIC:
-			$meleeAttack.visible = false
-			$rangedAttack.visible = false
-			$magicAttack.visible = true
+			attack_reload.wait_time = 0.1
+			attack_type.texture = MAGIC_TEXTURE
 			attack_cost = 20
 
 
 func inputDisabled():
-	player_control = true
+	lost_control = true
 	input_disabled.start()
 
 
 func createSpawn(pos):
-	respawn = true
+	has_respawn = true
 	respawn_pos = pos
 
 
-func has_respawn():
-	return respawn
+func get_respawn():
+	return has_respawn
 
 
-func isDead():
-	if $playerUI/healthBar.value <= 0:
-		if respawn:
+func is_player_dead():
+	if health_bar.value <= 0:
+		if has_respawn:
 			position = respawn_pos
-			$playerUI.setHealth(maxHealth)
-			respawn = false
+			has_respawn = false
 		else:
-			#addPlayerDeath()
 			Global.deathCounter += 1
 			print("Muertes: ", Global.deathCounter)
 			get_tree().change_scene_to_file("res://scenes/control/gameOverScreen.tscn")
-			$playerUI.setHealth(maxHealth)
+		health_bar.value = maxHealth
 
 
 func attack():
@@ -178,58 +178,52 @@ func attack():
 		$weapons.rotation_degrees = 270
 		facingDir = directions[6]
 
+	attack_reload.start()
 	match(current_weapon):
 		Weapon.MELEE:
-			if $meleeReloadTimer.is_stopped():
-				$meleeReloadTimer.start()
-				$AnimationPlayer.play("meleeAttack")
-				PA.append('C')
+			$AnimationPlayer.play("meleeAttack")
+			last_attacks.append('C')
 		Weapon.RANGED:
-			if $rangedReloadTimer.is_stopped():
-				$rangedReloadTimer.start()
-				var bullet = arrow.instantiate()
-				bullet.setup(position, $weapons.rotation_degrees, facingDir)
-				get_parent().add_child(bullet)
-				PA.append('R')
+			instantiate_bullet(RANGED_ATTACK, 'R', facingDir)
 		Weapon.MAGIC:
-			if $magicReloadTimer.is_stopped():
-				$magicReloadTimer.start()
-				var bullet = fireball.instantiate()
-				bullet.setup(position, $weapons.rotation_degrees, facingDir)
-				get_parent().add_child(bullet)
-				PA.append('M')
+			instantiate_bullet(MAGIC_ATTACK, 'M', facingDir)
 	checkPA()
 	makePAP()
 
 
+func instantiate_bullet(scene: PackedScene, value: String, direction: Vector2):
+	var bullet := scene.instantiate()
+	bullet.setup(position, $weapons.rotation_degrees, direction)
+	add_sibling(bullet)
+	last_attacks.append(value)
+
+
 func checkPA():
-	if PA.size() > PAmax and $meleeReloadTimer.is_stopped() and $rangedReloadTimer.is_stopped() and $magicReloadTimer.is_stopped():
-		PA.pop_front()
+	if last_attacks.size() > PAmax and attack_reload.is_stopped():
+		last_attacks.pop_front()
 
 
 func makePAP():
-	PAsize = float(PA.size())
-
-	PAP['C'] = float(PA.count('C')) / PAsize
-	PAP['R'] = float(PA.count('R')) / PAsize
-	PAP['M'] = float(PA.count('M')) / PAsize
+	last_attacks_tracker['C'] = float(last_attacks.count('C')) / last_attacks.size()
+	last_attacks_tracker['R'] = float(last_attacks.count('R')) / last_attacks.size()
+	last_attacks_tracker['M'] = float(last_attacks.count('M')) / last_attacks.size()
 
 
 func getPAP():
-	return PAP
+	return last_attacks_tracker
 
 
 func receive_damage(lost_life: int):
 	if not god_mode:
-		$playerUI.healthUpdate(-lost_life)
+		health_bar.value -= lost_life
 
 
 func _on_inputDisabled_timeout():
-	player_control = false
+	lost_control = false
 
 
 func _on_staminaRecharge_timeout():
-	$playerUI.recoverStamina(true)
+	regenerate_stamina = true
 
 
 func _on_near_attack_body_entered(body: Node2D) -> void:

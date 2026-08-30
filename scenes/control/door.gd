@@ -1,5 +1,5 @@
 class_name Door
-extends Marker2D
+extends Node2D
 
 
 func setup(initPos, doorRotation):
@@ -23,7 +23,3 @@ func playDoorAnimation(open):
 		$AnimationPlayer.play("open")
 	else:
 		$AnimationPlayer.play_backwards("open")
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

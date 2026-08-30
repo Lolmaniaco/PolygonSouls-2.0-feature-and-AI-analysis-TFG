@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://st7c67tetpq2"]
+
+[ext_resource type="Script" uid="uid://6664opjlik4j" path="res://scenes/enemies/bouncer/bouncerArrow.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://370aeh7lt0to" path="res://scenes/enemies/bouncer/bouncerArrow.png" id="2_jvjuj"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 15.0333
+
+[node name="bouncerArrow" type="Area2D" unique_id=689637286]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1218667598]
+position = Vector2(10, 0)
+shape = SubResource("1")
+
+[node name="ranged" type="Sprite2D" parent="." unique_id=487310216]
+position = Vector2(-0.290671, 3.87677e-05)
+rotation = 1.5708
+texture = ExtResource("2_jvjuj")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=2117905572]
+position = Vector2(9.7093, -0.31498)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

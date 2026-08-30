@@ -1,9 +1,21 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene format=3 uid="uid://dpjqg4i0swvdu"]
 
-[ext_resource path="res://scenes/control/musicPlayer.gd" type="Script" id=1]
+[sub_resource type="GDScript" id="GDScript_rbjxe"]
+script/source = "extends Node2D
 
-[node name="musicPlayer" type="Node2D"]
-script = ExtResource( 1 )
+var exploringMusic = load(\"res://music/AAOCG - mIRC 6 x - KeyGen Sound - by Done.ogg\")
 
-[node name="music" type="AudioStreamPlayer" parent="."]
+
+func _ready():
+	playMusic()
+
+
+func playMusic():
+	$music.stream = exploringMusic
+"
+
+[node name="musicPlayer" type="Node2D" unique_id=734880367]
+script = SubResource("GDScript_rbjxe")
+
+[node name="music" type="AudioStreamPlayer" parent="." unique_id=2036516295]
 volume_db = -20.0

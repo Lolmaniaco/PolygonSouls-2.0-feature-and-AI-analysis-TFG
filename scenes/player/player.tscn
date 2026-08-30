@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://jeixy66kq2jx"]
 
-[ext_resource type="Texture2D" uid="uid://di0he57eb2q6t" path="res://img/rangedAttack.png" id="1"]
 [ext_resource type="Script" uid="uid://xbuhksxkrij2" path="res://scenes/player/player.gd" id="2"]
-[ext_resource type="Texture2D" uid="uid://n0x1o10oc22o" path="res://img/magicAttack.png" id="3"]
-[ext_resource type="Texture2D" uid="uid://c0vm7qhvrs64c" path="res://img/meleeAttack.png" id="5"]
-[ext_resource type="PackedScene" path="res://scenes/player/playerUI.tscn" id="6"]
+[ext_resource type="Texture2D" uid="uid://bwjnr8upy4j35" path="res://scenes/player/assets/melee_type.png" id="3_0owmy"]
+[ext_resource type="Texture2D" uid="uid://ct8hk6tgjt503" path="res://scenes/player/assets/melee_attack.png" id="5_qek5x"]
+[ext_resource type="FontFile" path="res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres" id="6_0owmy"]
+[ext_resource type="Texture2D" uid="uid://dqnsy5qabv1ou" path="res://img/ringTexture.png" id="6_75vfm"]
+[ext_resource type="Script" uid="uid://deohtks5u3awf" path="res://scenes/player/UI.gd" id="6_qek5x"]
 [ext_resource type="Texture2D" uid="uid://71dx60cfh6rg" path="res://img/pjCircle.png" id="7"]
 
 [sub_resource type="CircleShape2D" id="1"]
@@ -19,18 +20,6 @@ length = 0.001
 
 [sub_resource type="Animation" id="5"]
 resource_name = "lowHealth"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("playerUI:self_modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 0, 0, 1)]
-}
 
 [sub_resource type="Animation" id="4"]
 length = 0.39
@@ -78,26 +67,48 @@ _data = {
 &"meleeAttack": SubResource("4")
 }
 
-[node name="player" type="CharacterBody2D" unique_id=1181376105]
+[node name="Player" type="CharacterBody2D" unique_id=1181376105]
 motion_mode = 1
 script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=742816128]
 shape = SubResource("1")
 
-[node name="pjSrpite" type="Sprite2D" parent="." unique_id=702973418]
-visible = false
+[node name="Body" type="Sprite2D" parent="." unique_id=702973418]
+texture_filter = 1
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("7")
 
-[node name="playerUI" parent="." unique_id=1351724349 instance=ExtResource("6")]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 3
-anchors_preset = 0
-offset_left = -47.9754
-offset_top = -48.3431
-offset_right = -7.97539
-offset_bottom = -8.34308
+[node name="healthBar" type="TextureProgressBar" parent="." unique_id=856429769]
+modulate = Color(0.952941, 0.952941, 0.952941, 1)
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.00004
+offset_bottom = 48.0
+value = 100.0
+fill_mode = 4
+texture_under = ExtResource("6_75vfm")
+texture_progress = ExtResource("6_75vfm")
+tint_under = Color(0, 0, 0, 1)
+tint_progress = Color(1, 0, 0, 1)
+
+[node name="staminaBar" type="TextureProgressBar" parent="." unique_id=222478688]
+modulate = Color(0.952941, 0.952941, 0.952941, 1)
+offset_left = -36.485962
+offset_top = -36.08911
+offset_right = 59.514038
+offset_bottom = 59.91089
+scale = Vector2(0.75, 0.75)
+value = 100.0
+fill_mode = 4
+texture_under = ExtResource("6_75vfm")
+texture_progress = ExtResource("6_75vfm")
+tint_under = Color(0, 0, 0, 1)
+tint_progress = Color(0, 0.709804, 0.988235, 1)
+
+[node name="AttackType" type="Sprite2D" parent="." unique_id=1907901713]
+modulate = Color(0, 0, 0, 1)
+texture = ExtResource("3_0owmy")
 
 [node name="weapons" type="Node2D" parent="." unique_id=864535724]
 position = Vector2(-0.529724, 0.707108)
@@ -107,10 +118,9 @@ visible = false
 rotation = -1.5707964
 
 [node name="Sprite2D" type="Sprite2D" parent="weapons/sword" unique_id=549550801]
-position = Vector2(44.7251, -44.5477)
+position = Vector2(46.70711, -45.470276)
 rotation = 0.785398
-scale = Vector2(0.15, 0.1)
-texture = ExtResource("5")
+texture = ExtResource("5_qek5x")
 
 [node name="nearAttack" type="Area2D" parent="weapons/sword" unique_id=501105498]
 position = Vector2(45.832, -45.5001)
@@ -120,48 +130,52 @@ collision_mask = 3
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="weapons/sword/nearAttack" unique_id=413853535]
 shape = SubResource("3")
+disabled = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1165632210]
 libraries/ = SubResource("AnimationLibrary_75vfm")
-
-[node name="magicReloadTimer" type="Timer" parent="." unique_id=902854203]
-wait_time = 0.1
-one_shot = true
-
-[node name="meleeReloadTimer" type="Timer" parent="." unique_id=1138931732]
-wait_time = 0.4
-one_shot = true
-
-[node name="rangedReloadTimer" type="Timer" parent="." unique_id=988461557]
-wait_time = 0.3
-one_shot = true
 
 [node name="inputDisabled" type="Timer" parent="." unique_id=1208684070]
 wait_time = 0.2
 one_shot = true
 
-[node name="magicAttack" type="Sprite2D" parent="." unique_id=2054232105]
-visible = false
-self_modulate = Color(0, 0, 0, 1)
-position = Vector2(0, -0.999998)
-scale = Vector2(0.227499, 0.225)
-texture = ExtResource("3")
-
-[node name="rangedAttack" type="Sprite2D" parent="." unique_id=489569579]
-visible = false
-position = Vector2(-1.00001, 0)
-scale = Vector2(0.18, 0.175)
-texture = ExtResource("1")
-
-[node name="meleeAttack" type="Sprite2D" parent="." unique_id=1091209071]
-self_modulate = Color(0, 0, 0, 1)
-position = Vector2(0.176778, -0.176778)
-rotation = 0.785398
-scale = Vector2(0.066018, 0.0546014)
-texture = ExtResource("5")
-
 [node name="staminaRecharge" type="Timer" parent="." unique_id=1724263771]
 one_shot = true
+
+[node name="AttackReload" type="Timer" parent="." unique_id=1872925307]
+wait_time = 0.4
+one_shot = true
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=51063419]
+script = ExtResource("6_qek5x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI" unique_id=702978245]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 49.0
+offset_right = -856.0
+offset_bottom = -444.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SoulsCollected" type="Label" parent="UI/VBoxContainer" unique_id=952709857]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_0owmy")
+text = "0 Almas"
+
+[node name="ClearedRooms" type="Label" parent="UI/VBoxContainer" unique_id=174541411]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_0owmy")
+text = "0 Salas"
+
+[node name="GameTime" type="Label" parent="UI/VBoxContainer" unique_id=190129010]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("6_0owmy")
+text = "0"
 
 [connection signal="body_entered" from="weapons/sword/nearAttack" to="." method="_on_near_attack_body_entered"]
 [connection signal="timeout" from="inputDisabled" to="." method="_on_inputDisabled_timeout"]

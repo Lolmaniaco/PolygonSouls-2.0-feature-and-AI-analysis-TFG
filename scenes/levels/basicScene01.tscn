@@ -2,12 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://c4rpgd7ftynhg" path="res://scenes/levels/TileMap.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://scenes/player/player.tscn" id="2"]
-[ext_resource type="PackedScene" uid="uid://d6hqfkgirjyl" path="res://scenes/enemies/turret.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://d6hqfkgirjyl" path="res://scenes/enemies/turret/turret.tscn" id="3"]
 [ext_resource type="Script" uid="uid://cadikcdhhja8d" path="res://scenes/levels/basicScene01.gd" id="4"]
-[ext_resource type="PackedScene" uid="uid://bw3k6flp2e5o1" path="res://scenes/enemies/finalBoss.tscn" id="5"]
-[ext_resource type="PackedScene" uid="uid://cbocpuwmn6qsf" path="res://scenes/enemies/kamikaze.tscn" id="6"]
-[ext_resource type="PackedScene" uid="uid://cjhy5jdp4knd4" path="res://scenes/enemies/bouncer.tscn" id="7"]
-[ext_resource type="PackedScene" uid="uid://c7dq5i3oueuk" path="res://scenes/enemies/spinEnemy.tscn" id="8"]
+[ext_resource type="PackedScene" uid="uid://bw3k6flp2e5o1" path="res://scenes/enemies/boss/finalBoss.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://cbocpuwmn6qsf" path="res://scenes/enemies/kamikaze/kamikaze.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://cjhy5jdp4knd4" path="res://scenes/enemies/bouncer/bouncer.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://c7dq5i3oueuk" path="res://scenes/enemies/spin_enemy/spinEnemy.tscn" id="8"]
 
 [node name="basicScene" type="Node2D" unique_id=256059296]
 script = ExtResource("4")

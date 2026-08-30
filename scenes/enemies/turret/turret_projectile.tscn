@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dnyctorhi3ttb"]
+
+[ext_resource type="Script" uid="uid://bqma4n0awkgmp" path="res://scenes/enemies/turret/turret_projectile.gd" id="1_d86bt"]
+[ext_resource type="Texture2D" uid="uid://yn2hji1tsyb5" path="res://scenes/enemies/turret/Tarrow.png" id="2_ttsqn"]
+
+[sub_resource type="CircleShape2D" id="1"]
+radius = 10.3169
+
+[node name="turretArrow" type="Area2D" unique_id=1114743174]
+script = ExtResource("1_d86bt")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=555009163]
+position = Vector2(-0.290671, 3.87677e-05)
+rotation = 1.5708
+texture = ExtResource("2_ttsqn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1360105487]
+position = Vector2(10.7093, -0.31498)
+shape = SubResource("1")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1613246971]
+position = Vector2(9.7093, -0.31498)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

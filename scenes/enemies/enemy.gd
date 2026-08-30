@@ -5,8 +5,8 @@ var speed = 100
 
 @onready var explosion = preload("res://particles/fake_explosion_particles.tscn")
 
-@onready var player: Player = $"../../../player"
-@onready var roomCam: Camera2D = $"../../../cameras/roomCam"
+@onready var player: Player = $"../../../../player"
+@onready var UI: UserInterface = $"../../../../player/UI"
 
 
 func _ready() -> void:
@@ -33,7 +33,7 @@ func createExplosion():
 
 
 func updatePlayerSouls(amount):
-	roomCam.updateSoulsValue(amount)
+	UI.updateSoulsValue(amount)
 
 
 func _start_delay() -> void:

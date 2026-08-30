@@ -1,12 +1,18 @@
 class_name RoomHandler
 extends Node2D
 
+const TURRET = preload("uid://d6hqfkgirjyl")
+const KAMIKAZE = preload("uid://cbocpuwmn6qsf")
+const BOUNCER = preload("uid://cjhy5jdp4knd4")
+const SPIN_ENEMY = preload("uid://c7dq5i3oueuk")
+const FINAL_BOSS = preload("uid://bw3k6flp2e5o1")
+
 var roomCoord = Vector2(0, 0)
 var neighbors = []
 var corridors = []
 
-var doorNodes = []
-var enemyNodes
+var doorNodes: Array[Door] = []
+var enemyNodes: Array = []
 
 var typeOfRoom = "common"
 var doorsClosed = true
@@ -14,20 +20,15 @@ var doorsClosed = true
 var cryptNotCreated = true
 var firepitNotCreated = true
 var isPlayerDead = false
-var enteredFinalBossRoom = false
 
-@onready var kamikaze = preload("res://scenes/enemies/kamikaze.tscn")
-@onready var turret = preload("res://scenes/enemies/turret.tscn")
-@onready var spinEnemy = preload("res://scenes/enemies/spinEnemy.tscn")
-@onready var bouncer = preload("res://scenes/enemies/bouncer.tscn")
-@onready var finalBoss = preload("res://scenes/enemies/finalBoss.tscn")
-
-@onready var baseEnemies = [kamikaze, kamikaze, kamikaze]
-@onready var hardEnemies = [kamikaze, turret, spinEnemy, bouncer]
+@onready var baseEnemies = [SPIN_ENEMY, SPIN_ENEMY, SPIN_ENEMY]
+@onready var hardEnemies = [KAMIKAZE, TURRET, BOUNCER, SPIN_ENEMY]
 
 @onready var door = preload("res://scenes/control/door.tscn")
-@onready var camera: RoomCamera = get_node("../../cameras/roomCam")
 @onready var tile_map: TileMapLayer = $TileMap
+@onready var room_cam: Camera2D = $"../../cameras/roomCam"
+@onready var UI: UserInterface = $"../../player/UI"
+@onready var enemy_nodes: Node2D = $EnemyNodes
 
 
 func setTypeOfRoom(newRoom):
@@ -41,11 +42,10 @@ func setCoord(coordPos):
 
 
 func getCoord():
-#	return [coordX, coordY]
 	return roomCoord
 
 
-func drawBlockLine(startPosLine, finalPosLine, blockIndex): # only works form left-right or up-down, not in diagonal
+func drawBlockLine(startPosLine, finalPosLine, blockIndex):
 	var dirLine = startPosLine.direction_to(finalPosLine)
 	var distLine = startPosLine.distance_to(finalPosLine)
 
@@ -58,27 +58,14 @@ func drawBlockLine(startPosLine, finalPosLine, blockIndex): # only works form le
 
 
 func drawRoom(startCoord, finCoord, wallBlockType = 0, _doorBlockType = 1):
-#	print("--- Up Line ---")
-#	print("startCoord: ",startCoord)
 	var upCoord = Vector2(finCoord.x, startCoord.y)
-#	print("upCoord: ", upCoord)
-
 	drawBlockLine(startCoord, upCoord, wallBlockType)
 
-#	print("--- Down Line ---")
-#	print("startCoord: ",startCoord)
 	var downCoordS = Vector2(startCoord.x, finCoord.y - 1)
-#	print("downCoordS: ", downCoordS)
 	var downCoordF = Vector2(finCoord.x, finCoord.y - 1)
-#	print("downCoordF: ", downCoordF)
 
 	drawBlockLine(downCoordS, downCoordF, wallBlockType)
-
-#	print("--- Left Line ---")
 	drawBlockLine(startCoord, downCoordS, wallBlockType)
-
-#	print("--- Right Line ---")
-#	var upCoordR = upCoord - Vector2.LEFT 
 	drawBlockLine(upCoord - Vector2.RIGHT, downCoordF - Vector2.RIGHT, wallBlockType)
 
 
@@ -98,20 +85,16 @@ func makeCorridor(_sizeInBlocks):
 			finCorridor = Vector2(0, 12)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(16, 320), 0])
-#			print(corridors["L"])
-
 		elif dir == Vector2.RIGHT:
 			initCorridor = Vector2(35, 8)
 			finCorridor = Vector2(35, 12)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(1136, 320), 0])
-
 		elif dir == Vector2.DOWN:
 			initCorridor = Vector2(16, 19)
 			finCorridor = Vector2(20, 19)
 			drawBlockLine(initCorridor, finCorridor, 1)
 			corridors.append([Vector2(576, 624), -90])
-
 		elif dir == Vector2.UP:
 			initCorridor = Vector2(16, 0)
 			finCorridor = Vector2(20, 0)
@@ -126,28 +109,27 @@ func makeDoors():
 		doorObj.setup(corridor[0], corridor[1])
 
 		doorNodes.append(doorObj)
-#	doorNodes = get_tree().get_nodes_in_group("Doors")
 
 
 func openDoors():
 	for doorNode in doorNodes:
-		doorNode.playDoorAnimation(true) # to open
+		doorNode.playDoorAnimation(true)
 	doorsClosed = false
 
 
 func closeDoors():
 	for doorNode in doorNodes:
-		doorNode.playDoorAnimation(false) # to close
+		doorNode.playDoorAnimation(false)
 	doorsClosed = true
 
 
 func getPlayerDeaths():
-	var user_file = "res://score.txt"
+	var user_file = "user://score.txt"
 	var f = FileAccess.open(user_file, FileAccess.READ)
 	var lastNumberDeaths
 
 	var index = 1
-	while index != 3: # iterate through all lines until the end of file is reached
+	while index != 3:
 		if index == 1:
 			f.get_line()
 		elif index == 2:
@@ -172,71 +154,64 @@ func createEnemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 			enemyObj = baseEnemies[idx].instantiate()
 
 		enemyObj.position = Vector2(randi_range(192, 960), randi_range(192, 448))
-		call_deferred("add_child", enemyObj)
+		enemy_nodes.call_deferred("add_child", enemyObj)
 
 		var spawn_point: ColorRect = ColorRect.new()
 		spawn_point.size = Vector2(10, 10)
 		spawn_point.color = Color.WHITE
 		call_deferred("add_child", spawn_point)
 		spawn_point.position = enemyObj.position
+	
+	enemyNodes = enemy_nodes.get_children()
 
 
 func _on_roomArea_body_entered(body):
-	# when player node enters room area do:
 	if body.name == "player":
-		camera.position = roomCoord * Vector2(1152, 640)
-		visible = true # room is now visible
+		room_cam.position = roomCoord * Vector2(1152, 640)
+		visible = true
 
 		if typeOfRoom == "common":
 			var playerDeaths = float(getPlayerDeaths())
 			var x = playerDeaths / 3
-			var y = float(camera.getRoomsCleared())
+			var y = float(UI.getRoomsCleared())
 			var enemyPressence = float((-50 - x) / float(y + 12)) + 6
 			var minimumEnemies = clamp(enemyPressence * 0.90, 2, 7)
 			var maximumEnemies = clamp(enemyPressence * 1.4, 2, 7)
-			createEnemies(enemyPressence, minimumEnemies, maximumEnemies) # default: create enemies between 1 and 4
+			createEnemies(enemyPressence, minimumEnemies, maximumEnemies)
 			closeDoors()
 		elif typeOfRoom == "boss" and cryptNotCreated:
 			cryptNotCreated = false
 		elif typeOfRoom == "firepit" and firepitNotCreated:
 			firepitNotCreated = false
 		elif typeOfRoom == "final":
-			var finalBoss1 = finalBoss.instantiate()
-			call_deferred("add_child", finalBoss1)
-			finalBoss1.setup(Vector2(576, 320))
-			enteredFinalBossRoom = true
-		else:
-			pass
+			var boss = FINAL_BOSS.instantiate()
+			call_deferred("add_child", boss)
+			boss.setup(Vector2(576, 320))
 
 		$checkRoomClear.start()
 
 
 func _on_roomArea_body_exited(body):
-	if body.name == "player":
-		# Used only when player dies 
-		if enemyNodes != null:
-			if enemyNodes.size() > 0:
-				#for enemyNode in enemyNodes:
-					#remove_child(enemyNode)
-				isPlayerDead = true
-				#$checkRoomClear.stop()
-				if doorsClosed:
-					openDoors()
+	if not body is Player:
+		return
 
-		if isPlayerDead == false:
-			if typeOfRoom != "enemiesKilled" and typeOfRoom != "boss" and typeOfRoom != "initial":
-				camera.updateRoomsCleared(1)
-				camera.updateRoomsLabel()
-			typeOfRoom = "enemiesKilled"
+	if not enemyNodes.is_empty():
+		isPlayerDead = true
+		if doorsClosed:
+			openDoors()
 
-			body.inputDisabled()
+	if isPlayerDead == false:
+		if typeOfRoom != "enemiesKilled" and typeOfRoom != "boss" and typeOfRoom != "initial":
+			UI.updateRoomsCleared(1)
+			UI.updateRoomsLabel()
+		typeOfRoom = "enemiesKilled"
 
-		isPlayerDead = false
+		body.inputDisabled()
+	isPlayerDead = false
 
 
 func _on_checkRoomClear_timeout():
-	enemyNodes = get_tree().get_nodes_in_group("Enemies")
-	if enemyNodes.size() == 0: # room cleared
+	if enemyNodes.is_empty():
 		$checkRoomClear.stop()
 		if doorsClosed:
 			openDoors()

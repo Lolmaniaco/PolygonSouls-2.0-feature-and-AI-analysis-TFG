@@ -3,11 +3,6 @@ extends Node2D
 var roomCam = true
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	$paused.visible = false
-
-
 func _physics_process(_delta):
 	get_input()
 

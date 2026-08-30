@@ -1,9 +1,11 @@
 extends Control
 
+@onready var label: RichTextLabel = $RichTextLabel
+
 
 func _ready():
-	$dialogBox/RichTextLabel.bbcode_enabled = true
+	label.bbcode_enabled = true
 
 
-func setText(text):
-	$dialogBox/RichTextLabel.text = text
+func setText(new_text: String):
+	label.text = new_text

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://cpkds4nrxak5s"]
+
+[ext_resource type="Script" uid="uid://ds1owvf0cl353" path="res://scenes/player/attack_types/projectile.gd" id="1_j5xwa"]
+[ext_resource type="Texture2D" uid="uid://cljnuqpteme5u" path="res://scenes/player/assets/ranged_attack.png" id="2_j5xwa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uv8pu"]
+
+[sub_resource type="ParticleProcessMaterial" id="2"]
+spread = 15.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.0
+scale_max = 0.0
+
+[node name="rangedProjectile" type="Area2D" unique_id=582655090 groups=["pjBullets"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_j5xwa")
+
+[node name="CollisionShape3D" type="CollisionShape2D" parent="." unique_id=1074542383]
+position = Vector2(0, -25)
+shape = SubResource("CircleShape2D_uv8pu")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=525531418 groups=["pjBullets"]]
+light_mask = 0
+rotation = 1.5708
+texture = ExtResource("2_j5xwa")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1757607372]
+position = Vector2(0, 28)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=758762589]
+visible = false
+rotation = 1.5708
+amount = 80
+process_material = SubResource("2")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

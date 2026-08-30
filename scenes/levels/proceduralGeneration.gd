@@ -1,13 +1,9 @@
 extends Node2D
 
-#Cantidad de salas exportada a la interfaz
 const CONTROLS_VER_2_CONTROLLER = preload("uid://do10oxvlyy5vx")
 const CONTROLS_VER_2 = preload("uid://cuefxxc41y8x8")
 
-#Array de habitaciones
 var roomArray: Array[RoomHandler] = []
-
-#Habitación que aparece en escena
 
 @onready var controls: Sprite2D = $controlsVer2
 @onready var room_node: Node2D = $Rooms

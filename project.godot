@@ -14,7 +14,7 @@ config/name="Polygon Souls"
 config/tags=PackedStringArray("github", "learn", "solo")
 run/main_scene="res://scenes/levels/proceduralGeneration.tscn"
 config/features=PackedStringArray("4.7")
-config/icon="res://img/PolygonSouls.png"
+config/icon="res://PolygonSouls.png"
 
 [autoload]
 
@@ -203,7 +203,6 @@ right={
 [rendering]
 
 environment/defaults/default_clear_color=Color(0.301961, 0.301961, 0.301961, 1)
-environment/defaults/default_environment="res://default_env.tres"
 vram_compression/import_etc=true
 
 [tiled_importer]
