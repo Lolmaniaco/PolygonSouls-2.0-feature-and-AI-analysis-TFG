@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://p62y243htu3p"]
+
+[ext_resource type="Script" uid="uid://deohtks5u3awf" path="res://rooms/UI/UI.gd" id="1_4hxr3"]
+[ext_resource type="FontFile" path="res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres" id="2_pko1k"]
+
+[node name="UI" type="CanvasLayer" unique_id=240912075]
+script = ExtResource("1_4hxr3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=65248588]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 49.0
+offset_right = -856.0
+offset_bottom = -444.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="SoulsCollected" type="Label" parent="VBoxContainer" unique_id=1965381448]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_pko1k")
+text = "0 Almas"
+
+[node name="ClearedRooms" type="Label" parent="VBoxContainer" unique_id=2031932455]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_pko1k")
+text = "0 Salas"
+
+[node name="GameTime" type="Label" parent="VBoxContainer" unique_id=1164310466]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_pko1k")
+text = "0"

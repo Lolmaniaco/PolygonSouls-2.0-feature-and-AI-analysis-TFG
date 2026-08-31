@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://droh4si7to168"]
+
+[ext_resource type="Script" uid="uid://cekwtx4vbwq1i" path="res://rooms/proceduralGeneration.gd" id="1_jny56"]
+[ext_resource type="Texture2D" uid="uid://cuefxxc41y8x8" path="res://rooms/assets/controlsVer2.png" id="2_jny56"]
+[ext_resource type="Script" uid="uid://dom85t8c3fcwo" path="res://rooms/cameras/cameras.gd" id="3_6nwnb"]
+[ext_resource type="PackedScene" uid="uid://cjiul3ixswvld" path="res://rooms/cameras/zoomCamera.tscn" id="4_pvp8l"]
+[ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://player/player.tscn" id="5_qednq"]
+
+[node name="proceduralGeneration" type="Node2D" unique_id=1596741187]
+script = ExtResource("1_jny56")
+
+[node name="controlsVer2" type="Sprite2D" parent="." unique_id=256459446]
+position = Vector2(64, 0)
+texture = ExtResource("2_jny56")
+centered = false
+
+[node name="cameras" type="Node2D" parent="." unique_id=865769756]
+process_mode = 3
+position = Vector2(576, 320)
+script = ExtResource("3_6nwnb")
+
+[node name="roomCam" type="Camera2D" parent="cameras" unique_id=2077186126]
+position_smoothing_enabled = true
+
+[node name="zoomCamera" parent="cameras" unique_id=678721618 instance=ExtResource("4_pvp8l")]
+zoom = Vector2(12, 12)
+zoomStepAmount = 1.0
+
+[node name="Rooms" type="Node2D" parent="." unique_id=827832661]
+
+[node name="player" parent="." unique_id=1181376105 instance=ExtResource("5_qednq")]
+position = Vector2(576, 320)

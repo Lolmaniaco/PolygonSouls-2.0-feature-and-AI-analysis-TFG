@@ -1,5 +1,0 @@
-[gd_scene format=3 uid="uid://dcyga64xj82wm"]
-
-[node name="roomCam" type="Camera2D" unique_id=1574463850]
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0

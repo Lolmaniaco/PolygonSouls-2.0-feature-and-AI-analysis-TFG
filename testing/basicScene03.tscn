@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://ceqy3lhvfpvkm"]
+
+[ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://player/player.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://bo5agcu7w5phl" path="res://rooms/assets/whiteAndTransparent.png" id="2_lo8kr"]
+[ext_resource type="PackedScene" uid="uid://6xgbmu2hka2v" path="res://rooms/room_modules/cryptEntrance.tscn" id="3"]
+[ext_resource type="Script" uid="uid://v0qihra3ip51" path="res://testing/basicScene02.gd" id="4"]
+[ext_resource type="PackedScene" uid="uid://cf1jgsbpl4471" path="res://rooms/room_modules/firepit.tscn" id="5"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gvtp2"]
+texture = ExtResource("2_lo8kr")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_laogf"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+sources/0 = SubResource("TileSetAtlasSource_gvtp2")
+
+[node name="basicScene2" type="Node2D" unique_id=1192967221]
+script = ExtResource("4")
+
+[node name="TileMap" type="TileMapLayer" parent="." unique_id=219633128]
+tile_set = SubResource("TileSet_laogf")
+use_kinematic_bodies = true
+
+[node name="Node2D" type="Node2D" parent="." unique_id=819837434]
+
+[node name="Node2D" type="Node2D" parent="Node2D" unique_id=1088558036]
+
+[node name="firepit" parent="Node2D/Node2D" unique_id=136666723 instance=ExtResource("5")]
+position = Vector2(726.47, 173.998)
+
+[node name="cryptEntrance" parent="Node2D/Node2D" unique_id=287658835 instance=ExtResource("3")]
+position = Vector2(268.782, 176.117)
+
+[node name="player" parent="." unique_id=244368613 instance=ExtResource("2")]
+position = Vector2(298.464, 464.335)

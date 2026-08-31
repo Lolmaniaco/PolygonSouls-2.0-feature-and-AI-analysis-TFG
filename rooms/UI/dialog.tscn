@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://b8klvkimc6px1"]
+
+[ext_resource type="Script" uid="uid://c6fqj5qr1md27" path="res://rooms/UI/dialog.gd" id="1_i8w7s"]
+[ext_resource type="FontFile" path="res://fonts/liberation-fonts-ttf-2.00.1/Liberation Font.tres" id="2_6o17f"]
+
+[node name="dialog" type="Control" unique_id=54620617]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_i8w7s")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1039701368]
+layout_mode = 0
+offset_left = -350.0
+offset_right = 350.0
+offset_bottom = 250.0
+pivot_offset = Vector2(350, 125)
+theme_override_fonts/normal_font = ExtResource("2_6o17f")
+bbcode_enabled = true
+horizontal_alignment = 1

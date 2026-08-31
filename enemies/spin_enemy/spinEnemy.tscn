@@ -1,0 +1,229 @@
+[gd_scene format=3 uid="uid://c7dq5i3oueuk"]
+
+[ext_resource type="Script" uid="uid://bkf6ss5oyands" path="res://enemies/spin_enemy/spinEnemy.gd" id="1_1ua8s"]
+[ext_resource type="Texture2D" uid="uid://bobpk14vwwjc6" path="res://enemies/spin_enemy/assets/baseEnemy.png" id="2_4t711"]
+[ext_resource type="Texture2D" uid="uid://bkrr2agvogyje" path="res://enemies/spin_enemy/assets/healthEnemy.png" id="3_f0y4v"]
+[ext_resource type="Texture2D" uid="uid://bwjnr8upy4j35" path="res://player/assets/melee_type.png" id="6_2qkol"]
+[ext_resource type="Texture2D" uid="uid://dc30uhgi34unt" path="res://enemies/spin_enemy/assets/enemyWeapon.png" id="8_1ua8s"]
+[ext_resource type="Texture2D" uid="uid://42esu76vpomh" path="res://enemies/spin_enemy/assets/healing.png" id="9_1ua8s"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="2"]
+size = Vector2(48, 48)
+
+[sub_resource type="CircleShape2D" id="3"]
+radius = 14.5774
+
+[sub_resource type="Animation" id="Animation_8gp72"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("healthBar:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.54902)]
+}
+
+[sub_resource type="Animation" id="8"]
+resource_name = "regenerated"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyBorder/Body:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.611765, 0.0588235, 0.0588235, 1), Color(0.203922, 0.580392, 0.886275, 1)]
+}
+
+[sub_resource type="Animation" id="6"]
+resource_name = "shieldLess"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("healthBar:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.12941177, 0.5803922, 0.78039217, 1), Color(1, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="4"]
+resource_name = "weakened"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodyBorder/Body:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.203922, 0.580392, 0.886275, 1), Color(0.611765, 0.0588235, 0.0588235, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2l5um"]
+_data = {
+&"RESET": SubResource("Animation_8gp72"),
+&"regenerated": SubResource("8"),
+&"shieldLess": SubResource("6"),
+&"weakened": SubResource("4")
+}
+
+[sub_resource type="CircleShape2D" id="7"]
+radius = 352.24
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_suasx"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 50.0
+gravity = Vector3(0, -98, 0)
+scale_min = 0.5
+scale_max = 0.59999996
+color = Color(0.7483308, 0.6481213, 0.99674755, 1)
+
+[node name="spinEnemy" type="RigidBody2D" unique_id=734987806 groups=["Enemies"]]
+self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
+collision_layer = 3
+collision_mask = 3
+freeze = true
+freeze_mode = 1
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_1ua8s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1241234656]
+shape = SubResource("1")
+
+[node name="hitbox" type="Area2D" parent="." unique_id=1138286001]
+position = Vector2(-36, -36)
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox" unique_id=1733866455]
+position = Vector2(36, 36)
+shape = SubResource("2")
+
+[node name="BodyBorder" type="Sprite2D" parent="." unique_id=23604413]
+texture = ExtResource("2_4t711")
+
+[node name="Body" type="Sprite2D" parent="BodyBorder" unique_id=1147636746]
+self_modulate = Color(0.203922, 0.580392, 0.886275, 1)
+position = Vector2(1.43051e-06, 7.15256e-07)
+scale = Vector2(0.875, 0.875)
+texture = ExtResource("2_4t711")
+centered = false
+offset = Vector2(-24, -24)
+
+[node name="Type" type="Sprite2D" parent="." unique_id=2134326463]
+texture = ExtResource("6_2qkol")
+
+[node name="healthBar" type="TextureProgressBar" parent="." unique_id=411662636]
+modulate = Color(1, 1, 1, 0.54902)
+offset_left = -36.0
+offset_top = -36.0
+offset_right = 36.0
+offset_bottom = 36.0
+value = 100.0
+fill_mode = 4
+texture_under = ExtResource("3_f0y4v")
+texture_progress = ExtResource("3_f0y4v")
+tint_under = Color(0, 0, 0, 1)
+
+[node name="enemyCenterPos" type="Marker2D" parent="." unique_id=1704548236]
+
+[node name="spike" type="Marker2D" parent="enemyCenterPos" unique_id=1001891722]
+
+[node name="enemyWeapon" type="Sprite2D" parent="enemyCenterPos/spike" unique_id=1775359987]
+position = Vector2(0, -70)
+texture = ExtResource("8_1ua8s")
+
+[node name="shieldHitBox" type="Area2D" parent="enemyCenterPos/spike/enemyWeapon" unique_id=589975811]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyCenterPos/spike/enemyWeapon/shieldHitBox" unique_id=1946551149]
+position = Vector2(0.5, -1.5)
+shape = SubResource("3")
+
+[node name="spike2" type="Marker2D" parent="enemyCenterPos" unique_id=395806842]
+rotation = 2.0944
+
+[node name="enemyWeapon" type="Sprite2D" parent="enemyCenterPos/spike2" unique_id=979430248]
+position = Vector2(0, -70)
+texture = ExtResource("8_1ua8s")
+
+[node name="shieldHitBox" type="Area2D" parent="enemyCenterPos/spike2/enemyWeapon" unique_id=161092503]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyCenterPos/spike2/enemyWeapon/shieldHitBox" unique_id=1163198933]
+position = Vector2(-0.189451, -0.327553)
+shape = SubResource("3")
+
+[node name="spike3" type="Marker2D" parent="enemyCenterPos" unique_id=648656067]
+rotation = 4.18879
+
+[node name="enemyWeapon" type="Sprite2D" parent="enemyCenterPos/spike3" unique_id=1914786997]
+position = Vector2(0, -70)
+texture = ExtResource("8_1ua8s")
+
+[node name="shieldHitBox" type="Area2D" parent="enemyCenterPos/spike3/enemyWeapon" unique_id=728050589]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemyCenterPos/spike3/enemyWeapon/shieldHitBox" unique_id=1027863773]
+position = Vector2(0.5, -1.5)
+shape = SubResource("3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1875100442]
+libraries/ = SubResource("AnimationLibrary_2l5um")
+
+[node name="reloadTimer" type="Timer" parent="." unique_id=302248747]
+wait_time = 0.6
+one_shot = true
+
+[node name="processEAP" type="Timer" parent="." unique_id=670623771]
+autostart = true
+
+[node name="HealingTimer" type="Timer" parent="." unique_id=1882194115]
+wait_time = 0.05
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1880836059]
+
+[node name="regenerationDetector" type="CollisionShape2D" parent="Area2D" unique_id=551868500]
+shape = SubResource("7")
+
+[node name="HealParticles" type="GPUParticles2D" parent="." unique_id=355969006]
+position = Vector2(-1, -1)
+emitting = false
+amount = 10
+texture = ExtResource("9_1ua8s")
+process_material = SubResource("ParticleProcessMaterial_suasx")
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="area_entered" from="enemyCenterPos/spike/enemyWeapon/shieldHitBox" to="." method="_on_shield_hit_box_area_entered"]
+[connection signal="area_entered" from="enemyCenterPos/spike2/enemyWeapon/shieldHitBox" to="." method="_on_shield_hit_box_area_entered"]
+[connection signal="area_entered" from="enemyCenterPos/spike3/enemyWeapon/shieldHitBox" to="." method="_on_shield_hit_box_area_entered"]
+[connection signal="timeout" from="reloadTimer" to="." method="_on_reloadTimer_timeout"]
+[connection signal="timeout" from="processEAP" to="." method="_on_processEAP_timeout"]
+[connection signal="timeout" from="HealingTimer" to="." method="_on_healingTicTimer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

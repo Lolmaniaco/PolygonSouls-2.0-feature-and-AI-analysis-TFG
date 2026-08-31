@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Polygon Souls"
 config/tags=PackedStringArray("github", "learn", "solo")
-run/main_scene="res://scenes/levels/proceduralGeneration.tscn"
+run/main_scene="res://rooms/proceduralGeneration.tscn"
 config/features=PackedStringArray("4.7")
 config/icon="res://PolygonSouls.png"
 
@@ -33,6 +33,15 @@ window/size/always_on_top=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/simple_gdscript_formatter/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://enemies/": "red",
+"res://player/": "purple",
+"res://rooms/": "yellow",
+"res://singleton/": "green"
+}
 
 [global]
 

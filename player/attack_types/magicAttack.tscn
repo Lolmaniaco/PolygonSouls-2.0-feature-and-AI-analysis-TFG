@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://ckf0fqbdq4342"]
+
+[ext_resource type="Script" uid="uid://bg0j1fwi3eka4" path="res://player/attack_types/magicAttack.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://b7arpav0idf1b" path="res://player/assets/magic_attack.png" id="2_n8e12"]
+
+[sub_resource type="CapsuleShape2D" id="1"]
+radius = 8.0
+height = 16.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_laogf"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(15, 15, 1)
+emission_shape = 2
+emission_sphere_radius = 1.0
+angle_min = -44.99999
+angle_max = 45.00001
+radial_velocity_min = -20.000021
+radial_velocity_max = 19.999977
+gravity = Vector3(0, 98, 0)
+scale_max = 3.0
+
+[node name="magicProjectile" type="Area2D" unique_id=440528070 groups=["pjBullets"]]
+light_mask = 3
+visibility_layer = 3
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1241871889]
+shape = SubResource("1")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=848119367]
+light_mask = 0
+position = Vector2(-1, 7)
+rotation = 3.14159
+texture = ExtResource("2_n8e12")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1721741571]
+position = Vector2(0, 1)
+rect = Rect2(-10, -10, 20, 18)
+
+[node name="lifespanTimer" type="Timer" parent="." unique_id=165124033]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1616431161]
+position = Vector2(0, 7)
+amount = 40
+lifetime = 0.2
+preprocess = 0.65
+process_material = SubResource("ParticleProcessMaterial_laogf")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="lifespanTimer" to="." method="_on_lifespanTimer_timeout"]

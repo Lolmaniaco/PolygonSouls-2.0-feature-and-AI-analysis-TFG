@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://e15spn265ppq"]
+
+[ext_resource type="Texture2D" uid="uid://bo5agcu7w5phl" path="res://rooms/assets/whiteAndTransparent.png" id="1_wlkub"]
+[ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://player/player.tscn" id="2_igd41"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gvtp2"]
+texture = ExtResource("1_wlkub")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_laogf"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+sources/0 = SubResource("TileSetAtlasSource_gvtp2")
+
+[node name="basicScene" type="Node2D" unique_id=1815371019]
+
+[node name="TileMap" type="TileMapLayer" parent="." unique_id=1894691120]
+tile_set = SubResource("TileSet_laogf")
+use_kinematic_bodies = true
+
+[node name="player" parent="." unique_id=1251169354 instance=ExtResource("2_igd41")]
+position = Vector2(385.059, 390.486)

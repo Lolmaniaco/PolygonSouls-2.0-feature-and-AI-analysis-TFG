@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cjiul3ixswvld"]
+
+[ext_resource type="Script" uid="uid://dvavf5d3ncaak" path="res://rooms/cameras/zoomCamera.gd" id="1"]
+
+[node name="Camera2D" type="Camera2D" unique_id=567905829]
+script = ExtResource("1")

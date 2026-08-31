@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://28ny200nwchd"]
+
+[ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://player/player.tscn" id="2"]
+[ext_resource type="Texture2D" uid="uid://bo5agcu7w5phl" path="res://rooms/assets/whiteAndTransparent.png" id="2_uhhvj"]
+[ext_resource type="PackedScene" uid="uid://d6hqfkgirjyl" path="res://enemies/turret/turret.tscn" id="3"]
+[ext_resource type="Script" uid="uid://cadikcdhhja8d" path="res://testing/basicScene01.gd" id="4"]
+[ext_resource type="PackedScene" uid="uid://bw3k6flp2e5o1" path="res://enemies/boss/finalBoss.tscn" id="5"]
+[ext_resource type="PackedScene" uid="uid://cbocpuwmn6qsf" path="res://enemies/kamikaze/kamikaze.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://cjhy5jdp4knd4" path="res://enemies/bouncer/bouncer.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://c7dq5i3oueuk" path="res://enemies/spin_enemy/spinEnemy.tscn" id="8"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gvtp2"]
+texture = ExtResource("2_uhhvj")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_laogf"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+sources/0 = SubResource("TileSetAtlasSource_gvtp2")
+
+[node name="basicScene" type="Node2D" unique_id=256059296]
+script = ExtResource("4")
+
+[node name="TileMap" type="TileMapLayer" parent="." unique_id=203333654]
+visible = false
+tile_set = SubResource("TileSet_laogf")
+use_kinematic_bodies = true
+
+[node name="player" parent="." unique_id=1447350376 instance=ExtResource("2")]
+position = Vector2(412, 309)
+
+[node name="Node2D" type="Node2D" parent="." unique_id=1940958470]
+
+[node name="Node2D2" type="Node2D" parent="Node2D" unique_id=111833801]
+
+[node name="Node2D" type="Node2D" parent="Node2D/Node2D2" unique_id=72625772]
+
+[node name="turret" parent="Node2D/Node2D2/Node2D" unique_id=1662103544 instance=ExtResource("3")]
+position = Vector2(348, 138)
+
+[node name="spinEnemy" parent="Node2D/Node2D2/Node2D" unique_id=2046215698 instance=ExtResource("8")]
+position = Vector2(496, 136)
+
+[node name="kamikaze" parent="Node2D/Node2D2/Node2D" unique_id=1428310695 instance=ExtResource("6")]
+position = Vector2(219, 135)
+
+[node name="bouncer" parent="Node2D/Node2D2/Node2D" unique_id=258546064 instance=ExtResource("7")]
+position = Vector2(127, 137)
+
+[node name="finalBoss" parent="Node2D/Node2D2/Node2D" unique_id=224586804 instance=ExtResource("5")]
+position = Vector2(697, 135)

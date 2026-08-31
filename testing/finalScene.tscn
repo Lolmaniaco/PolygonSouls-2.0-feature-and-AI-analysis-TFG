@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bes178jpu78hd"]
+
+[ext_resource type="Script" uid="uid://v0qihra3ip51" path="res://testing/basicScene02.gd" id="1_0ejhl"]
+[ext_resource type="Texture2D" uid="uid://bo5agcu7w5phl" path="res://rooms/assets/whiteAndTransparent.png" id="2_xrwjp"]
+[ext_resource type="PackedScene" uid="uid://bw3k6flp2e5o1" path="res://enemies/boss/finalBoss.tscn" id="3_y7fb3"]
+[ext_resource type="PackedScene" uid="uid://jeixy66kq2jx" path="res://player/player.tscn" id="4_snyov"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gvtp2"]
+texture = ExtResource("2_xrwjp")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_laogf"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+sources/0 = SubResource("TileSetAtlasSource_gvtp2")
+
+[node name="finalScene" type="Node2D" unique_id=499243275]
+script = ExtResource("1_0ejhl")
+
+[node name="TileMap" type="TileMapLayer" parent="." unique_id=1458924145]
+tile_set = SubResource("TileSet_laogf")
+use_kinematic_bodies = true
+
+[node name="Node2D" type="Node2D" parent="." unique_id=310098043]
+
+[node name="Node2D2" type="Node2D" parent="Node2D" unique_id=452626527]
+
+[node name="finalBoss" parent="Node2D/Node2D2" unique_id=1485414158 instance=ExtResource("3_y7fb3")]
+position = Vector2(287.35, 254.799)
+
+[node name="player" parent="." unique_id=76777750 instance=ExtResource("4_snyov")]
+position = Vector2(680.538, 286.852)

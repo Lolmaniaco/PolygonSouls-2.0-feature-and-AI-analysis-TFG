@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://uwn36kk1pqgs"]
+
+[ext_resource type="Script" uid="uid://dpmw6h4gmqt6m" path="res://rooms/UI/gameOverScreen.gd" id="2"]
+[ext_resource type="FontFile" uid="uid://dcxlgsp7tnlep" path="res://fonts/Enchanted Land/Enchanted Land.otf" id="2_4ejfo"]
+
+[node name="gameOverScreen" type="Control" unique_id=2034191214]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1103821873]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -345.0
+offset_top = -174.0
+offset_right = 345.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1656977837]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_4ejfo")
+theme_override_font_sizes/font_size = 64
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Empty" type="Label" parent="VBoxContainer" unique_id=1149082949]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=475570555]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_4ejfo")
+theme_override_font_sizes/font_size = 64
+text = "¡No puedes rendirte!
+Tienes que volver a intentarlo
+
+Pulsa R para reiniciar"
+horizontal_alignment = 1

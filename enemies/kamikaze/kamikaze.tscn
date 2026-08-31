@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cbocpuwmn6qsf"]
+
+[ext_resource type="Script" uid="uid://d28xo07kr1rnl" path="res://enemies/kamikaze/kamikaze.gd" id="1_4wgqj"]
+[ext_resource type="Texture2D" uid="uid://0hpec7ufdbv7" path="res://enemies/kamikaze/assets/Kamikaze.png" id="2_0byo6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_n4y2n"]
+radius = 14.0
+
+[node name="kamikaze" type="RigidBody2D" unique_id=1066817316 groups=["Enemies"]]
+collision_layer = 3
+collision_mask = 0
+sleeping = true
+freeze = true
+freeze_mode = 1
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 10
+script = ExtResource("1_4wgqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=598438575]
+texture_filter = 1
+scale = Vector2(0.666667, 0.666667)
+texture = ExtResource("2_0byo6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1939408541]
+shape = SubResource("CircleShape2D_n4y2n")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

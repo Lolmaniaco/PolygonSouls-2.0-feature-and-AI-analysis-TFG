@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://dies2o4ldgdk5"]
+
+[ext_resource type="Script" uid="uid://bahfe06forvxj" path="res://rooms/room.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bo5agcu7w5phl" path="res://rooms/assets/whiteAndTransparent.png" id="2_10nyy"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(1088, 576)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gvtp2"]
+texture = ExtResource("2_10nyy")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+1:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_laogf"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 3
+physics_layer_0/collision_mask = 3
+sources/0 = SubResource("TileSetAtlasSource_gvtp2")
+
+[node name="room" type="Node2D" unique_id=1402980646]
+script = ExtResource("1")
+
+[node name="roomArea" type="Area2D" parent="." unique_id=1656243253]
+position = Vector2(576, 320)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="roomArea" unique_id=1436548266]
+shape = SubResource("1")
+
+[node name="TileMap" type="TileMapLayer" parent="." unique_id=321861581]
+tile_set = SubResource("TileSet_laogf")
+use_kinematic_bodies = true
+
+[node name="checkRoomClear" type="Timer" parent="." unique_id=869821843]
+
+[node name="EnemyNodes" type="Node2D" parent="." unique_id=1846463442]
+
+[connection signal="body_entered" from="roomArea" to="." method="_on_roomArea_body_entered"]
+[connection signal="body_exited" from="roomArea" to="." method="_on_roomArea_body_exited"]
+[connection signal="timeout" from="checkRoomClear" to="." method="_on_checkRoomClear_timeout"]
