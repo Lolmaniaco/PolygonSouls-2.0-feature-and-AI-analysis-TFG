@@ -18,7 +18,7 @@ func _input(_event):
 	if active:
 		if Input.is_action_just_pressed("actionButton"):
 			if access_granted:
-				player.position = Vector2(11 * 1024 - 200, 11 * 640 - 200)
+				player.position = Vector2(11520 + 200, 6400 + 200)
 
 			actionButton = "RT" if UI.isControllerConnected() else "F"
 

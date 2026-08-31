@@ -11,6 +11,8 @@ const KAMIKAZE = preload("uid://cbocpuwmn6qsf")
 const BOUNCER = preload("uid://cjhy5jdp4knd4")
 const SPIN_ENEMY = preload("uid://c7dq5i3oueuk")
 const FINAL_BOSS = preload("uid://bw3k6flp2e5o1")
+const DOOR = preload("uid://jg0smtbft8fp")
+
 const CORRIDOR_DATA := {
 	Vector2.LEFT: {
 		"start": Vector2(0, 8),
@@ -54,7 +56,6 @@ var firepitNotCreated = true
 @onready var baseEnemies = [SPIN_ENEMY, SPIN_ENEMY, SPIN_ENEMY]
 @onready var hardEnemies = [KAMIKAZE, TURRET, BOUNCER, SPIN_ENEMY]
 
-@onready var door = preload("res://scenes/control/door.tscn")
 @onready var tile_map: TileMapLayer = $TileMap
 @onready var room_cam: Camera2D = $"../../cameras/roomCam"
 @onready var enemy_nodes: Node2D = $EnemyNodes
@@ -119,7 +120,7 @@ func open_tilemap_for_doors(_sizeInBlocks):
 
 func create_doors():
 	for data: DoorData in doors_positions:
-		var doorObj: Door = door.instantiate()
+		var doorObj: Door = DOOR.instantiate()
 		add_child(doorObj)
 		doorObj.setup(data.position, data.vertical)
 

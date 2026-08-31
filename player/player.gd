@@ -31,12 +31,11 @@ var has_respawn: bool = false
 var respawn_pos: Vector2 = Vector2.ZERO
 var lost_control: bool = false
 
-var last_attacks = [] # Player Attacks
+var last_attacks = []
 var last_attacks_tracker = { 'C': 0, 'R': 0, 'M': 0 }
 
 var god_mode: bool = false
 
-@onready var user_file = "user://score.txt"
 @onready var input_disabled: Timer = $inputDisabled
 @onready var attack_type: Sprite2D = $AttackType
 

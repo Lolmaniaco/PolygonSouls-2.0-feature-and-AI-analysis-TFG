@@ -3,8 +3,8 @@ extends CanvasLayer
 
 @export var maxRooms: int = 12
 
-var soulsCollected: int = 0
-var roomsCleared: int = 0
+var soulsCollected: int = 1000
+var roomsCleared: int = 10
 var controllerConnected: bool = false
 var colorIndicator: bool = false
 var start_time: float = 0
@@ -12,6 +12,7 @@ var start_time: float = 0
 @onready var souls_collected: Label = $VBoxContainer/SoulsCollected
 @onready var cleared_rooms: Label = $VBoxContainer/ClearedRooms
 @onready var game_time: Label = $VBoxContainer/GameTime
+@onready var timer: Timer = $Timer
 
 
 func _ready():
@@ -34,12 +35,8 @@ func isControllerConnected():
 
 
 func gameWon():
-	var t = Timer.new()
-	t.set_wait_time(3)
-	t.set_one_shot(true)
-	add_child(t)
-	t.start()
-	await t.timeout
+	timer.start()
+	await timer.timeout
 	get_tree().change_scene_to_file("res://scenes/control/gameFinished.tscn")
 
 

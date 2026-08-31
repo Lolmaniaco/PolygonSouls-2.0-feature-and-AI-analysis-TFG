@@ -3,21 +3,19 @@ extends Node2D
 const CONTROLS_VER_2_CONTROLLER = preload("uid://do10oxvlyy5vx")
 const CONTROLS_VER_2 = preload("uid://cuefxxc41y8x8")
 
+const ROOM = preload("uid://dies2o4ldgdk5")
+const CRYPT_ENTRANCE = preload("uid://6xgbmu2hka2v")
+const FIREPIT = preload("uid://cf1jgsbpl4471")
+
 var roomArray: Array[RoomHandler] = []
 
 @onready var controls: Sprite2D = $controlsVer2
 @onready var room_node: Node2D = $Rooms
 
-@onready var room = preload("res://scenes/control/room.tscn")
-@onready var cryptStairs = preload("res://scenes/control/cryptEntrance.tscn")
-@onready var firepit = preload("res://scenes/control/firepit.tscn")
-
 
 func _ready():
-	if Input.get_connected_joypads().size() > 0:
+	if not Input.get_connected_joypads().is_empty():
 		controls.set_texture(CONTROLS_VER_2_CONTROLLER)
-	else:
-		controls.set_texture(CONTROLS_VER_2)
 
 	var arrayRooms = []
 	var distance_index: Array[int] = []
@@ -69,19 +67,19 @@ func _ready():
 
 	var max_dist_idx = distance_index.find(distance_index.max())
 	roomArray[max_dist_idx].setTypeOfRoom("boss")
-	var cryptObj = cryptStairs.instantiate()
+	var cryptObj = CRYPT_ENTRANCE.instantiate()
 	roomArray[max_dist_idx].call_deferred("add_child", cryptObj)
 	cryptObj.setup(Vector2(576, 320))
 
 	var mean_dist_idx = distance_index.find(roundi(distance_index.max() / 2.0))
 	roomArray[mean_dist_idx].setTypeOfRoom("firepit")
-	var firepitObj = firepit.instantiate()
+	var firepitObj = FIREPIT.instantiate()
 	roomArray[mean_dist_idx].call_deferred("add_child", firepitObj)
 	firepitObj.setup(Vector2(576, 320))
 
 
 func create_room(array: Array, coords: Vector2, type_of_room: String) -> void:
-	var new_room: RoomHandler = room.instantiate()
+	var new_room: RoomHandler = ROOM.instantiate()
 
 	new_room.setTypeOfRoom(type_of_room)
 	new_room.name = type_of_room + " Room" if type_of_room != "common" else "Room " + str(array.size())

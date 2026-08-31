@@ -41,8 +41,8 @@ size = Vector2(205, 36)
 size = Vector2(203, 36)
 
 [sub_resource type="CapsuleShape2D" id="9"]
-radius = 5.79557
-height = 19.9735
+radius = 35.0
+height = 102.0
 
 [sub_resource type="CapsuleShape2D" id="7"]
 radius = 14.0
@@ -252,79 +252,70 @@ scale_min = 0.0
 scale_max = 0.0
 color_ramp = SubResource("14")
 
-[sub_resource type="CapsuleShape2D" id="5"]
-radius = 0.0
-height = 0.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_swxae"]
+radius = 230.2629
 
 [node name="finalBoss" type="RigidBody2D" unique_id=848329245 groups=["Enemies"]]
+freeze = true
+freeze_mode = 1
 script = ExtResource("2")
 
 [node name="finalBossBody" type="CollisionShape2D" parent="." unique_id=1809278876]
-position = Vector2(1, -5)
 shape = SubResource("6")
 
 [node name="stateBody" type="Sprite2D" parent="." unique_id=1193619396]
 self_modulate = Color(0, 0.882353, 1, 1)
-position = Vector2(2, -9)
 scale = Vector2(1.45639, 1.48045)
 
 [node name="bossMouthShield" type="Sprite2D" parent="stateBody" unique_id=925050744]
 self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
-position = Vector2(-1.02994, 3.03961)
 scale = Vector2(0.552289, 0.526195)
 texture = ExtResource("7")
 
-[node name="bossSkullShield" type="Sprite2D" parent="stateBody" unique_id=107114243]
-self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
-position = Vector2(-1.02995, 9.11884)
-scale = Vector2(0.532386, 0.533659)
-texture = ExtResource("6")
-
 [node name="bossMouth" type="Sprite2D" parent="stateBody" unique_id=1983825373]
-position = Vector2(-1.1, 3)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5")
 
+[node name="bossSkullShield" type="Sprite2D" parent="stateBody" unique_id=107114243]
+self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
+scale = Vector2(0.532386, 0.533659)
+texture = ExtResource("6")
+
 [node name="bossSkull" type="Sprite2D" parent="stateBody" unique_id=36705128]
-position = Vector2(-1.10179, 8.52808)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1")
 
 [node name="healthPoints" type="Label" parent="stateBody" unique_id=1642772941]
-offset_left = -15.1058
-offset_top = -30.3962
-offset_right = 16.8942
-offset_bottom = -2.39616
+offset_left = -16.0
+offset_top = -35.0
+offset_right = 16.0
+offset_bottom = -3.0
+pivot_offset = Vector2(16, 16)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("3")
 text = "10"
+horizontal_alignment = 1
 
 [node name="lowerDodge" type="Area2D" parent="." unique_id=693766738]
-position = Vector2(0, -2)
 
 [node name="lowerDodgeHitbox" type="CollisionShape2D" parent="lowerDodge" unique_id=834336280]
-position = Vector2(2.5, 70.25)
+position = Vector2(0, 75)
 shape = SubResource("19")
 
 [node name="upperDodge" type="Area2D" parent="." unique_id=1157914904]
-position = Vector2(0, -2)
 
 [node name="upperDodgeHitbox" type="CollisionShape2D" parent="upperDodge" unique_id=1832313827]
-position = Vector2(0, -73)
+position = Vector2(0, -75)
 shape = SubResource("20")
 
 [node name="blockBody" type="Area2D" parent="." unique_id=987130264]
-position = Vector2(0, -2)
 
 [node name="blockBodyHitbox" type="CollisionShape2D" parent="blockBody" unique_id=1973729711]
-scale = Vector2(3.796, 3.675)
 shape = SubResource("9")
 
 [node name="hitbox" type="Area2D" parent="." unique_id=548186806]
-position = Vector2(0, -1)
 
 [node name="finalBossHitbox" type="CollisionShape2D" parent="hitbox" unique_id=494372697]
-position = Vector2(1, -4)
 shape = SubResource("7")
 
 [node name="firingPoint" type="Marker2D" parent="." unique_id=1634744739]
@@ -358,18 +349,18 @@ one_shot = true
 autostart = true
 
 [node name="bossDialogs" type="RichTextLabel" parent="." unique_id=2024180706]
-offset_left = -188.0
-offset_top = 73.0
-offset_right = 62.0
-offset_bottom = 134.0
-scale = Vector2(1.5, 1.5)
+offset_left = -125.0
+offset_top = 100.0
+offset_right = 125.0
+offset_bottom = 175.0
 theme_override_fonts/normal_font = ExtResource("9")
+theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
 scroll_active = false
 tab_size = 6
+horizontal_alignment = 1
 
 [node name="rift" type="RigidBody2D" parent="." unique_id=1362529970]
-position = Vector2(0, -4)
 
 [node name="riftSprite" type="Sprite2D" parent="rift" unique_id=1469450145]
 visible = false
@@ -457,17 +448,14 @@ one_shot = true
 process_material = SubResource("15")
 
 [node name="protectiveAura" type="RigidBody2D" parent="." unique_id=1501654087]
-position = Vector2(0, -2)
 
 [node name="Sprite2D" type="Sprite2D" parent="protectiveAura" unique_id=1874173155]
-position = Vector2(14, 3)
+position = Vector2(14, 5)
 scale = Vector2(0.42, 0.42)
 texture = ExtResource("8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="protectiveAura" unique_id=143588066]
-visible = false
-position = Vector2(0, 5)
-shape = SubResource("5")
+shape = SubResource("CircleShape2D_swxae")
 
 [connection signal="area_entered" from="lowerDodge" to="." method="_on_lowerDodge_area_entered"]
 [connection signal="area_entered" from="upperDodge" to="." method="_on_upperDodge_area_entered"]

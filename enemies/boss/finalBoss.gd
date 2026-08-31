@@ -12,19 +12,14 @@ var currentHealth
 var maxHealth = 10
 var active = false
 
-var collidedWithWall = false
 var initialAttackFinished = false
-var fleeFromPlayer = false
 var proyectilesRecibidos = 0
 var phase = 0
-var tempPos
 var wallMovement = 1
-var collided = false
 var t = Timer.new()
 var canAttack = false
 var delay = 1.2
 
-var havePlayerPosition = false
 var playerPosition
 var haveToFadeOut = true
 var haveToFadeIn = false
@@ -43,6 +38,13 @@ var collision
 var concentratedAttackCounter = 2
 
 @onready var healthPoints = $stateBody/healthPoints
+@onready var boss_dialogs: RichTextLabel = $bossDialogs
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+@onready var dialog_death: Timer = $dialogDeath
+@onready var firing_point: Marker2D = $firingPoint
+
+@onready var protective_aura: RigidBody2D = $protectiveAura
+@onready var shield_timer: Timer = $shieldTimer
 
 
 func _ready():
@@ -52,42 +54,41 @@ func _ready():
 	t.set_one_shot(true)
 	add_child(t)
 
-	$AnimationPlayer.play("talking")
+	anim_player.play("talking")
 	t.start()
 	await t.timeout
-	$bossDialogs.text = "[center] BIENVENIDO, PALADIN DE LA LUZ"
+	boss_dialogs.text = "[center] BIENVENIDO, PALADIN DE LA LUZ"
 
 	t.set_wait_time(2)
 	t.start()
 	await t.timeout
-	$bossDialogs.text = "[center] ESTA SERA TU TUMBA DENTRO DE MUY POCO"
+	boss_dialogs.text = "[center] ESTA SERA TU TUMBA DENTRO DE MUY POCO"
 
 	t.set_wait_time(2)
 	t.start()
 	await t.timeout
-	$bossDialogs.visible = false
-	$AnimationPlayer.stop(true)
+	boss_dialogs.visible = false
+	anim_player.stop(true)
+
+	protective_aura.queue_free()
 
 
 func _physics_process(delta):
 	var movement: Vector2 = Vector2.ZERO
 	if active:
-		$protectiveAura/CollisionShape2D.disabled = true
-		$protectiveAura/Sprite2D.visible = false
-
 		if global_position.y > 6900:
-			$bossDialogs.position.y = -115
+			boss_dialogs.position.y = -115
 		else:
-			$bossDialogs.position.y = 75
+			boss_dialogs.position.y = 75
+
 		if phase == 0:
 			$blockBody/blockBodyHitbox.shape.radius = 11.855
 			$blockBody/blockBodyHitbox.shape.height = 8.4
 			tripleAroundAttack()
 			phase += 1
-
 		elif phase == 1 and initialAttackFinished:
 			if delay <= 0:
-				$AnimationPlayer.play("chargedShoot")
+				anim_player.play("chargedShoot")
 			else:
 				delay -= delta
 
@@ -152,7 +153,7 @@ func _physics_process(delta):
 						posibleSpawnsNames.erase(1)
 				global_position = posibleSpawns[randi() % posibleSpawns.size()]
 
-				$AnimationPlayer.play("fadeIn")
+				anim_player.play("fadeIn")
 				$fadeInTimer.start()
 				tripleAroundAttack()
 
@@ -163,9 +164,8 @@ func _physics_process(delta):
 
 			if haveToFadeOut:
 				haveToFadeOut = false
-				$AnimationPlayer.play("fadeOut")
+				anim_player.play("fadeOut")
 				$fadeOutTimer.start()
-
 		elif phase == 3:
 			if !hasDoneTheExplosion:
 				hasDoneTheExplosion = true
@@ -218,7 +218,7 @@ func _physics_process(delta):
 					print("playing animation")
 					hasAppeared = true
 					$stateBody.visible = true
-					$AnimationPlayer.play("fadeIn")
+					anim_player.play("fadeIn")
 
 				if bounce % 2 == 0:
 					collision = move_and_collide(Vector2.UP * speed * delta)
@@ -228,8 +228,8 @@ func _physics_process(delta):
 					bounce += 1
 
 				if currentHealth <= 2:
-					if $shieldTimer.is_stopped():
-						$shieldTimer.start()
+					if shield_timer.is_stopped():
+						shield_timer.start()
 
 				if $attackTimer.is_stopped():
 					$attackTimer.start()
@@ -241,8 +241,6 @@ func _physics_process(delta):
 					if concentratedAttackCounter == 3:
 						shootAroundProjectiles()
 						concentratedAttackCounter = 0
-		else:
-			pass
 
 
 func setup(pos):
@@ -301,12 +299,12 @@ func shootFocusedToPlayerProjectile():
 
 func shootAroundProjectiles():
 	for i in range(0, maxHealth + 1):
-		var angle = i * 36 + $firingPoint.rotation_degrees
+		var angle = i * 36 + firing_point.rotation_degrees
 		var direction = Vector2(cos(angle), sin(angle))
 		var bossArrow = BOSS_ARROW.instantiate()
 		get_parent().add_child(bossArrow)
 		bossArrow.setup(position, rotation_degrees + i * 36, direction, 400)
-	$firingPoint.rotation_degrees += 10
+	firing_point.rotation_degrees += 10
 
 
 func getProjectilesReceived():
@@ -322,14 +320,14 @@ func _on_hitbox_area_entered(area):
 			elif "magicAttack" in area.name or "rangedAttack" in area.name:
 				proyectilesRecibidos += 1
 				if proyectilesRecibidos <= 4:
-					$bossDialogs.set_bbcode("[center] TUS PROYECTILES SON INUTILES CONTRA MI")
+					boss_dialogs.set_bbcode("[center] TUS PROYECTILES SON INUTILES CONTRA MI")
 				else:
-					$bossDialogs.set_bbcode("[center] PERO ES QUE NO TE ENTERAS?! NO SIRVE DE NADA DISPARARME, IMBECIL.")
-				$bossDialogs.visible = true
-				$dialogDeath.start()
+					boss_dialogs.set_bbcode("[center] PERO ES QUE NO TE ENTERAS?! NO SIRVE DE NADA DISPARARME, IMBECIL.")
+				boss_dialogs.visible = true
+				dialog_death.start()
 		elif phase == 2:
 			if "nearAttack" in area.name or "magicAttack" in area.name or "rangedAttack" in area.name:
-				$shieldTimer.start()
+				shield_timer.start()
 				shieldHealth -= 1
 				match(shieldHealth):
 					4: $stateBody/bossSkullShield.self_modulate = "#FF0000"
@@ -354,12 +352,12 @@ func _on_hitbox_area_entered(area):
 
 		if currentHealth <= 0:
 			phase = 4
-			$bossDialogs.set_bbcode("[center]IMPOSIBLE\nYO TE MALDIGO")
-			$dialogDeath.wait_time = 3
-			$dialogDeath.start()
+			boss_dialogs.set_bbcode("[center]IMPOSIBLE\nYO TE MALDIGO")
+			dialog_death.wait_time = 3
+			dialog_death.start()
 			move_and_collide(Vector2(0, 0))
-			$AnimationPlayer.set_speed_scale(0.4)
-			$AnimationPlayer.play("fadeOut")
+			anim_player.set_speed_scale(0.4)
+			anim_player.play("fadeOut")
 			createExplosion()
 			UI.gameWon()
 
@@ -370,7 +368,7 @@ func _on_active_timeout():
 
 func _on_dialogDeath_timeout():
 	proyectilesRecibidos = 0
-	$bossDialogs.visible = false
+	boss_dialogs.visible = false
 
 
 func _on_attackTimer_timeout():
@@ -391,9 +389,9 @@ func _on_shieldTimer_timeout():
 		$stateBody/bossSkullShield.self_modulate = "#ff0000"
 		$stateBody/bossMouthShield.self_modulate = "#ff0000"
 		if notEnoughDamage:
-			$bossDialogs.visible = true
-			$bossDialogs.set_bbcode("[center] DISPARANDO TAN LENTO NUNCA ATRAVESARAS MI ESCUDO")
-			$dialogDeath.start()
+			boss_dialogs.visible = true
+			boss_dialogs.set_bbcode("[center] DISPARANDO TAN LENTO NUNCA ATRAVESARAS MI ESCUDO")
+			dialog_death.start()
 		notEnoughDamage = true
 
 
@@ -401,15 +399,15 @@ func _on_lowerDodge_area_entered(area):
 	if phase == 3:
 		bounce = 0
 		if "magicAttack" in area.name or "rangedAttack" in area.name:
-			$bossDialogs.visible = true
-			$bossDialogs.set_bbcode("[center] PREVISIBLE")
-			$dialogDeath.start()
+			boss_dialogs.visible = true
+			boss_dialogs.set_bbcode("[center] PREVISIBLE")
+			dialog_death.start()
 
 
 func _on_upperDodge_area_entered(area):
 	if phase == 3:
 		bounce = 1
 		if "magicAttack" in area.name or "rangedAttack" in area.name:
-			$bossDialogs.visible = true
-			$bossDialogs.set_bbcode("[center] FACIL")
-			$dialogDeath.start()
+			boss_dialogs.visible = true
+			boss_dialogs.set_bbcode("[center] FACIL")
+			dialog_death.start()
