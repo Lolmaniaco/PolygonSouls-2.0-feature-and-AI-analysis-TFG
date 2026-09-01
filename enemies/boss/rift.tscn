@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://b7obr3bc1ihef"]
+
+[ext_resource type="Texture2D" uid="uid://dsnmhmrovd2dd" path="res://enemies/boss/assets/groundBreak.png" id="1_bmxqs"]
+[ext_resource type="Script" uid="uid://brm638b3biba4" path="res://enemies/boss/rift.gd" id="1_gq5yr"]
+
+[sub_resource type="RectangleShape2D" id="12"]
+size = Vector2(80, 640)
+
+[sub_resource type="Curve" id="Curve_bmxqs"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.51356995, 0.60098517), 0.0, 0.0, 0, 0, Vector2(1, 0.2660098), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_bmxqs"]
+curve = SubResource("Curve_bmxqs")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_laogf"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(40, 320, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 92.84
+initial_velocity_max = 176.01
+gravity = Vector3(0, 0, 0)
+scale_min = 35.0
+scale_max = 70.0
+scale_curve = SubResource("CurveTexture_bmxqs")
+scale_over_velocity_min = 7.74
+scale_over_velocity_max = 7.74
+color = Color(0.8047426, 0.80474263, 0.8047426, 1)
+
+[sub_resource type="Gradient" id="Gradient_gq5yr"]
+colors = PackedColorArray(0.8039216, 0.16470589, 0.08627451, 1, 0.8233179, 0.59151584, 9.62615e-07, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gq5yr"]
+gradient = SubResource("Gradient_gq5yr")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rfb8g"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(40, 320, 1)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 300.0
+initial_velocity_max = 600.0
+gravity = Vector3(0, 0, 0)
+scale_min = 35.0
+scale_max = 70.0
+scale_curve = SubResource("CurveTexture_bmxqs")
+scale_over_velocity_min = 7.74
+scale_over_velocity_max = 7.74
+color_ramp = SubResource("GradientTexture1D_gq5yr")
+
+[node name="rift" type="RigidBody2D" unique_id=2126228175]
+freeze = true
+script = ExtResource("1_gq5yr")
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1725522575]
+z_index = -1
+texture = ExtResource("1_bmxqs")
+
+[node name="CollisionShape" type="CollisionShape2D" parent="." unique_id=1019403997]
+shape = SubResource("12")
+disabled = true
+
+[node name="Smoke" type="GPUParticles2D" parent="." unique_id=841747043]
+emitting = false
+amount = 200
+lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_laogf")
+
+[node name="Explosion" type="GPUParticles2D" parent="." unique_id=795257215]
+emitting = false
+amount = 200
+lifetime = 0.25
+process_material = SubResource("ParticleProcessMaterial_rfb8g")

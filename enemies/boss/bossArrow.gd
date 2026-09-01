@@ -1,3 +1,4 @@
+class_name BossProjectile
 extends Node2D
 
 @export var bullet_speed: float = 10.0
@@ -5,16 +6,20 @@ extends Node2D
 var dirToShoot
 var explosion = preload("res://particles/fake_explosion_particles.tscn")
 var notCollide = ["turret", "spinEnemy", "player", "rift", "riftCollisionShape", "bouncer", "finalBoss"]
+var rotating_speed: float
+
+
+func _ready() -> void:
+	rotating_speed = randi_range(250, 750)
 
 
 func _physics_process(delta):
 	position += dirToShoot * bullet_speed * delta
-	rotation_degrees += 4
+	rotation_degrees += rotating_speed * delta
 
 
-func setup(pos, rot, direction, new_speed):
+func setup(pos, direction, new_speed):
 	position = pos
-	rotation_degrees += rot
 	dirToShoot = direction
 	bullet_speed = new_speed
 

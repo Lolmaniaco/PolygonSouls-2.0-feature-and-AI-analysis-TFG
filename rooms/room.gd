@@ -11,6 +11,8 @@ const KAMIKAZE = preload("uid://cbocpuwmn6qsf")
 const BOUNCER = preload("uid://cjhy5jdp4knd4")
 const SPIN_ENEMY = preload("uid://c7dq5i3oueuk")
 const FINAL_BOSS = preload("uid://bw3k6flp2e5o1")
+
+const RIFT = preload("uid://b7obr3bc1ihef")
 const DOOR = preload("uid://jg0smtbft8fp")
 
 const CORRIDOR_DATA := {
@@ -49,9 +51,6 @@ var enemyNodes: Array = []
 
 var room_type = "common"
 var doors_closed = true
-
-var cryptNotCreated = true
-var firepitNotCreated = true
 
 @onready var baseEnemies = [SPIN_ENEMY, SPIN_ENEMY, SPIN_ENEMY]
 @onready var hardEnemies = [KAMIKAZE, TURRET, BOUNCER, SPIN_ENEMY]
@@ -192,9 +191,15 @@ func _on_roomArea_body_entered(body):
 			create_enemies(enemyPressence, minimumEnemies, maximumEnemies)
 			close_all_doors()
 		elif room_type == "final":
-			var boss = FINAL_BOSS.instantiate()
+			Music.fade_out_music()
+			await get_tree().create_timer(3).timeout
+			var boss: Boss = FINAL_BOSS.instantiate()
 			call_deferred("add_child", boss)
-			boss.setup(Vector2(576, 320))
+			boss.position = Vector2(576, 320)
+			var rift: Rift = RIFT.instantiate()
+			call_deferred("add_child", rift)
+			rift.position = Vector2(576, 320)
+			
 
 		check_timer.start()
 
@@ -203,8 +208,7 @@ func _on_roomArea_body_exited(body):
 	if not body is Player:
 		return
 
-	if Global.restart_timer:
-		body.inputDisabled()
+	body.inputDisabled()
 
 
 func _on_checkRoomClear_timeout():

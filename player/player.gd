@@ -123,8 +123,9 @@ func swap_weapons() -> void:
 
 
 func inputDisabled():
-	lost_control = true
-	input_disabled.start()
+	if input_disabled.is_inside_tree():
+		lost_control = true
+		input_disabled.start()
 
 
 func createSpawn(pos):

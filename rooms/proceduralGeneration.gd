@@ -68,7 +68,7 @@ func _ready():
 	var max_dist_idx = distance_index.find(distance_index.max())
 	roomArray[max_dist_idx].setTypeOfRoom("boss")
 	var cryptObj = CRYPT_ENTRANCE.instantiate()
-	roomArray[max_dist_idx].call_deferred("add_child", cryptObj)
+	roomArray[0].call_deferred("add_child", cryptObj)
 	cryptObj.setup(Vector2(576, 320))
 
 	var mean_dist_idx = distance_index.find(roundi(distance_index.max() / 2.0))

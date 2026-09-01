@@ -12,14 +12,16 @@ var start_time: float = 0
 @onready var souls_collected: Label = $VBoxContainer/SoulsCollected
 @onready var cleared_rooms: Label = $VBoxContainer/ClearedRooms
 @onready var game_time: Label = $VBoxContainer/GameTime
-@onready var timer: Timer = $Timer
+@onready var win_timer: Timer = $WinTimer
+@onready var volume: VSlider = $VSlider
 
 
 func _ready():
 	start_time = Time.get_ticks_msec()
+	volume.value = AudioServer.get_bus_volume_linear(0) * 100
 
 
-func _process(_delta):
+func _physics_process(_delta: float) -> void:
 	controllerConnected = false if Input.get_connected_joypads().is_empty() else true
 	var current_time = Time.get_ticks_msec() - start_time
 	var total_seconds = current_time / 1000
@@ -35,9 +37,7 @@ func isControllerConnected():
 
 
 func gameWon():
-	timer.start()
-	await timer.timeout
-	get_tree().change_scene_to_file("res://scenes/control/gameFinished.tscn")
+	win_timer.start()
 
 
 func getMaxRooms() -> int:
@@ -78,3 +78,11 @@ func getPlayerSouls():
 func activateColorInfo():
 	colorIndicator = true
 	updateRoomsLabel()
+
+
+func _on_win_timer_timeout() -> void:
+	get_tree().change_scene_to_file("res://rooms/UI/gameFinished.tscn")
+
+
+func _on_v_slider_value_changed(value: float) -> void:
+	AudioServer.set_bus_volume_linear(0, value / 100)

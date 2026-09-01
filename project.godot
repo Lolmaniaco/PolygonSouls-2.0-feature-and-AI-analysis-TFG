@@ -20,6 +20,7 @@ config/icon="res://PolygonSouls.png"
 
 Global="*res://singleton/global.gd"
 Utils="*uid://i41d7r5yv036"
+Music="*uid://cq0ccueyo8wyk"
 
 [debug]
 

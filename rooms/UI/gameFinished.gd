@@ -1,8 +1,10 @@
 extends Control
 
+@onready var time_message: Label = $VBoxContainer/TimeMessage
+
 
 func _ready():
-	$TimeMessage.text = "Has completado PolygonSouls 2.0 en " + Global.time + " minutos"
+	time_message.text = "Has completado PolygonSouls 2.0 en " + Global.time + " minutos"
 
 
 func _input(event):

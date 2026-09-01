@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://bo0djp53w0kkm" path="res://enemies/boss/assets/bossSkull.png" id="1"]
 [ext_resource type="Script" uid="uid://bockyvuh60ye" path="res://enemies/boss/finalBoss.gd" id="2"]
 [ext_resource type="FontFile" uid="uid://djw3genaxnshs" path="res://fonts/liberation-fonts-ttf-2.00.1/LiberationMono-Bold.ttf" id="3"]
-[ext_resource type="Texture2D" uid="uid://dsnmhmrovd2dd" path="res://enemies/boss/assets/groundBreak.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://dibw0a6868n11" path="res://enemies/boss/assets/bossMouth.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://dkul5bg1kdbi7" path="res://enemies/boss/assets/bossSkullShield.png" id="6"]
 [ext_resource type="Texture2D" uid="uid://db7wnkboa40qu" path="res://enemies/boss/assets/bossMouthShield.png" id="7"]
@@ -33,6 +32,9 @@ cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
 cache/0/16/0/underline_thickness = 0.0
 cache/0/16/0/scale = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_swxae"]
+radius = 230.2629
 
 [sub_resource type="RectangleShape2D" id="19"]
 size = Vector2(205, 36)
@@ -216,45 +218,6 @@ _data = {
 &"talking": SubResource("2")
 }
 
-[sub_resource type="RectangleShape2D" id="12"]
-size = Vector2(66, 1448)
-
-[sub_resource type="Gradient" id="16"]
-offsets = PackedFloat32Array(0.0135135, 0.774775, 1)
-colors = PackedColorArray(0.134766, 0.104759, 0.104759, 1, 0.10498, 0.1017, 0.1017, 1, 0.0410156, 0.0410156, 0.0410156, 0)
-
-[sub_resource type="GradientTexture2D" id="17"]
-gradient = SubResource("16")
-
-[sub_resource type="ParticleProcessMaterial" id="18"]
-emission_shape = 1
-emission_sphere_radius = 14.57
-spread = 180.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.0
-scale_max = 0.0
-color_ramp = SubResource("17")
-
-[sub_resource type="Gradient" id="13"]
-offsets = PackedFloat32Array(0, 0.486486, 0.995495)
-colors = PackedColorArray(1, 0.887695, 0, 1, 1, 0, 0, 1, 1, 0.729412, 0.729412, 0)
-
-[sub_resource type="GradientTexture2D" id="14"]
-gradient = SubResource("13")
-
-[sub_resource type="ParticleProcessMaterial" id="15"]
-emission_shape = 1
-emission_sphere_radius = 41.63
-direction = Vector3(0, 0, 0)
-spread = 180.0
-gravity = Vector3(0, 0, 0)
-scale_min = 0.0
-scale_max = 0.0
-color_ramp = SubResource("14")
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_swxae"]
-radius = 230.2629
-
 [node name="finalBoss" type="RigidBody2D" unique_id=848329245 groups=["Enemies"]]
 freeze = true
 freeze_mode = 1
@@ -273,6 +236,7 @@ scale = Vector2(0.552289, 0.526195)
 texture = ExtResource("7")
 
 [node name="bossMouth" type="Sprite2D" parent="stateBody" unique_id=1983825373]
+position = Vector2(-1.1, 3)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5")
 
@@ -295,6 +259,16 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = SubResource("3")
 text = "10"
 horizontal_alignment = 1
+
+[node name="protectiveAura" type="Area2D" parent="." unique_id=1317458996]
+
+[node name="Sprite2D" type="Sprite2D" parent="protectiveAura" unique_id=1874173155]
+position = Vector2(14, 5)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="protectiveAura" unique_id=143588066]
+shape = SubResource("CircleShape2D_swxae")
 
 [node name="lowerDodge" type="Area2D" parent="." unique_id=693766738]
 
@@ -339,14 +313,13 @@ one_shot = true
 wait_time = 2.0
 autostart = true
 
-[node name="dialogDeath" type="Timer" parent="." unique_id=1208100375]
+[node name="DialogHideTimer" type="Timer" parent="." unique_id=1208100375]
 wait_time = 1.5
 one_shot = true
 
-[node name="active" type="Timer" parent="." unique_id=610220387]
-wait_time = 5.0
+[node name="DialogTimer" type="Timer" parent="." unique_id=1823320428]
+wait_time = 0.5
 one_shot = true
-autostart = true
 
 [node name="bossDialogs" type="RichTextLabel" parent="." unique_id=2024180706]
 offset_left = -125.0
@@ -356,107 +329,12 @@ offset_bottom = 175.0
 theme_override_fonts/normal_font = ExtResource("9")
 theme_override_font_sizes/normal_font_size = 32
 bbcode_enabled = true
+fit_content = true
 scroll_active = false
 tab_size = 6
 horizontal_alignment = 1
 
-[node name="rift" type="RigidBody2D" parent="." unique_id=1362529970]
-
-[node name="riftSprite" type="Sprite2D" parent="rift" unique_id=1469450145]
-visible = false
-z_index = -1
-position = Vector2(1, -7)
-scale = Vector2(0.698763, 1.35)
-texture = ExtResource("4")
-
-[node name="riftCollisionShape" type="CollisionShape2D" parent="rift" unique_id=1330319887]
-position = Vector2(358, -5)
-scale = Vector2(0.964278, 1)
-shape = SubResource("12")
-disabled = true
-
-[node name="smokeExplosion1" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=1747958760]
-position = Vector2(-3.05176e-05, -196)
-scale = Vector2(1.72307, -1.78563)
-emitting = false
-amount = 500
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("18")
-
-[node name="smokeExplosion2" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=393080032]
-position = Vector2(1.03705, -35)
-scale = Vector2(1.81798, 1.59271)
-emitting = false
-amount = 500
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("18")
-
-[node name="smokeExplosion3" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=1722199496]
-position = Vector2(3.1111, 102)
-scale = Vector2(1.72307, -1.78563)
-emitting = false
-amount = 500
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("18")
-
-[node name="smokeExplosion4" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=877214005]
-position = Vector2(4.14815, 252)
-scale = Vector2(1.69518, 1.2589)
-emitting = false
-amount = 500
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("18")
-
-[node name="Explosion1" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=364604125]
-position = Vector2(-0.185669, -252)
-scale = Vector2(1.5, 1.5)
-emitting = false
-amount = 100
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("15")
-
-[node name="Explosion2" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=1503821292]
-position = Vector2(2.81436, 201)
-scale = Vector2(1.22943, 2.25)
-emitting = false
-amount = 100
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("15")
-
-[node name="Explosion3" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=955277779]
-position = Vector2(5.81433, -33)
-scale = Vector2(1.10273, 9.13798)
-emitting = false
-amount = 100
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("15")
-
-[node name="Explosion4" type="GPUParticles2D" parent="rift/riftCollisionShape" unique_id=4304294]
-position = Vector2(6.81436, -25)
-scale = Vector2(1.46851, 1.54157)
-emitting = false
-amount = 100
-lifetime = 0.5
-one_shot = true
-process_material = SubResource("15")
-
-[node name="protectiveAura" type="RigidBody2D" parent="." unique_id=1501654087]
-
-[node name="Sprite2D" type="Sprite2D" parent="protectiveAura" unique_id=1874173155]
-position = Vector2(14, 5)
-scale = Vector2(0.42, 0.42)
-texture = ExtResource("8")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="protectiveAura" unique_id=143588066]
-shape = SubResource("CircleShape2D_swxae")
-
+[connection signal="area_entered" from="protectiveAura" to="." method="_on_protective_aura_area_entered"]
 [connection signal="area_entered" from="lowerDodge" to="." method="_on_lowerDodge_area_entered"]
 [connection signal="area_entered" from="upperDodge" to="." method="_on_upperDodge_area_entered"]
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
@@ -464,5 +342,4 @@ shape = SubResource("CircleShape2D_swxae")
 [connection signal="timeout" from="fadeInTimer" to="." method="_on_fadeInTimer_timeout"]
 [connection signal="timeout" from="shieldTimer" to="." method="_on_shieldTimer_timeout"]
 [connection signal="timeout" from="attackTimer" to="." method="_on_attackTimer_timeout"]
-[connection signal="timeout" from="dialogDeath" to="." method="_on_dialogDeath_timeout"]
-[connection signal="timeout" from="active" to="." method="_on_active_timeout"]
+[connection signal="timeout" from="DialogHideTimer" to="." method="_on_dialogDeath_timeout"]

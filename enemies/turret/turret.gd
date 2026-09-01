@@ -8,6 +8,10 @@ const TURRET_PROJECTILE = preload("uid://dnyctorhi3ttb")
 var dirToShoot
 
 
+func _ready() -> void:
+	player = $"../../../../player"
+
+
 func _physics_process(delta: float) -> void:
 	chargeUpdate(chargeSpeed * delta)
 	look_at(player.global_position)

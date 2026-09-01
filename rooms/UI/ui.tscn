@@ -34,6 +34,26 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_pko1k")
 text = "0"
 
-[node name="Timer" type="Timer" parent="." unique_id=1934662988]
+[node name="WinTimer" type="Timer" parent="." unique_id=1934662988]
 wait_time = 3.0
 one_shot = true
+
+[node name="VSlider" type="VSlider" parent="." unique_id=262021095]
+offset_left = 9.0
+offset_top = 521.0
+offset_right = 25.0
+offset_bottom = 609.0
+
+[node name="Label" type="Label" parent="." unique_id=107569346]
+offset_left = 9.0
+offset_top = 611.0
+offset_right = 60.0
+offset_bottom = 634.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+text = "MUSIC"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=692050127]
+
+[connection signal="timeout" from="WinTimer" to="." method="_on_win_timer_timeout"]
+[connection signal="value_changed" from="VSlider" to="." method="_on_v_slider_value_changed"]

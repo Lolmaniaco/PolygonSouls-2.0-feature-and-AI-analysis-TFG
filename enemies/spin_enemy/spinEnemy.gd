@@ -42,6 +42,7 @@ var base_attack_speed = 0.8
 
 
 func _ready():
+	player = $"../../../../player"
 	_start_delay()
 	speed *= 0.7
 

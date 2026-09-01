@@ -5,11 +5,12 @@ var speed = 100
 
 @onready var explosion = preload("res://particles/fake_explosion_particles.tscn")
 
-@onready var player: Player = $"../../../../player"
-@onready var UI: UserInterface = $"../../../../player/UI"
+@onready var player: Player
+@onready var UI: UserInterface
 
 
 func _ready() -> void:
+	UI = $"../../../../player/UI"
 	_start_delay()
 
 

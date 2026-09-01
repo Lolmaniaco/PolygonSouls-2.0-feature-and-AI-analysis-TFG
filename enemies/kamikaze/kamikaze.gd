@@ -11,6 +11,7 @@ var tankedHits = 0
 
 
 func _ready() -> void:
+	player = $"../../../../player"
 	set_physics_process(false)
 	await rotate_to_player()
 	set_physics_process(true)
