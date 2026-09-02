@@ -14,109 +14,118 @@ const KAMIKAZE = preload("uid://cbocpuwmn6qsf")
 const BOUNCER = preload("uid://cjhy5jdp4knd4")
 const SPIN_ENEMY = preload("uid://c7dq5i3oueuk")
 const BOSS_ARROW = preload("uid://ce802823rpndy")
-
 const directions = [Vector2.UP, Vector2.RIGHT, Vector2.DOWN, Vector2.LEFT]
 
-var state: State = State.INITIAL
-
-var baseEnemies: Array[PackedScene] = [KAMIKAZE, TURRET, BOUNCER]
-var hardEnemies: Array[PackedScene] = [KAMIKAZE, TURRET, BOUNCER, SPIN_ENEMY]
-var maxHealth: int = 10
-var currentHealth: int = 10
-
 var initialAttackFinished: bool = false
+
 var proyectilesRecibidos: int = 0
+var dir_idx: int = 1
 
-var wall_idx: int = 1
-var can_attack: bool = false
-
-var player_pos: Vector2
 var haveToFadeOut: bool = true
 var haveToFadeIn: bool = false
 var posibleSpawns: Array[Vector2] = [Vector2(120, 150), Vector2(120, 500), Vector2(1050, 150), Vector2(1050, 500)]
 var shieldHealth: int = 4
 var enough_damage: bool = false
 
-var waitRiftAppear = 0.5
-var delayPhaseThree = 3
-var setPositionPhaseThree = false
-var hasDoneTheExplosion = false
-var hardEnemy = true
-var hasAppeared = false
-var bounce = 1
-var collision
-var concentratedAttackCounter = 2
+var go_up: bool = true
+var concentratedAttackCounter: int = 2
 
-@onready var healthPoints = $stateBody/healthPoints
-@onready var boss_dialogs: RichTextLabel = $bossDialogs
+var state: State = State.INITIAL
+var maxHealth: int = 10
+var health: int = 10
+var movement: Vector2 = Vector2.ZERO
+var can_attack: bool = false
+
+@onready var health_label = $stateBody/healthPoints
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 @onready var firing_point: Marker2D = $firingPoint
 @onready var dialog_hide_timer: Timer = $DialogHideTimer
 
 @onready var protective_aura: Area2D = $protectiveAura
 @onready var shield_timer: Timer = $shieldTimer
-@onready var dialog_timer: Timer = $DialogTimer
+@onready var rift: Rift = $"../rift"
+@onready var boss_dialogs: RichTextLabel = $"../rift/bossDialogs"
+@onready var hitbox: Area2D = $hitbox
+@onready var state_body: Sprite2D = $stateBody
+
+@onready var mouth_shield: Sprite2D = $stateBody/bossMouthShield
+@onready var skull_shield: Sprite2D = $stateBody/bossSkullShield
+@onready var sfx: AudioStreamPlayer = $SFX
+@onready var voice: AudioStreamPlayer = $Voice
 
 
-func _ready():
+func _ready() -> void:
 	player = $"../../../player"
 	UI = $"../../../player/UI"
 	speed *= 3
+	modulate.a = 0
 
 	set_physics_process(false)
-	anim_player.play("talking")
+	await get_tree().create_timer(2).timeout
+	Music.play_boss_music()
+	player.change_control(true)
+	var tween = get_tree().create_tween()
+	tween.tween_property(player, "position", Vector2(11520 + 200, player.global_position.y), 0.5)
+	tween.tween_property(player, "position", Vector2(11520 + 200, 6720), 0.5)
+	await tween.finished
+
+	var dialog_timer = Timer.new()
+	dialog_timer.wait_time = 0.5
+	dialog_timer.one_shot = true
+	add_child(dialog_timer)
+
+	tween = get_tree().create_tween()
+	tween.tween_property(self, "modulate:a", 1, 1)
+
 	dialog_timer.start()
 	await dialog_timer.timeout
+	anim_player.play("talking")
 	boss_dialogs.text = "[center] BIENVENIDO, PALADIN DE LA LUZ"
 
 	dialog_timer.wait_time = 2
 	dialog_timer.start()
 	await dialog_timer.timeout
 	boss_dialogs.text = "[center] ESTA SERA TU TUMBA DENTRO DE MUY POCO"
+	voice.play()
 
 	dialog_timer.start()
 	await dialog_timer.timeout
 	boss_dialogs.visible = false
+
 	anim_player.stop(true)
 
+	tween = get_tree().create_tween()
+	tween.tween_property(protective_aura, "scale", Vector2(0.2, 0.2), 1.25)
+	await tween.finished
 	protective_aura.queue_free()
+	mouth_shield.visible = true
+	skull_shield.visible = true
+
+	await get_tree().create_timer(1).timeout
+	player.change_control(false)
 	set_physics_process(true)
 
 
-func _physics_process(delta):
-	var movement: Vector2 = Vector2.ZERO
-
+func _physics_process(delta) -> void:
 	if state == State.INITIAL:
 		if not initialAttackFinished:
-			tripleAroundAttack()
+			shoot_around_thrice()
 			state = State.WALL_CRAWLER
 
 	elif state == State.WALL_CRAWLER:
-		anim_player.play("chargedShoot")
+		anim_player.play("chargedShot")
 
 		if can_attack:
 			can_attack = false
-			shootFocusedToPlayerProjectile()
+			anim_player.play("chargedShot")
 
-		movement = directions[wall_idx] * speed * 1.35 * delta
+		movement = directions[dir_idx] * speed * delta
 		if move_and_collide(movement):
-			if randf() <= 0.25:
-				tripleAroundAttack()
-
-			if currentHealth >= 9:
-				wall_idx = randi_range(0, 3)
-			else:
-				$stateBody/bossSkullShield.self_modulate = Color.RED
-				$stateBody/bossMouthShield.self_modulate = Color.RED
-				$blockBody/blockBodyHitbox.disabled = true
-				state = State.TELEPORT
+			if randf() <= 0.2:
+				shoot_around()
+			dir_idx = randi_range(0, 3)
 
 	elif state == State.TELEPORT:
-		if currentHealth <= 3:
-			state = State.EXPLOSION
-			haveToFadeOut = false
-			$stateBody.visible = false
-
 		if haveToFadeOut:
 			haveToFadeOut = false
 			anim_player.play("fadeOut")
@@ -126,117 +135,37 @@ func _physics_process(delta):
 			return
 
 		haveToFadeIn = false
-		player_pos = player.global_position
-		if player_pos.x > 12096:
-			if player_pos.y > 6720:
+		if player.global_position.x > 12096:
+			if player.global_position.y > 6720:
 				position = posibleSpawns[0]
 			else:
 				position = posibleSpawns[1]
 		else:
-			if player_pos.y > 6720:
+			if player.global_position.y > 6720:
 				position = posibleSpawns[2]
 			else:
 				position = posibleSpawns[3]
 
 		anim_player.play("fadeIn")
 		$fadeInTimer.start()
-		tripleAroundAttack()
+		shoot_around_thrice()
 
 	elif state == State.EXPLOSION:
-		if !hasDoneTheExplosion:
-			hasDoneTheExplosion = true
-			$rift/riftCollisionShape.disabled = false
-			$rift/riftCollisionShape.visible = true
-			$rift/riftCollisionShape/Explosion1.emitting = true
-			$rift/riftCollisionShape/Explosion2.emitting = true
-			$rift/riftCollisionShape/Explosion3.emitting = true
-			$rift/riftCollisionShape/Explosion4.emitting = true
-			$rift/riftCollisionShape/smokeExplosion1.emitting = true
-			$rift/riftCollisionShape/smokeExplosion2.emitting = true
-			$rift/riftCollisionShape/smokeExplosion3.emitting = true
-			$rift/riftCollisionShape/smokeExplosion4.emitting = true
-			$stateBody/bossMouthShield.visible = false
-			$stateBody/bossSkullShield.visible = false
-			$blockBody/blockBodyHitbox.shape.radius = 5.796
-			$blockBody/blockBodyHitbox.shape.height = 19.973
+		movement = Vector2.UP if go_up else Vector2.DOWN
 
-		if player.global_position.x > 10751.5:
-			if !setPositionPhaseThree:
-				setPositionPhaseThree = true
-				global_position.x = 10350
-				global_position.y = 6724.5
-				$rift/riftSprite.flip_h = false
-				$rift/riftCollisionShape.position.x = 358
+		if move_and_collide(movement * speed * delta):
+			go_up = !go_up
 
-			if $rift/riftCollisionShape.position.x != 422:
-				$rift/riftCollisionShape.position.x += 1
-		else:
-			if !setPositionPhaseThree:
-				setPositionPhaseThree = true
-				global_position.x = 11153
-				global_position.y = 6724.5
-				$rift/riftSprite.flip_h = true
-				$rift/riftCollisionShape.position.x = -358
-
-			if $rift/riftCollisionShape.position.x != -422:
-				$rift/riftCollisionShape.position.x -= 1
-
-		if waitRiftAppear <= 0:
-			$rift/riftSprite.visible = true
-			delayPhaseThree -= delta
-		else:
-			waitRiftAppear -= delta
-
-		if delayPhaseThree <= 0:
-			delayPhaseThree = 0
-
-			if hasAppeared == false:
-				print("playing animation")
-				hasAppeared = true
-				$stateBody.visible = true
-				anim_player.play("fadeIn")
-
-			if bounce % 2 == 0:
-				collision = move_and_collide(Vector2.UP * speed * delta)
-			else:
-				collision = move_and_collide(Vector2.DOWN * speed * delta)
-			if collision != null:
-				bounce += 1
-
-			if currentHealth <= 2:
-				if shield_timer.is_stopped():
-					shield_timer.start()
-
-			if $attackTimer.is_stopped():
-				$attackTimer.start()
-
-			if can_attack:
-				can_attack = false
-				concentratedAttackCounter += 1
-				shootFocusedToPlayerProjectile()
-				if concentratedAttackCounter == 3:
-					shootAroundProjectiles()
-					concentratedAttackCounter = 0
+		if can_attack:
+			can_attack = false
+			concentratedAttackCounter += 1
+			anim_player.play("chargedShot")
+			if concentratedAttackCounter == 3:
+				shoot_around()
+				concentratedAttackCounter = 0
 
 
-func spawnEnemies():
-	var enemyObj
-
-	if hardEnemy:
-		enemyObj = hardEnemies[randi() % 4].instantiate()
-		hardEnemy = false
-	else:
-		enemyObj = baseEnemies[randi() % 3].instantiate()
-		hardEnemy = true
-
-	add_child(enemyObj)
-	var xMinMaxRoom = [10340, 10741]
-	var yMinMaxRoom = [6515, 6934]
-
-	enemyObj.setupSpawn(xMinMaxRoom, yMinMaxRoom, player)
-
-
-func tripleAroundAttack():
+func shoot_around_thrice() -> void:
 	initialAttackFinished = true
 	var new_timer = Timer.new()
 	new_timer.set_wait_time(0.5)
@@ -245,21 +174,21 @@ func tripleAroundAttack():
 	for i in range(3):
 		new_timer.start()
 		await new_timer.timeout
-		shootAroundProjectiles()
+		shoot_around()
 
 	new_timer.queue_free()
 
 
-func shootFocusedToPlayerProjectile():
+func shoot_at_player() -> void:
 	for i in range(3):
 		var bossArrow: BossProjectile = BOSS_ARROW.instantiate()
 		add_sibling(bossArrow)
 		var direction = global_position.direction_to(player.global_position)
 		direction *= randf_range(0.7, 1.3)
-		bossArrow.setup(position, direction, randf_range(500, 750))
+		bossArrow.setup(position, direction, randf_range(400, 600))
 
 
-func shootAroundProjectiles():
+func shoot_around() -> void:
 	for i in range(0, maxHealth + 1):
 		var angle = i * 36 + firing_point.rotation_degrees
 		var direction = Vector2(cos(angle), sin(angle))
@@ -269,12 +198,35 @@ func shootAroundProjectiles():
 	firing_point.rotation_degrees += 10
 
 
+func pop_invulnerability(seconds: float) -> void:
+	hitbox.call_deferred("set_monitoring", false)
+	var tween: Tween = get_tree().create_tween()
+	var iterations = seconds / 0.1
+	for i in range(iterations):
+		tween.tween_property(state_body, "modulate:a", 0, 0.1)
+		tween.tween_property(state_body, "modulate:a", 1, 0.1)
+
+	await tween.finished
+	hitbox.call_deferred("set_monitoring", true)
+
+
+func change_shield_color(new_color: Color) -> void:
+	mouth_shield.self_modulate = new_color
+	skull_shield.self_modulate = new_color
+
+
+func get_hit() -> void:
+	health -= 1
+	sfx.play()
+
+
 func _on_hitbox_area_entered(area):
 	if state == State.WALL_CRAWLER:
 		if "nearAttack" in area.name:
-			currentHealth = currentHealth - 1
-			healthPoints.text = "0" + str(currentHealth)
-		elif "magicAttack" in area.name or "rangedAttack" in area.name:
+			get_hit()
+			pop_invulnerability(1.0)
+			health_label.text = str(health)
+		elif area is Projectile:
 			proyectilesRecibidos += 1
 			if proyectilesRecibidos <= 4:
 				boss_dialogs.text = "[center] TUS PROYECTILES SON INUTILES CONTRA MI"
@@ -283,45 +235,66 @@ func _on_hitbox_area_entered(area):
 			boss_dialogs.visible = true
 			dialog_hide_timer.start()
 
+		if health <= 7:
+			change_shield_color(Color.RED)
+			state = State.TELEPORT
+
 	elif state == State.TELEPORT:
-		if "nearAttack" in area.name or "magicAttack" in area.name or "rangedAttack" in area.name:
-			shield_timer.start()
+		if "nearAttack" in area.name or area is Projectile:
+			if shield_timer.is_stopped():
+				shield_timer.start()
 			shieldHealth -= 1
 			match(shieldHealth):
-				4:
-					$stateBody/bossSkullShield.self_modulate = "#FF0000"
-					$stateBody/bossMouthShield.self_modulate = "#FF0000"
-				3:
-					$stateBody/bossSkullShield.self_modulate = "#FFB900"
-					$stateBody/bossMouthShield.self_modulate = "#FFB900"
-				2:
-					$stateBody/bossSkullShield.self_modulate = "#FCFF08"
-					$stateBody/bossMouthShield.self_modulate = "#FCFF08"
-				1:
-					$stateBody/bossSkullShield.self_modulate = "#00ffffff"
-					$stateBody/bossMouthShield.self_modulate = "#00ffffff"
+				4: change_shield_color(Color.RED)
+				3: change_shield_color(Color.DARK_ORANGE)
+				2: change_shield_color(Color.GOLD)
+				1: change_shield_color(Color.CYAN)
 				_: enough_damage = true
 
 			if enough_damage:
-				currentHealth -= 1
-				healthPoints.text = "0" + str(currentHealth)
+				get_hit()
+				pop_invulnerability(0.3)
+				health_label.text = str(health)
+
+			if health <= 4:
+				state = State.EXPLOSION
+				$stateBody.visible = false
+				haveToFadeOut = false
+				rift.make_rift()
+
+				if player.global_position.x > 12096:
+					position.x = 120
+				else:
+					position.x = 1050
+				position.y = 150
+				print("PLAYER POSITION: ", player.global_position)
+
+				set_physics_process(false)
+				await get_tree().create_timer(3).timeout
+				$stateBody.visible = true
+				anim_player.play("fadeIn")
+				await anim_player.animation_finished
+				set_physics_process(true)
 
 	elif state == State.EXPLOSION:
-		if "rangedAttack" in area.name:
-			currentHealth -= 1
-			healthPoints.text = "0" + str(currentHealth)
+		if area is Projectile:
+			get_hit()
+			pop_invulnerability(1.0)
+			health_label.text = str(health)
 			$lowerDodge/lowerDodgeHitbox.shape.extents.y *= 1.2
 			$upperDodge/upperDodgeHitbox.shape.extents.y *= 1.2
 
-	if currentHealth <= 0:
+	if health <= 0:
 		state = State.END
-		boss_dialogs.text = "[center]IMPOSIBLE\nYO TE MALDIGO"
-		dialog_hide_timer.wait_time = 3
-		dialog_hide_timer.start()
-		move_and_collide(Vector2(0, 0))
+		set_physics_process(false)
+		boss_dialogs.text = "[center]IMPOSIBLEEEEE!!\nYO TE MALDIGO"
 		anim_player.set_speed_scale(0.4)
 		anim_player.play("fadeOut")
-		createExplosion()
+		
+		Music.fade_out_music()
+		Music.play_fanfare_music()
+		UI.transition_color(Color.WHITE)
+		await get_tree().create_timer(0.5).timeout
 		UI.gameWon()
 
 
@@ -343,10 +316,9 @@ func _on_fadeInTimer_timeout():
 
 
 func _on_shieldTimer_timeout():
-	if state == 2:
+	if state == State.TELEPORT:
 		shieldHealth = 4
-		$stateBody/bossSkullShield.self_modulate = "#ff0000"
-		$stateBody/bossMouthShield.self_modulate = "#ff0000"
+		change_shield_color(Color.RED)
 		if not enough_damage:
 			boss_dialogs.visible = true
 			boss_dialogs.text = "[center] DISPARANDO TAN LENTO NUNCA ATRAVESARAS MI ESCUDO"
@@ -355,21 +327,27 @@ func _on_shieldTimer_timeout():
 
 
 func _on_lowerDodge_area_entered(area):
-	if state == 3:
-		bounce = 0
-		if "magicAttack" in area.name or "rangedAttack" in area.name:
-			boss_dialogs.visible = true
-			boss_dialogs.text = "[center] PREVISIBLE"
-			dialog_hide_timer.start()
+	if not area is Projectile:
+		return
+
+	if state == State.EXPLOSION:
+		if movement == Vector2.DOWN:
+			go_up = !go_up
+		boss_dialogs.visible = true
+		boss_dialogs.text = "[center] PREVISIBLE"
+		dialog_hide_timer.start()
 
 
 func _on_upperDodge_area_entered(area):
-	if state == 3:
-		bounce = 1
-		if "magicAttack" in area.name or "rangedAttack" in area.name:
-			boss_dialogs.visible = true
-			boss_dialogs.text = "[center] FACIL"
-			dialog_hide_timer.start()
+	if not area is Projectile:
+		return
+
+	if state == State.EXPLOSION:
+		if movement == Vector2.UP:
+			go_up = !go_up
+		boss_dialogs.visible = true
+		boss_dialogs.text = "[center] FACIL"
+		dialog_hide_timer.start()
 
 
 func _on_protective_aura_area_entered(area: Area2D) -> void:

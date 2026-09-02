@@ -5,6 +5,7 @@ extends RigidBody2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape
 @onready var smoke: GPUParticles2D = $Smoke
 @onready var explosion: GPUParticles2D = $Explosion
+@onready var audio_stream_player: AudioStreamPlayer = $AudioStreamPlayer
 
 
 func _ready() -> void:
@@ -13,6 +14,7 @@ func _ready() -> void:
 
 
 func make_rift() -> void:
+	audio_stream_player.play()
 	explosion.emitting = true
 	await get_tree().create_timer(0.2).timeout
 	sprite.visible = true
@@ -20,5 +22,5 @@ func make_rift() -> void:
 	await get_tree().create_timer(0.3).timeout
 	explosion.emitting = false
 	smoke.emitting = true
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(1).timeout
 	smoke.emitting = false

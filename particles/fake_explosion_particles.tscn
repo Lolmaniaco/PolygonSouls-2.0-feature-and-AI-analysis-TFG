@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://crcjjjp66atgr"]
-
-[ext_resource type="Script" uid="uid://bb7ruyf2mdf2y" path="res://particles/fake_explosion_particles.gd" id="1"]
-
-[node name="fake_explosion_particles" type="Node2D" unique_id=906215050]
-script = ExtResource("1")

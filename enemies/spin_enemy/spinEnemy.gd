@@ -9,6 +9,9 @@ const MAGIC_TYPE = preload("uid://b1j80a31wbinc")
 const MELEE_TYPE = preload("uid://du77whchfxqwy")
 const RANGED_TYPE = preload("uid://c65282by30vy8")
 
+const MAGIC_SHOT = preload("uid://bxcj748t3uu2v")
+const TURRET_SHOT = preload("uid://yluj847eimc1")
+
 var player_inside: bool = false
 var regenerate: bool = true
 var waitUntilStartHealing: float = 1
@@ -39,9 +42,11 @@ var base_attack_speed = 0.8
 @onready var type: Sprite2D = $Type
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var enemy_center_pos: Array = $enemyCenterPos.get_children()
+@onready var sfx: AudioStreamPlayer = $sfx
 
 
 func _ready():
+	UI = $"../../../../player/UI"
 	player = $"../../../../player"
 	_start_delay()
 	speed *= 0.7
@@ -130,7 +135,7 @@ func shootProjectile():
 		return
 
 	canShoot = false
-	reload_timer.wait_time = base_attack_speed + randf_range(-0.5, 0.5)
+	reload_timer.wait_time = base_attack_speed + randf_range(-0.3, 0.8)
 	reload_timer.start()
 
 	var projectile: SpinProjectile = PROJECTILE.instantiate()
@@ -151,6 +156,7 @@ func shootProjectile():
 		proj_speed
 	)
 	projectile.set_projectile_texture(texture, move_texture)
+	sfx.play()
 
 
 func initProbabilities():
@@ -171,9 +177,9 @@ func pick_type() -> String:
 	return ""
 
 
-func trigger_death():
-	createExplosion()
-	updatePlayerSouls(100)
+func trigger_death(get_souls: bool):
+	if get_souls:
+		updatePlayerSouls(100)
 	queue_free()
 
 
@@ -209,7 +215,7 @@ func _on_hitbox_area_entered(area):
 		healthUpdate(-attackDamage * attackMultiplier)
 
 	if getHealth() <= 0:
-		trigger_death()
+		trigger_death(true)
 
 
 func _on_processEAP_timeout():
@@ -223,8 +229,15 @@ func _on_processEAP_timeout():
 	initProbabilities()
 
 	var new_type = pick_type()
-	if not new_type == "":
-		current_attack = new_type
+	if new_type == "":
+		return
+		
+	current_attack = new_type
+	
+	if new_type == 'R':
+		sfx.stream = TURRET_SHOT
+	elif new_type == 'M':
+		sfx.stream = MAGIC_SHOT
 
 
 func _on_healingTicTimer_timeout():

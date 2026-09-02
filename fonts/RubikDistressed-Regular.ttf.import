@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://cshnoe5cx6b4c"
-path="res://.godot/imported/War is Over.ttf-6c79ad990deba8f98b7b6267a14ab1a5.fontdata"
+uid="uid://bpm057lpadi0m"
+path="res://.godot/imported/RubikDistressed-Regular.ttf-a8fdc9cc49731d8c86f95056cd53846e.fontdata"
 
 [deps]
 
-source_file="res://fonts/War is over/War is Over.ttf"
-dest_files=["res://.godot/imported/War is Over.ttf-6c79ad990deba8f98b7b6267a14ab1a5.fontdata"]
+source_file="res://fonts/RubikDistressed-Regular.ttf"
+dest_files=["res://.godot/imported/RubikDistressed-Regular.ttf-a8fdc9cc49731d8c86f95056cd53846e.fontdata"]
 
 [params]
 

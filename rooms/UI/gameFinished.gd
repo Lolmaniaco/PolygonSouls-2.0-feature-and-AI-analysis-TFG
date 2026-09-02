@@ -1,9 +1,15 @@
 extends Control
 
 @onready var time_message: Label = $VBoxContainer/TimeMessage
+@onready var color_rect: ColorRect = $ColorRect
+@onready var texture_rect: TextureRect = $TextureRect
 
 
-func _ready():
+func _ready() -> void:
+	texture_rect.modulate = Color.DIM_GRAY
+	var tween = get_tree().create_tween()
+	tween.tween_property(color_rect, "modulate:a", 0, 10)
+
 	time_message.text = "Has completado PolygonSouls 2.0 en " + Global.time + " minutos"
 
 

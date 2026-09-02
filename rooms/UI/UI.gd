@@ -3,8 +3,8 @@ extends CanvasLayer
 
 @export var maxRooms: int = 12
 
-var soulsCollected: int = 1000
-var roomsCleared: int = 10
+var soulsCollected: int = 0
+var roomsCleared: int = 0
 var controllerConnected: bool = false
 var colorIndicator: bool = false
 var start_time: float = 0
@@ -14,6 +14,7 @@ var start_time: float = 0
 @onready var game_time: Label = $VBoxContainer/GameTime
 @onready var win_timer: Timer = $WinTimer
 @onready var volume: VSlider = $VSlider
+@onready var color_rect: ColorRect = $ColorRect
 
 
 func _ready():
@@ -78,6 +79,12 @@ func getPlayerSouls():
 func activateColorInfo():
 	colorIndicator = true
 	updateRoomsLabel()
+
+
+func transition_color(new_color: Color) -> void:
+	color_rect.color = new_color
+	var tween = get_tree().create_tween()
+	tween.tween_property(color_rect, "modulate:a", 1, 0.5)
 
 
 func _on_win_timer_timeout() -> void:

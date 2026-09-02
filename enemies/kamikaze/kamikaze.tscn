@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d28xo07kr1rnl" path="res://enemies/kamikaze/kamikaze.gd" id="1_4wgqj"]
 [ext_resource type="Texture2D" uid="uid://0hpec7ufdbv7" path="res://enemies/kamikaze/assets/Kamikaze.png" id="2_0byo6"]
+[ext_resource type="AudioStream" uid="uid://do8ecrejkycxe" path="res://enemies/kamikaze/explosion.ogg" id="3_xpfi3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n4y2n"]
 radius = 14.0
@@ -24,5 +25,8 @@ texture = ExtResource("2_0byo6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1939408541]
 shape = SubResource("CircleShape2D_n4y2n")
+
+[node name="SFX" type="AudioStreamPlayer" parent="." unique_id=2067918029]
+stream = ExtResource("3_xpfi3")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

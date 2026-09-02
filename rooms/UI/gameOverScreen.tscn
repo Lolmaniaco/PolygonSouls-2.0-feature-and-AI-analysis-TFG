@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dpmw6h4gmqt6m" path="res://rooms/UI/gameOverScreen.gd" id="2"]
 [ext_resource type="FontFile" uid="uid://dcxlgsp7tnlep" path="res://fonts/Enchanted Land/Enchanted Land.otf" id="2_4ejfo"]
+[ext_resource type="Texture2D" uid="uid://d2mkg478o4bar" path="res://rooms/UI/assets/death_screen.jpg" id="2_rqpnf"]
 
 [node name="gameOverScreen" type="Control" unique_id=2034191214]
 layout_mode = 3
@@ -11,6 +12,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=758024510]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = -138.5
+offset_right = 23.5
+offset_bottom = 138.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_rqpnf")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1103821873]
 layout_mode = 1
@@ -29,9 +43,12 @@ alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer" unique_id=1656977837]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("2_4ejfo")
 theme_override_font_sizes/font_size = 64
-text = "Game Over"
+text = "Game  Over"
 horizontal_alignment = 1
 
 [node name="Empty" type="Label" parent="VBoxContainer" unique_id=1149082949]
@@ -41,10 +58,13 @@ horizontal_alignment = 1
 
 [node name="Label2" type="Label" parent="VBoxContainer" unique_id=475570555]
 layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("2_4ejfo")
 theme_override_font_sizes/font_size = 64
 text = "¡No puedes rendirte!
 Tienes que volver a intentarlo
 
-Pulsa R para reiniciar"
+Pulsa  [R]  para reiniciar"
 horizontal_alignment = 1

@@ -55,5 +55,13 @@ text = "MUSIC"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=692050127]
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=208113894]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [connection signal="timeout" from="WinTimer" to="." method="_on_win_timer_timeout"]
 [connection signal="value_changed" from="VSlider" to="." method="_on_v_slider_value_changed"]

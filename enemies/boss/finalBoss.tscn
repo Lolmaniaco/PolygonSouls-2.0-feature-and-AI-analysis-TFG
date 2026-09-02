@@ -7,11 +7,19 @@
 [ext_resource type="Texture2D" uid="uid://dkul5bg1kdbi7" path="res://enemies/boss/assets/bossSkullShield.png" id="6"]
 [ext_resource type="Texture2D" uid="uid://db7wnkboa40qu" path="res://enemies/boss/assets/bossMouthShield.png" id="7"]
 [ext_resource type="Texture2D" uid="uid://b66yk088ksgic" path="res://enemies/boss/assets/aura.png" id="8"]
-[ext_resource type="FontFile" path="res://fonts/War is over/War is over.tres" id="9"]
+[ext_resource type="AudioStream" uid="uid://b26mwngkwv2mm" path="res://enemies/boss/assets/laugh.ogg" id="9_qfhsh"]
+[ext_resource type="AudioStream" uid="uid://dkgbl5twc57r4" path="res://enemies/boss/assets/damage.ogg" id="9_swxae"]
 
 [sub_resource type="CapsuleShape2D" id="6"]
 radius = 48.0
 height = 96.0
+
+[sub_resource type="CapsuleShape2D" id="7"]
+radius = 35.0
+height = 102.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_swxae"]
+radius = 230.2629
 
 [sub_resource type="FontFile" id="3"]
 fallbacks = Array[Font]([ExtResource("3"), ExtResource("3")])
@@ -33,22 +41,38 @@ cache/0/16/0/underline_position = 0.0
 cache/0/16/0/underline_thickness = 0.0
 cache/0/16/0/scale = 1.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_swxae"]
-radius = 230.2629
-
 [sub_resource type="RectangleShape2D" id="19"]
 size = Vector2(205, 36)
 
 [sub_resource type="RectangleShape2D" id="20"]
 size = Vector2(203, 36)
 
-[sub_resource type="CapsuleShape2D" id="9"]
-radius = 35.0
-height = 102.0
-
-[sub_resource type="CapsuleShape2D" id="7"]
-radius = 14.0
-height = 28.0
+[sub_resource type="Animation" id="Animation_swxae"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Voice:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Voice:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
 
 [sub_resource type="Animation" id="8"]
 resource_name = "chargedShoot"
@@ -64,11 +88,38 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 2),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector2(-1.1, 3.014), Vector2(-1.1, 11.5), Vector2(-1.1, 3.014)]
+"values": [Vector2(-1, 3), Vector2(-1, 11), Vector2(-1, 3)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.13333334),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"shoot_at_player"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("stateBody/bossMouthShield:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-1, 3), Vector2(-1, 11), Vector2(-1, 3)]
 }
 
 [sub_resource type="Animation" id="11"]
 resource_name = "fadeIn"
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -76,10 +127,10 @@ tracks/0/path = NodePath("stateBody/bossMouth:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.101, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.401, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.101, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.401, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.73333335, 0.8, 0.85, 0.9, 0.95, 1, 1.0166668, 1.0666667, 1.1166667, 1.1176668, 1.1666669, 1.2166668, 1.2666668, 1.3166667, 1.3666667, 1.4166669, 1.4176668, 1.4666668, 1.5166668, 1.5666667, 1.6166667, 1.6666669, 1.7166668, 1.7500001, 1.8166667, 1.8666667, 1.9166669, 1.9666668, 2.016667),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(-1.1, 3), Vector2(-1.1, 5.076), Vector2(-1.1, 7), Vector2(-1.1, 7), Vector2(-1.1, 9), Vector2(-1.1, 11), Vector2(0, 11), Vector2(1, 12), Vector2(-1, 10), Vector2(0, 9), Vector2(0, 9), Vector2(-2, 10), Vector2(-1, 8), Vector2(0, 9), Vector2(2, 12), Vector2(-2, 8), Vector2(1, 12), Vector2(-1, 10), Vector2(-2, 10), Vector2(0, 9), Vector2(-2, 8), Vector2(-1, 10), Vector2(-1.1, 3)]
+"values": [Vector2(-1.1, 3), Vector2(-1.1, 5.076), Vector2(-1.1, 7), Vector2(-1.1, 7), Vector2(-1.1, 9), Vector2(-1.1, 11), Vector2(0, 11), Vector2(1, 12), Vector2(-1, 10), Vector2(0, 9), Vector2(0, 9), Vector2(-2, 10), Vector2(-1, 8), Vector2(0, 9), Vector2(2, 12), Vector2(-2, 8), Vector2(1, 12), Vector2(-1, 10), Vector2(-2, 10), Vector2(0, 9), Vector2(-2, 8), Vector2(-1, 10), Vector2(-1.1, 3), Vector2(-1.1, 3), Vector2(-1.1, 5.076), Vector2(-1.1, 7), Vector2(-1.1, 7), Vector2(-1.1, 9), Vector2(-1.1, 11), Vector2(0, 11), Vector2(1, 12), Vector2(-1, 10), Vector2(0, 9), Vector2(0, 9), Vector2(-2, 10), Vector2(-1, 8), Vector2(0, 9), Vector2(2, 12), Vector2(-2, 8), Vector2(1, 12), Vector2(-1, 10), Vector2(-2, 10), Vector2(0, 9), Vector2(-2, 8), Vector2(-1, 10), Vector2(-1.1, 3)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -88,7 +139,7 @@ tracks/1/path = NodePath("stateBody:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(1.45639, 1.48045)]
@@ -96,11 +147,11 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("blockBody/blockBodyHitbox:disabled")
+tracks/2/path = NodePath("hitbox/finalBossHitbox:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.56666666),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
@@ -108,11 +159,11 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("hitbox/finalBossHitbox:disabled")
+tracks/3/path = NodePath("finalBossBody:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.56666666),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
@@ -120,18 +171,31 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("finalBossBody:disabled")
+tracks/4/path = NodePath("Voice:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 1.9666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [true, false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Voice:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 1.7333333, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [-10.0, 0.0, -50.0]
+}
 
 [sub_resource type="Animation" id="10"]
 resource_name = "fadeOut"
+length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -139,10 +203,10 @@ tracks/0/path = NodePath("stateBody/bossMouth:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.101, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.401, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 0.99),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.101, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.401, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 0.99, 1.0187844, 1.0687844, 1.1187844, 1.1197844, 1.1687844, 1.2187845, 1.2687844, 1.3187845, 1.3687844, 1.4187844, 1.4197844, 1.4687843, 1.5187844, 1.5687845, 1.6187844, 1.6687844, 1.7187843, 1.7687844, 1.8187845, 1.8687844, 1.9187844, 1.9687843, 2.0087843),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(-1.1, 3), Vector2(-1.1, 5.076), Vector2(-1.1, 7), Vector2(-1.1, 7), Vector2(-1.1, 9), Vector2(-1.1, 11), Vector2(0, 11), Vector2(1, 12), Vector2(-1, 10), Vector2(0, 9), Vector2(0, 9), Vector2(-2, 10), Vector2(-1, 8), Vector2(0, 9), Vector2(2, 12), Vector2(-2, 8), Vector2(1, 12), Vector2(-1, 10), Vector2(-2, 10), Vector2(0, 9), Vector2(-2, 8), Vector2(-1, 10), Vector2(-2, 10)]
+"values": [Vector2(-1.1, 3), Vector2(-1.1, 5.076), Vector2(-1.1, 7), Vector2(-1.1, 7), Vector2(-1.1, 9), Vector2(-1.1, 11), Vector2(0, 11), Vector2(1, 12), Vector2(-1, 10), Vector2(0, 9), Vector2(0, 9), Vector2(-2, 10), Vector2(-1, 8), Vector2(0, 9), Vector2(2, 12), Vector2(-2, 8), Vector2(1, 12), Vector2(-1, 10), Vector2(-2, 10), Vector2(0, 9), Vector2(-2, 8), Vector2(-1, 10), Vector2(-2, 10), Vector2(-1.1, 3), Vector2(-1.1, 5.076), Vector2(-1.1, 7), Vector2(-1.1, 7), Vector2(-1.1, 9), Vector2(-1.1, 11), Vector2(0, 11), Vector2(1, 12), Vector2(-1, 10), Vector2(0, 9), Vector2(0, 9), Vector2(-2, 10), Vector2(-1, 8), Vector2(0, 9), Vector2(2, 12), Vector2(-2, 8), Vector2(1, 12), Vector2(-1, 10), Vector2(-2, 10), Vector2(0, 9), Vector2(-2, 8), Vector2(-1, 10), Vector2(-2, 10)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -151,7 +215,7 @@ tracks/1/path = NodePath("stateBody:scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(1.45639, 1.48045), Vector2(0, 0)]
@@ -159,11 +223,11 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("blockBody/blockBodyHitbox:disabled")
+tracks/2/path = NodePath("hitbox/finalBossHitbox:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.36666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -171,11 +235,11 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("hitbox/finalBossHitbox:disabled")
+tracks/3/path = NodePath("finalBossBody:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 0.36666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -183,14 +247,26 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("finalBossBody:disabled")
+tracks/4/path = NodePath("Voice:playing")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 1),
+"times": PackedFloat32Array(0, 1.9666667),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [false, true]
+"values": [true, false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Voice:volume_db")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -20.0]
 }
 
 [sub_resource type="Animation" id="2"]
@@ -212,7 +288,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ccdrl"]
 _data = {
-&"chargedShoot": SubResource("8"),
+&"RESET": SubResource("Animation_swxae"),
+&"chargedShot": SubResource("8"),
 &"fadeIn": SubResource("11"),
 &"fadeOut": SubResource("10"),
 &"talking": SubResource("2")
@@ -226,21 +303,44 @@ script = ExtResource("2")
 [node name="finalBossBody" type="CollisionShape2D" parent="." unique_id=1809278876]
 shape = SubResource("6")
 
+[node name="hitbox" type="Area2D" parent="." unique_id=548186806]
+collision_layer = 3
+collision_mask = 3
+
+[node name="finalBossHitbox" type="CollisionShape2D" parent="hitbox" unique_id=494372697]
+shape = SubResource("7")
+
+[node name="protectiveAura" type="Area2D" parent="." unique_id=1317458996]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="protectiveAura" unique_id=1874173155]
+self_modulate = Color(0.3882353, 0.5411765, 0.9372549, 1)
+position = Vector2(14, 5)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="protectiveAura" unique_id=143588066]
+shape = SubResource("CircleShape2D_swxae")
+
 [node name="stateBody" type="Sprite2D" parent="." unique_id=1193619396]
 self_modulate = Color(0, 0.882353, 1, 1)
 scale = Vector2(1.45639, 1.48045)
 
 [node name="bossMouthShield" type="Sprite2D" parent="stateBody" unique_id=925050744]
+visible = false
 self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
+position = Vector2(-1, 3)
 scale = Vector2(0.552289, 0.526195)
 texture = ExtResource("7")
 
 [node name="bossMouth" type="Sprite2D" parent="stateBody" unique_id=1983825373]
-position = Vector2(-1.1, 3)
+position = Vector2(-1.1, 9.18)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5")
 
 [node name="bossSkullShield" type="Sprite2D" parent="stateBody" unique_id=107114243]
+visible = false
 self_modulate = Color(0.388235, 0.541176, 0.937255, 1)
 scale = Vector2(0.532386, 0.533659)
 texture = ExtResource("6")
@@ -260,37 +360,21 @@ theme_override_fonts/font = SubResource("3")
 text = "10"
 horizontal_alignment = 1
 
-[node name="protectiveAura" type="Area2D" parent="." unique_id=1317458996]
-
-[node name="Sprite2D" type="Sprite2D" parent="protectiveAura" unique_id=1874173155]
-position = Vector2(14, 5)
-scale = Vector2(0.42, 0.42)
-texture = ExtResource("8")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="protectiveAura" unique_id=143588066]
-shape = SubResource("CircleShape2D_swxae")
-
 [node name="lowerDodge" type="Area2D" parent="." unique_id=693766738]
+collision_layer = 3
+collision_mask = 3
 
 [node name="lowerDodgeHitbox" type="CollisionShape2D" parent="lowerDodge" unique_id=834336280]
 position = Vector2(0, 75)
 shape = SubResource("19")
 
 [node name="upperDodge" type="Area2D" parent="." unique_id=1157914904]
+collision_layer = 3
+collision_mask = 3
 
 [node name="upperDodgeHitbox" type="CollisionShape2D" parent="upperDodge" unique_id=1832313827]
 position = Vector2(0, -75)
 shape = SubResource("20")
-
-[node name="blockBody" type="Area2D" parent="." unique_id=987130264]
-
-[node name="blockBodyHitbox" type="CollisionShape2D" parent="blockBody" unique_id=1973729711]
-shape = SubResource("9")
-
-[node name="hitbox" type="Area2D" parent="." unique_id=548186806]
-
-[node name="finalBossHitbox" type="CollisionShape2D" parent="hitbox" unique_id=494372697]
-shape = SubResource("7")
 
 [node name="firingPoint" type="Marker2D" parent="." unique_id=1634744739]
 
@@ -306,7 +390,7 @@ wait_time = 3.0
 one_shot = true
 
 [node name="shieldTimer" type="Timer" parent="." unique_id=1001934940]
-wait_time = 0.3
+wait_time = 0.4
 one_shot = true
 
 [node name="attackTimer" type="Timer" parent="." unique_id=869814966]
@@ -317,27 +401,17 @@ autostart = true
 wait_time = 1.5
 one_shot = true
 
-[node name="DialogTimer" type="Timer" parent="." unique_id=1823320428]
-wait_time = 0.5
-one_shot = true
+[node name="SFX" type="AudioStreamPlayer" parent="." unique_id=995606812]
+stream = ExtResource("9_swxae")
+volume_db = -5.0
 
-[node name="bossDialogs" type="RichTextLabel" parent="." unique_id=2024180706]
-offset_left = -125.0
-offset_top = 100.0
-offset_right = 125.0
-offset_bottom = 175.0
-theme_override_fonts/normal_font = ExtResource("9")
-theme_override_font_sizes/normal_font_size = 32
-bbcode_enabled = true
-fit_content = true
-scroll_active = false
-tab_size = 6
-horizontal_alignment = 1
+[node name="Voice" type="AudioStreamPlayer" parent="." unique_id=1849983723]
+stream = ExtResource("9_qfhsh")
 
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="protectiveAura" to="." method="_on_protective_aura_area_entered"]
 [connection signal="area_entered" from="lowerDodge" to="." method="_on_lowerDodge_area_entered"]
 [connection signal="area_entered" from="upperDodge" to="." method="_on_upperDodge_area_entered"]
-[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="timeout" from="fadeOutTimer" to="." method="_on_fadeOutTimer_timeout"]
 [connection signal="timeout" from="fadeInTimer" to="." method="_on_fadeInTimer_timeout"]
 [connection signal="timeout" from="shieldTimer" to="." method="_on_shieldTimer_timeout"]

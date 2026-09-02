@@ -16,6 +16,10 @@ const MELEE_ATTACK = preload("uid://ct8hk6tgjt503")
 const RANGED_ATTACK = preload("uid://cpkds4nrxak5s")
 const MAGIC_ATTACK = preload("uid://ckf0fqbdq4342")
 
+const SLASH_SFX = preload("uid://r0vhnhhkx4xe")
+const ARROW_SFX = preload("uid://bf5rfb84mjpxd")
+const MAGIC_SFX = preload("uid://b3qr1bdj8lqd4")
+
 const GAME_OVER_SCREEN = preload("uid://uwn36kk1pqgs")
 
 @export var maxHealth: int = 100
@@ -30,11 +34,13 @@ var directions = [Vector2.UP, Vector2(1, -1), Vector2.RIGHT, Vector2(1, 1), Vect
 var has_respawn: bool = false
 var respawn_pos: Vector2 = Vector2.ZERO
 var lost_control: bool = false
+var boss_controlled: bool = false
 
 var last_attacks = []
 var last_attacks_tracker = { 'C': 0, 'R': 0, 'M': 0 }
 
 var god_mode: bool = false
+var invulnerable: bool = false
 
 @onready var input_disabled: Timer = $inputDisabled
 @onready var attack_type: Sprite2D = $AttackType
@@ -42,6 +48,11 @@ var god_mode: bool = false
 @onready var attack_reload: Timer = $AttackReload
 @onready var health_bar: TextureProgressBar = $healthBar
 @onready var stamina_bar: TextureProgressBar = $staminaBar
+@onready var sfx: AudioStreamPlayer = $sfx
+
+@onready var hit: AudioStreamPlayer = $hit
+@onready var col_shape: CollisionShape2D = $CollisionShape2D
+@onready var UI: UserInterface = $UI
 
 
 func _ready():
@@ -80,11 +91,16 @@ func getHealth():
 	return health_bar.value
 
 
+func change_control(new_value: bool) -> void:
+	boss_controlled = new_value
+
+
 func get_input():
 	velocity = Vector2.ZERO
 	var direction = Input.get_vector("left", "right", "up", "down")
 
-	velocity = direction * speed
+	if not boss_controlled:
+		velocity = direction * speed
 
 	if Input.is_action_just_pressed("prevWeapon"):
 		change_weapon(-1)
@@ -106,17 +122,32 @@ func change_weapon(direction: int) -> void:
 	swap_weapons()
 
 
+func pop_invulnerability() -> void:
+	invulnerable = true
+	var tween: Tween = get_tree().create_tween()
+
+	for i in range(5):
+		tween.tween_property(self, "modulate:a", 0, 0.1)
+		tween.tween_property(self, "modulate:a", 1, 0.1)
+
+	await tween.finished
+	invulnerable = false
+
+
 func swap_weapons() -> void:
 	match(current_weapon):
 		Weapon.MELEE:
+			sfx.stream = SLASH_SFX
 			attack_reload.wait_time = 0.4
 			attack_type.texture = MELEE_TEXTURE
 			attack_cost = 10
 		Weapon.RANGED:
+			sfx.stream = ARROW_SFX
 			attack_reload.wait_time = 0.3
 			attack_type.texture = RANGED_TEXTURE
 			attack_cost = 10
 		Weapon.MAGIC:
+			sfx.stream = MAGIC_SFX
 			attack_reload.wait_time = 0.1
 			attack_type.texture = MAGIC_TEXTURE
 			attack_cost = 20
@@ -144,6 +175,10 @@ func is_player_dead():
 			has_respawn = false
 		else:
 			Global.death_counter += 1
+			visible = false
+			col_shape. disabled = true
+			UI.transition_color(Color.BLACK)
+			await get_tree().create_timer(0.5).timeout
 			get_tree().change_scene_to_packed(GAME_OVER_SCREEN)
 
 
@@ -178,6 +213,7 @@ func attack():
 		facingDir = directions[6]
 
 	attack_reload.start()
+	sfx.play()
 	match(current_weapon):
 		Weapon.MELEE:
 			$AnimationPlayer.play("meleeAttack")
@@ -213,8 +249,15 @@ func getPAP():
 
 
 func receive_damage(lost_life: int):
-	if not god_mode:
-		health_bar.value -= lost_life
+	if god_mode:
+		return
+
+	if invulnerable:
+		return
+
+	health_bar.value -= lost_life
+	pop_invulnerability()
+	hit.play()
 
 
 func _on_inputDisabled_timeout():

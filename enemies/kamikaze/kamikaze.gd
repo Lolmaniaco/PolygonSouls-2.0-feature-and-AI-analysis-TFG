@@ -9,9 +9,12 @@ var tankedHits = 0
 @onready var col_shape: CollisionShape2D = $CollisionShape2D
 @onready var sprite: Sprite2D = $Sprite2D
 
+@onready var sfx: AudioStreamPlayer = $SFX
+
 
 func _ready() -> void:
 	player = $"../../../../player"
+	UI = $"../../../../player/UI"
 	set_physics_process(false)
 	await rotate_to_player()
 	set_physics_process(true)
@@ -48,11 +51,14 @@ func rotate_to_player() -> void:
 		await get_tree().process_frame
 
 
-func trigger_death():
-	createExplosion()
-	createExplosion()
-	createExplosion()
-	updatePlayerSouls(50)
+func trigger_death(get_souls: bool):
+	if get_souls:
+		updatePlayerSouls(50)
+	
+	col_shape.call_deferred("set_disabled", true)
+	call_deferred("set_visible", false)
+	sfx.play()
+	await sfx.finished
 	queue_free()
 
 
@@ -63,11 +69,12 @@ func take_hit():
 
 	tankedHits += 1;
 	if tankedHits == 3:
-		trigger_death()
+		trigger_death(true)
 
 
 func _on_body_entered(body: Node) -> void:
-	if body is Player:
-		createExplosion()
-		body.receive_damage(POWER)
-		queue_free()
+	if not body is Player:
+		return
+
+	body.receive_damage(POWER)
+	trigger_death(false)

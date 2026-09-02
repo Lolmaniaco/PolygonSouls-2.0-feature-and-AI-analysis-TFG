@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://p62y243htu3p" path="res://rooms/UI/ui.tscn" id="6_0owmy"]
 [ext_resource type="Texture2D" uid="uid://dqnsy5qabv1ou" path="res://enemies/boss/assets/ringTexture.png" id="6_75vfm"]
 [ext_resource type="Texture2D" uid="uid://71dx60cfh6rg" path="res://player/assets/pjCircle.png" id="7"]
+[ext_resource type="AudioStream" uid="uid://r0vhnhhkx4xe" path="res://player/assets/slash.ogg" id="7_boad6"]
+[ext_resource type="AudioStream" uid="uid://bkqu63c8y43np" path="res://player/assets/player_hit.ogg" id="8_rgyib"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 22.090721
@@ -146,6 +148,14 @@ wait_time = 0.4
 one_shot = true
 
 [node name="UI" parent="." unique_id=240912075 instance=ExtResource("6_0owmy")]
+
+[node name="sfx" type="AudioStreamPlayer" parent="." unique_id=1052618726]
+stream = ExtResource("7_boad6")
+volume_db = 10.0
+
+[node name="hit" type="AudioStreamPlayer" parent="." unique_id=1507961590]
+stream = ExtResource("8_rgyib")
+volume_db = 5.0
 
 [connection signal="body_entered" from="weapons/sword/nearAttack" to="." method="_on_near_attack_body_entered"]
 [connection signal="timeout" from="inputDisabled" to="." method="_on_inputDisabled_timeout"]

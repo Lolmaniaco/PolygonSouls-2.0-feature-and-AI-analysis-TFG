@@ -16,9 +16,11 @@ var movement_direction: Vector2
 @onready var ray_left: RayCast2D = $RayCastLeft
 @onready var ray_up: RayCast2D = $RayCastUp
 @onready var reload_timer: Timer = $reloadTimer
+@onready var sfx: AudioStreamPlayer = $sfx
 
 
 func _ready():
+	UI = $"../../../../player/UI"
 	_start_delay()
 	speed = randi_range(200, 300)
 	movement_direction = Vector2(randf(), randf()).normalized()
@@ -54,6 +56,7 @@ func _physics_process(delta: float) -> void:
 
 func shootProjectile():
 	var bullet: BouncerArrow = BOUNCER_ARROW.instantiate()
+	sfx.play()
 	add_sibling(bullet)
 
 	match dirToShoot:
@@ -64,12 +67,12 @@ func shootProjectile():
 
 
 func take_hit():
-	trigger_death()
+	trigger_death(true)
 
 
-func trigger_death():
-	createExplosion()
-	updatePlayerSouls(30)
+func trigger_death(get_souls:bool):
+	if get_souls:
+		updatePlayerSouls(30)
 	queue_free()
 
 
@@ -81,4 +84,4 @@ func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group("pjBullets"):
 		return
 
-	trigger_death()
+	trigger_death(true)

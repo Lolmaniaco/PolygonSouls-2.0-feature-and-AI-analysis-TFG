@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dfst8x7q5e5in" path="res://enemies/turret/assets/Tshooter.png" id="1"]
 [ext_resource type="Script" uid="uid://cp2smr8k7l1vb" path="res://enemies/turret/turret.gd" id="2"]
 [ext_resource type="Texture2D" uid="uid://dvffv68cf3cd5" path="res://enemies/turret/assets/chargeBar.png" id="3"]
+[ext_resource type="AudioStream" uid="uid://otxx4extofnr" path="res://enemies/turret/assets/turret_shot.ogg" id="4_kodyv"]
 
 [sub_resource type="CapsuleShape2D" id="2"]
 radius = 11.999996
@@ -46,6 +47,9 @@ collision_mask = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="shieldHitBox" unique_id=1228805344]
 position = Vector2(18, -0.5)
 shape = SubResource("1")
+
+[node name="sfx" type="AudioStreamPlayer" parent="." unique_id=742763267]
+stream = ExtResource("4_kodyv")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="area_entered" from="shieldHitBox" to="." method="_on_shield_hit_box_area_entered"]

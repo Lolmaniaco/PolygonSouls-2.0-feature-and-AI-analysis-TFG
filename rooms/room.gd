@@ -176,7 +176,7 @@ func create_enemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 
 
 func _on_roomArea_body_entered(body):
-	if body.name == "player":
+	if body is Player:
 		room_cam.position = roomCoord * Vector2(1152, 640)
 		visible = true
 
@@ -192,14 +192,12 @@ func _on_roomArea_body_entered(body):
 			close_all_doors()
 		elif room_type == "final":
 			Music.fade_out_music()
-			await get_tree().create_timer(3).timeout
-			var boss: Boss = FINAL_BOSS.instantiate()
-			call_deferred("add_child", boss)
-			boss.position = Vector2(576, 320)
 			var rift: Rift = RIFT.instantiate()
 			call_deferred("add_child", rift)
 			rift.position = Vector2(576, 320)
-			
+			var boss: Boss = FINAL_BOSS.instantiate()
+			call_deferred("add_child", boss)
+			boss.position = Vector2(576, 320)
 
 		check_timer.start()
 

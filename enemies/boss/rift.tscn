@@ -2,6 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://dsnmhmrovd2dd" path="res://enemies/boss/assets/groundBreak.png" id="1_bmxqs"]
 [ext_resource type="Script" uid="uid://brm638b3biba4" path="res://enemies/boss/rift.gd" id="1_gq5yr"]
+[ext_resource type="AudioStream" uid="uid://b0gp74nwp1rsm" path="res://enemies/boss/assets/rift_explosion.ogg" id="3_rfb8g"]
+[ext_resource type="FontFile" uid="uid://bpm057lpadi0m" path="res://fonts/RubikDistressed-Regular.ttf" id="4_b7ebd"]
 
 [sub_resource type="RectangleShape2D" id="12"]
 size = Vector2(80, 640)
@@ -76,3 +78,24 @@ emitting = false
 amount = 200
 lifetime = 0.25
 process_material = SubResource("ParticleProcessMaterial_rfb8g")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1319060752]
+stream = ExtResource("3_rfb8g")
+
+[node name="bossDialogs" type="RichTextLabel" parent="." unique_id=131172308]
+z_index = 10
+offset_left = -125.0
+offset_top = 50.0
+offset_right = 125.0
+offset_bottom = 150.0
+pivot_offset = Vector2(125, 50)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/normal_font = ExtResource("4_b7ebd")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+tab_size = 6
+horizontal_alignment = 1
+vertical_alignment = 1

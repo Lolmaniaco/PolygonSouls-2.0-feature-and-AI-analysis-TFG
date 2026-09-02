@@ -4,20 +4,32 @@ extends Enemy
 const TURRET_PROJECTILE = preload("uid://dnyctorhi3ttb")
 
 @export var chargeSpeed: int = 80
+@export var rotation_speed: float = 2.0 # radianes por segundo
 
 var dirToShoot
+
+@onready var sfx: AudioStreamPlayer = $sfx
 
 
 func _ready() -> void:
 	player = $"../../../../player"
-
+	UI = $"../../../../player/UI"
+func _run() -> void:
+	pass
 
 func _physics_process(delta: float) -> void:
 	chargeUpdate(chargeSpeed * delta)
-	look_at(player.global_position)
+	var angle_to_player = get_angle_to(player.global_position)
+
+	rotation = rotate_toward(
+		rotation,
+		rotation + angle_to_player,
+		rotation_speed * delta
+	)
 
 	if $chargeMeter.value == $chargeMeter.max_value:
 		dirToShoot = global_position.direction_to(player.global_position)
+		sfx.play()
 		shootProjectile()
 
 
@@ -26,12 +38,12 @@ func chargeUpdate(chargePoints):
 
 
 func take_hit():
-	trigger_death()
+	trigger_death(true)
 
 
-func trigger_death():
-	createExplosion()
-	updatePlayerSouls(30)
+func trigger_death(get_souls: bool):
+	if get_souls:
+		updatePlayerSouls(30)
 	queue_free()
 
 
@@ -46,7 +58,7 @@ func _on_body_entered(body: Node) -> void:
 	if not body.is_in_group("pjBullets"):
 		return
 
-	trigger_death()
+	trigger_death(true)
 
 
 func _on_shield_hit_box_area_entered(area: Area2D) -> void:

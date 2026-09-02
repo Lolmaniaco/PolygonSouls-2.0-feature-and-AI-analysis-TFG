@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bs27iop5q0xrk" path="res://enemies/bouncer/assets/cross.png" id="1"]
 [ext_resource type="Script" uid="uid://b3di24hi4n2fa" path="res://enemies/bouncer/bouncer.gd" id="2"]
+[ext_resource type="AudioStream" uid="uid://bb8mjsq18brvp" path="res://enemies/bouncer/assets/bouncer_shot.ogg" id="3_dw6wx"]
 
 [sub_resource type="CircleShape2D" id="2"]
 radius = 22.0
@@ -34,6 +35,10 @@ target_position = Vector2(-1152, 0)
 
 [node name="RayCastUp" type="RayCast2D" parent="." unique_id=1176598548]
 target_position = Vector2(0, -640)
+
+[node name="sfx" type="AudioStreamPlayer" parent="." unique_id=821072392]
+stream = ExtResource("3_dw6wx")
+volume_db = -7.5
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="reloadTimer" to="." method="_on_reloadTimer_timeout"]
