@@ -11,6 +11,7 @@ const RANGED_TYPE = preload("uid://c65282by30vy8")
 
 const MAGIC_SHOT = preload("uid://bxcj748t3uu2v")
 const TURRET_SHOT = preload("uid://yluj847eimc1")
+const DEATH = preload("uid://bwkmvll0tnung")
 
 var player_inside: bool = false
 var regenerate: bool = true
@@ -44,10 +45,12 @@ var base_attack_speed = 0.8
 @onready var enemy_center_pos: Array = $enemyCenterPos.get_children()
 @onready var sfx: AudioStreamPlayer = $sfx
 
+@onready var hitbox: Area2D = $hitbox
+
+@onready var death_sound: AudioStreamPlayer = $DeathSound
+
 
 func _ready():
-	UI = $"../../../../player/UI"
-	player = $"../../../../player"
 	_start_delay()
 	speed *= 0.7
 
@@ -59,7 +62,7 @@ func _physics_process(delta):
 	if not flee_player:
 		waitUntilStartHealing = 1
 		heal_particles.emitting = false
-		directionToPlayer = global_position.direction_to(player.global_position)
+		directionToPlayer = global_position.direction_to(Global.player.global_position)
 		movement = directionToPlayer * speed * 2 * delta
 		if getHealth() < 50:
 			weakened()
@@ -67,7 +70,7 @@ func _physics_process(delta):
 		if player_inside:
 			waitUntilStartHealing = 1
 			heal_particles.emitting = false
-			directionToPlayer = -global_position.direction_to(player.global_position)
+			directionToPlayer = -global_position.direction_to(Global.player.global_position)
 			movement = directionToPlayer * speed * delta
 			if getHealth() >= 50:
 				continue_fighting()
@@ -151,8 +154,8 @@ func shootProjectile():
 	add_sibling(projectile)
 	projectile.setup(
 		global_position,
-		global_position.angle_to_point(player.global_position),
-		global_position.direction_to(player.global_position).normalized(),
+		global_position.angle_to_point(Global.player.global_position),
+		global_position.direction_to(Global.player.global_position).normalized(),
 		proj_speed
 	)
 	projectile.set_projectile_texture(texture, move_texture)
@@ -178,8 +181,21 @@ func pick_type() -> String:
 
 
 func trigger_death(get_souls: bool):
+	set_physics_process(false)
+	call_deferred("set_collision_layer_value", 1, 0)
+	call_deferred("set_collision_layer_value", 2, 0)
+	heal_particles.emitting = false
+	hitbox.call_deferred("set_monitoring", false)
+
 	if get_souls:
 		updatePlayerSouls(100)
+	death_sound.play()
+	var tween = get_tree().create_tween()
+	tween.set_trans(Tween.TRANS_ELASTIC)
+	tween.tween_property(self, "scale:x", 0.4, 0.25)
+	tween.tween_property(self, "scale:y", 0.4, 0.25)
+	tween.tween_property(self, "scale", Vector2(0.1, 0.1), 0.4)
+	await get_tree().create_timer(1.5).timeout
 	queue_free()
 
 
@@ -219,7 +235,7 @@ func _on_hitbox_area_entered(area):
 
 
 func _on_processEAP_timeout():
-	rPAP = player.getPAP()
+	rPAP = Global.player.getPAP()
 
 	for obj_type in object_types:
 		match(obj_type.attackType):
@@ -231,9 +247,9 @@ func _on_processEAP_timeout():
 	var new_type = pick_type()
 	if new_type == "":
 		return
-		
+
 	current_attack = new_type
-	
+
 	if new_type == 'R':
 		sfx.stream = TURRET_SHOT
 	elif new_type == 'M':

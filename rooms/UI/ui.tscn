@@ -22,16 +22,19 @@ size_flags_vertical = 3
 [node name="SoulsCollected" type="Label" parent="VBoxContainer" unique_id=1965381448]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_pko1k")
+theme_override_font_sizes/font_size = 25
 text = "0 Almas"
 
 [node name="ClearedRooms" type="Label" parent="VBoxContainer" unique_id=2031932455]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_pko1k")
+theme_override_font_sizes/font_size = 25
 text = "0 Salas"
 
 [node name="GameTime" type="Label" parent="VBoxContainer" unique_id=1164310466]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_pko1k")
+theme_override_font_sizes/font_size = 25
 text = "0"
 
 [node name="WinTimer" type="Timer" parent="." unique_id=1934662988]

@@ -11,9 +11,13 @@ var roomArray: Array[RoomHandler] = []
 
 @onready var controls: Sprite2D = $controlsVer2
 @onready var room_node: Node2D = $Rooms
+@onready var cameras: Node2D = $cameras
 
 
 func _ready():
+	Global.cameras = cameras
+	Global.soulsCollected = 0
+	Global.roomsCleared = 0
 	Music.play_level_music()
 
 	if not Input.get_connected_joypads().is_empty():
@@ -71,13 +75,13 @@ func _ready():
 	roomArray[max_dist_idx].setTypeOfRoom("boss")
 	var cryptObj = CRYPT_ENTRANCE.instantiate()
 	roomArray[max_dist_idx].call_deferred("add_child", cryptObj)
-	cryptObj.setup(Vector2(576, 320))
+	cryptObj.position = Utils.CENTER
 
 	var mean_dist_idx = distance_index.find(roundi(distance_index.max() / 2.0))
 	roomArray[mean_dist_idx].setTypeOfRoom("firepit")
 	var firepitObj = FIREPIT.instantiate()
 	roomArray[mean_dist_idx].call_deferred("add_child", firepitObj)
-	firepitObj.setup(Vector2(576, 320))
+	firepitObj.position = Utils.CENTER
 
 
 func create_room(array: Array, coords: Vector2, type_of_room: String) -> void:
@@ -89,6 +93,7 @@ func create_room(array: Array, coords: Vector2, type_of_room: String) -> void:
 	room_node.add_child(new_room)
 	new_room.drawRoom(Vector2.ZERO, Utils.WINDOWS_SIZE)
 	new_room.setCoord(coords)
+	new_room.visible = false
 
 	if type_of_room == "final":
 		return

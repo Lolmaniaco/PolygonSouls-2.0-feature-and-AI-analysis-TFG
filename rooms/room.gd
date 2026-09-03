@@ -52,7 +52,7 @@ var enemyNodes: Array = []
 var room_type = "common"
 var doors_closed = true
 
-@onready var baseEnemies = [SPIN_ENEMY, SPIN_ENEMY, SPIN_ENEMY]
+@onready var baseEnemies = [KAMIKAZE, TURRET, BOUNCER]
 @onready var hardEnemies = [KAMIKAZE, TURRET, BOUNCER, SPIN_ENEMY]
 
 @onready var tile_map: TileMapLayer = $TileMap
@@ -159,47 +159,42 @@ func create_enemies(enemyPressence, minNumEnemies = 1, maxNumEnemies = 4):
 	var enemiesToCreate: int = randi_range(minNumEnemies, maxNumEnemies)
 
 	for i in enemiesToCreate:
-		var new_enemy: Enemy
-		if enemyPressence > 2.5:
-			new_enemy = hardEnemies[randi_range(0, hardEnemies.size() - 1)].instantiate()
-		else:
-			new_enemy = baseEnemies[randi_range(0, baseEnemies.size() - 1)].instantiate()
+		var new_scene: PackedScene
+		new_scene = hardEnemies.pick_random() if enemyPressence > 2.5 else baseEnemies.pick_random()
 
+		var new_enemy: Enemy = new_scene.instantiate()
 		new_enemy.position = Vector2(randi_range(192, 960), randi_range(192, 448))
 		enemy_nodes.call_deferred("add_child", new_enemy)
 
-		var spawn_point: ColorRect = ColorRect.new()
-		spawn_point.size = Vector2(10, 10)
-		spawn_point.color = Color.WHITE
-		call_deferred("add_child", spawn_point)
-		spawn_point.position = new_enemy.position
-
 
 func _on_roomArea_body_entered(body):
-	if body is Player:
-		room_cam.position = roomCoord * Vector2(1152, 640)
-		visible = true
+	if not body is Player:
+		return
 
-		if room_type == "common":
-			var playerDeaths = float(get_player_deaths())
-			var x = playerDeaths / 3
-			var y = float(UI.getRoomsCleared())
+	visible = true
+	room_cam.position = roomCoord * Vector2(1152, 640)
+	visible = true
 
-			var enemyPressence = float((-50 - x) / float(y + 12)) + 6
-			var minimumEnemies = clamp(enemyPressence * 0.90, 2, 7)
-			var maximumEnemies = clamp(enemyPressence * 1.4, 2, 7)
-			create_enemies(enemyPressence, minimumEnemies, maximumEnemies)
-			close_all_doors()
-		elif room_type == "final":
-			Music.fade_out_music()
-			var rift: Rift = RIFT.instantiate()
-			call_deferred("add_child", rift)
-			rift.position = Vector2(576, 320)
-			var boss: Boss = FINAL_BOSS.instantiate()
-			call_deferred("add_child", boss)
-			boss.position = Vector2(576, 320)
+	if room_type == "common":
+		var playerDeaths = float(get_player_deaths())
+		var x = playerDeaths / 3
+		var y = float(Global.getRoomsCleared())
 
-		check_timer.start()
+		var enemyPressence = float((-50 - x) / float(y + 12)) + 6
+		var minimumEnemies = clamp(enemyPressence * 0.90, 2, 7)
+		var maximumEnemies = clamp(enemyPressence * 1.4, 2, 7)
+		create_enemies(enemyPressence, minimumEnemies, maximumEnemies)
+		close_all_doors()
+	elif room_type == "final":
+		Music.fade_out_music()
+		var rift: Rift = RIFT.instantiate()
+		call_deferred("add_child", rift)
+		rift.position = Utils.CENTER
+		var boss: Boss = FINAL_BOSS.instantiate()
+		call_deferred("add_child", boss)
+		boss.position = Utils.CENTER
+
+	check_timer.start()
 
 
 func _on_roomArea_body_exited(body):
@@ -213,7 +208,7 @@ func _on_checkRoomClear_timeout():
 	enemyNodes = enemy_nodes.get_children()
 	if enemyNodes.is_empty():
 		if room_type == "common":
-			UI.updateRoomsCleared(1)
+			Global.updateRoomsCleared()
 			room_type = "cleared"
 		check_timer.stop()
 		if doors_closed:

@@ -33,6 +33,7 @@ tile_set = SubResource("TileSet_laogf")
 use_kinematic_bodies = true
 
 [node name="checkRoomClear" type="Timer" parent="." unique_id=869821843]
+wait_time = 0.5
 
 [node name="EnemyNodes" type="Node2D" parent="." unique_id=1846463442]
 

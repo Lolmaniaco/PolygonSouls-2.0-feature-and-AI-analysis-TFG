@@ -56,6 +56,9 @@ var invulnerable: bool = false
 
 
 func _ready():
+	Global.player = self
+	Global.UI = UI
+
 	health_bar.max_value = maxHealth
 	stamina_bar.max_value = maxStamina
 
@@ -127,8 +130,8 @@ func pop_invulnerability() -> void:
 	var tween: Tween = get_tree().create_tween()
 
 	for i in range(5):
-		tween.tween_property(self, "modulate:a", 0, 0.1)
-		tween.tween_property(self, "modulate:a", 1, 0.1)
+		tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.1)
+		tween.tween_property(self, "modulate", Color.WHITE, 0.1)
 
 	await tween.finished
 	invulnerable = false
@@ -154,32 +157,37 @@ func swap_weapons() -> void:
 
 
 func inputDisabled():
-	if input_disabled.is_inside_tree():
-		lost_control = true
-		input_disabled.start()
+	if not input_disabled.is_inside_tree():
+		return
+
+	lost_control = true
+	input_disabled.start()
 
 
-func createSpawn(pos):
+func create_checkpoint(pos):
 	has_respawn = true
 	respawn_pos = pos
 
 
-func get_respawn():
+func has_checkpoint():
 	return has_respawn
 
 
 func is_player_dead():
-	if health_bar.value <= 0:
-		if has_respawn:
-			position = respawn_pos
-			has_respawn = false
-		else:
-			Global.death_counter += 1
-			visible = false
-			col_shape. disabled = true
-			UI.transition_color(Color.BLACK)
-			await get_tree().create_timer(0.5).timeout
-			get_tree().change_scene_to_packed(GAME_OVER_SCREEN)
+	if health_bar.value > 0:
+		return
+
+	if has_respawn:
+		position = respawn_pos
+		has_respawn = false
+	else:
+		Music.play_game_over_music()
+		Global.death_counter += 1
+		visible = false
+		col_shape. disabled = true
+		UI.transition_color(Color.BLACK)
+		await get_tree().create_timer(0.5).timeout
+		get_tree().change_scene_to_packed(GAME_OVER_SCREEN)
 
 
 func attack():

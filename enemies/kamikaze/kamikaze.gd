@@ -13,8 +13,7 @@ var tankedHits = 0
 
 
 func _ready() -> void:
-	player = $"../../../../player"
-	UI = $"../../../../player/UI"
+	rotation_degrees = randf_range(0, 360)
 	set_physics_process(false)
 	await rotate_to_player()
 	set_physics_process(true)
@@ -22,8 +21,8 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	var movement: Vector2
-	var directionToPlayer = global_position.direction_to(player.global_position)
-	look_at(player.global_position)
+	var directionToPlayer = global_position.direction_to(Global.player.global_position)
+	look_at(Global.player.global_position)
 
 	match(tankedHits):
 		1: movement = directionToPlayer * speed * 2.5 * delta
@@ -35,7 +34,7 @@ func _physics_process(delta: float) -> void:
 
 func rotate_to_player() -> void:
 	while true:
-		var direction := global_position.direction_to(player.global_position)
+		var direction := global_position.direction_to(Global.player.global_position)
 		var target_angle := direction.angle()
 
 		rotation = rotate_toward(
@@ -55,8 +54,10 @@ func trigger_death(get_souls: bool):
 	if get_souls:
 		updatePlayerSouls(50)
 	
-	col_shape.call_deferred("set_disabled", true)
+	call_deferred("set_collision_layer_value", 1, 0)
+	call_deferred("set_collision_layer_value", 2, 0)
 	call_deferred("set_visible", false)
+	Global.create_nuclear_explosion(global_position)
 	sfx.play()
 	await sfx.finished
 	queue_free()

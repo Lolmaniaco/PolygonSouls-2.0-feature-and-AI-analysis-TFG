@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bwjnr8upy4j35" path="res://player/assets/melee_type.png" id="6_2qkol"]
 [ext_resource type="AudioStream" uid="uid://b3qr1bdj8lqd4" path="res://player/assets/magic_shot.ogg" id="7_7bbnj"]
 [ext_resource type="Texture2D" uid="uid://dc30uhgi34unt" path="res://enemies/spin_enemy/assets/enemyWeapon.png" id="8_1ua8s"]
+[ext_resource type="AudioStream" uid="uid://bwkmvll0tnung" path="res://enemies/spin_enemy/assets/death.ogg" id="8_7bbnj"]
 [ext_resource type="Texture2D" uid="uid://42esu76vpomh" path="res://enemies/spin_enemy/assets/healing.png" id="9_1ua8s"]
 
 [sub_resource type="RectangleShape2D" id="1"]
@@ -221,6 +222,9 @@ process_material = SubResource("ParticleProcessMaterial_suasx")
 
 [node name="sfx" type="AudioStreamPlayer" parent="." unique_id=852163672]
 stream = ExtResource("7_7bbnj")
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="." unique_id=1765774895]
+stream = ExtResource("8_7bbnj")
 
 [connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="area_entered" from="enemyCenterPos/spike/enemyWeapon/shieldHitBox" to="." method="_on_shield_hit_box_area_entered"]

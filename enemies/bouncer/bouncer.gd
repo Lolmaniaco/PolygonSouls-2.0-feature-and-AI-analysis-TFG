@@ -18,9 +18,10 @@ var movement_direction: Vector2
 @onready var reload_timer: Timer = $reloadTimer
 @onready var sfx: AudioStreamPlayer = $sfx
 
+@onready var death_sound: AudioStreamPlayer = $DeathSound
+
 
 func _ready():
-	UI = $"../../../../player/UI"
 	_start_delay()
 	speed = randi_range(200, 300)
 	movement_direction = Vector2(randf(), randf()).normalized()
@@ -70,9 +71,20 @@ func take_hit():
 	trigger_death(true)
 
 
-func trigger_death(get_souls:bool):
+func trigger_death(get_souls: bool):
+	set_physics_process(false)
+	call_deferred("set_collision_layer_value", 1, 0)
+	call_deferred("set_collision_layer_value", 2, 0)
 	if get_souls:
 		updatePlayerSouls(30)
+
+	var tween = get_tree().create_tween()
+	tween.set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(self, "modulate", Color.BLACK, 0.2)
+	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+	tween.tween_property(self, "modulate", Color.TRANSPARENT, 0.2)
+	death_sound.play()
+	await tween.finished
 	queue_free()
 
 

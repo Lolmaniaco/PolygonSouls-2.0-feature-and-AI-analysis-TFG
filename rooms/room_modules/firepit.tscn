@@ -3,9 +3,109 @@
 [ext_resource type="Script" uid="uid://b1kh3nongk8nm" path="res://rooms/room_modules/firepit.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://b8klvkimc6px1" path="res://rooms/UI/dialog.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://du74a0dof73ke" path="res://rooms/room_modules/assets/firepitVer2.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://cs1wppt78aioa" path="res://rooms/room_modules/assets/CampFire.png" id="4_fg4uf"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 63.0079
+
+[sub_resource type="Gradient" id="Gradient_b6wyt"]
+colors = PackedColorArray(0.029506557, 0.029506557, 0.029506557, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_laogf"]
+gradient = SubResource("Gradient_b6wyt")
+
+[sub_resource type="Curve" id="Curve_vph8t"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.81223625, 0.8059701), -0.5556447, -0.5556447, 0, 0, Vector2(1, 0.4123711), -4.275779, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3r1pb"]
+curve = SubResource("Curve_vph8t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1wy21"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(0, -7.5, 0)
+emission_shape_scale = Vector3(10, 10, 1)
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -15, 0)
+initial_velocity_max = 20.0
+gravity = Vector3(0, -98, 0)
+scale_min = 15.0
+scale_max = 20.0
+scale_curve = SubResource("CurveTexture_3r1pb")
+color = Color(0.69965345, 0.69965345, 0.69965345, 1)
+color_ramp = SubResource("GradientTexture1D_laogf")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rdxo2"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(0, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxu6j"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(50, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6p1od"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(100, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4hov"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(150, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3jqdt"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(200, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cu21o"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(250, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x20vt"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(300, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lgbna"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(350, 0, 50, 86)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u0yep"]
+atlas = ExtResource("4_fg4uf")
+region = Rect2(400, 0, 50, 86)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_laogf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rdxo2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxu6j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6p1od")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4hov")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3jqdt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cu21o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x20vt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lgbna")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u0yep")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 10.0
+}]
 
 [node name="firepit" type="Marker2D" unique_id=1378420152]
 script = ExtResource("2")
@@ -22,6 +122,21 @@ shape = SubResource("1")
 [node name="dialog" parent="." unique_id=1626238377 instance=ExtResource("3")]
 offset_top = 118.0
 offset_bottom = 118.0
+
+[node name="sfx" type="AudioStreamPlayer" parent="." unique_id=1295496156]
+volume_db = 20.0
+
+[node name="smoke" type="GPUParticles2D" parent="." unique_id=393778374]
+modulate = Color(1, 1, 1, 0.4392157)
+emitting = false
+amount = 10
+explosiveness = 0.3
+process_material = SubResource("ParticleProcessMaterial_1wy21")
+
+[node name="firepit" type="AnimatedSprite2D" parent="." unique_id=752674010]
+z_index = -1
+position = Vector2(0, -23)
+sprite_frames = SubResource("SpriteFrames_laogf")
 
 [connection signal="body_entered" from="firepitCenterArea" to="." method="_on_firepitCenterArea_body_entered"]
 [connection signal="body_exited" from="firepitCenterArea" to="." method="_on_firepitCenterArea_body_exited"]

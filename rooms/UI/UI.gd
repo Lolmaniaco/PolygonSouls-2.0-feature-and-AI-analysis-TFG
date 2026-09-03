@@ -1,11 +1,7 @@
 class_name UserInterface
 extends CanvasLayer
 
-@export var maxRooms: int = 12
-
-var soulsCollected: int = 0
-var roomsCleared: int = 0
-var controllerConnected: bool = false
+var controller: bool = false
 var colorIndicator: bool = false
 var start_time: float = 0
 
@@ -20,71 +16,51 @@ var start_time: float = 0
 func _ready():
 	start_time = Time.get_ticks_msec()
 	volume.value = AudioServer.get_bus_volume_linear(0) * 100
+	Global.update_souls_UI.connect(_on_update_souls)
+	Global.update_rooms_UI.connect(_on_update_rooms)
 
 
 func _physics_process(_delta: float) -> void:
-	controllerConnected = false if Input.get_connected_joypads().is_empty() else true
+	controller = false if Input.get_connected_joypads().is_empty() else true
 	var current_time = Time.get_ticks_msec() - start_time
 	var total_seconds = current_time / 1000
 
 	var seconds = fmod(total_seconds, 60)
 	var minutes = fmod((total_seconds / 60), 60)
-	Global.time = "%02d:%02d" % [minutes, seconds]
-	game_time.text = str(Global.time)
+	Global.game_time = "%02d:%02d" % [minutes, seconds]
+	game_time.text = Global.game_time
 
 
-func isControllerConnected():
-	return controllerConnected
+func controller_connected():
+	return controller
 
 
 func gameWon():
 	win_timer.start()
 
 
-func getMaxRooms() -> int:
-	return maxRooms
-
-
-func getRoomsCleared():
-	return roomsCleared
-
-
-func updateSoulsValue(amount):
-	soulsCollected += amount
-	updateSoulsLabel()
-
-
-func updateSoulsLabel():
-	souls_collected.text = str(soulsCollected) + " Almas"
-
-
-func updateRoomsCleared(value):
-	roomsCleared += value
-	updateRoomsLabel()
-
-
-func updateRoomsLabel():
-	cleared_rooms.text = str(roomsCleared) + " Salas"
-	if colorIndicator:
-		if roomsCleared <= (maxRooms * 0.7) - 1:
-			cleared_rooms.self_modulate = "#ff0000"
-		else:
-			cleared_rooms.self_modulate = "#3990d6"
-
-
-func getPlayerSouls():
-	return soulsCollected
-
-
 func activateColorInfo():
 	colorIndicator = true
-	updateRoomsLabel()
+	_on_update_rooms(Global.getRoomsCleared())
 
 
 func transition_color(new_color: Color) -> void:
 	color_rect.color = new_color
 	var tween = get_tree().create_tween()
-	tween.tween_property(color_rect, "modulate:a", 1, 0.5)
+	tween.tween_property(color_rect, "modulate", Color.WHITE, 0.5)
+
+
+func _on_update_souls(souls: int) -> void:
+	souls_collected.text = str(souls) + " Almas"
+
+
+func _on_update_rooms(rooms: int) -> void:
+	cleared_rooms.text = str(rooms) + " Salas"
+	if colorIndicator:
+		if rooms <= (Utils.MAX_ROOMS * 0.7) - 1:
+			cleared_rooms.self_modulate = "#ff0000"
+		else:
+			cleared_rooms.self_modulate = "#3990d6"
 
 
 func _on_win_timer_timeout() -> void:

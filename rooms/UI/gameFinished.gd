@@ -7,10 +7,11 @@ extends Control
 
 func _ready() -> void:
 	texture_rect.modulate = Color.DIM_GRAY
+	color_rect.visible = true
 	var tween = get_tree().create_tween()
-	tween.tween_property(color_rect, "modulate:a", 0, 10)
+	tween.tween_property(color_rect, "modulate", Color.TRANSPARENT, 10)
 
-	time_message.text = "Has completado PolygonSouls 2.0 en " + Global.time + " minutos"
+	time_message.text = "Has completado PolygonSouls 2.0 en " + Global.game_time + " minutos"
 
 
 func _input(event):

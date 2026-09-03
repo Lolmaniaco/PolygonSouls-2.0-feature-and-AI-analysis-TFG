@@ -2,24 +2,27 @@ class_name Turret
 extends Enemy
 
 const TURRET_PROJECTILE = preload("uid://dnyctorhi3ttb")
+const TURRET_BREAK = preload("uid://bxbae0q3uj1v1")
+const BROKEN_TURRET = preload("uid://dtu8g5eed28ag")
 
 @export var chargeSpeed: int = 80
-@export var rotation_speed: float = 2.0 # radianes por segundo
+@export var rotation_speed: float = 1.5
 
 var dirToShoot
 
 @onready var sfx: AudioStreamPlayer = $sfx
+@onready var charge_meter: TextureProgressBar = $chargeMeter
+
+@onready var shield_hit_box: Area2D = $shieldHitBox
 
 
 func _ready() -> void:
-	player = $"../../../../player"
-	UI = $"../../../../player/UI"
-func _run() -> void:
-	pass
+	rotation_degrees = randf_range(0, 360)
+
 
 func _physics_process(delta: float) -> void:
 	chargeUpdate(chargeSpeed * delta)
-	var angle_to_player = get_angle_to(player.global_position)
+	var angle_to_player = get_angle_to(Global.player.global_position)
 
 	rotation = rotate_toward(
 		rotation,
@@ -27,14 +30,15 @@ func _physics_process(delta: float) -> void:
 		rotation_speed * delta
 	)
 
-	if $chargeMeter.value == $chargeMeter.max_value:
-		dirToShoot = global_position.direction_to(player.global_position)
-		sfx.play()
-		shootProjectile()
+	if charge_meter.value == charge_meter.max_value:
+		if abs(angle_to_player) < 0.2:
+			dirToShoot = global_position.direction_to(Global.player.global_position)
+			sfx.play()
+			shootProjectile()
 
 
 func chargeUpdate(chargePoints):
-	$chargeMeter.value += chargePoints
+	charge_meter.value += chargePoints
 
 
 func take_hit():
@@ -42,8 +46,25 @@ func take_hit():
 
 
 func trigger_death(get_souls: bool):
+	set_physics_process(false)
+	call_deferred("set_collision_layer_value", 1, 0)
+	call_deferred("set_collision_layer_value", 2, 0)
+	shield_hit_box.call_deferred("set_collision_layer_value", 1, 0)
+	shield_hit_box.call_deferred("set_collision_layer_value", 2, 0)
 	if get_souls:
 		updatePlayerSouls(30)
+
+	sfx.stream = TURRET_BREAK
+	sfx.play()
+
+	visible = false
+	Global.create_explosion(global_position)
+
+	var new_broken = BROKEN_TURRET.instantiate()
+	new_broken.position = position
+	get_parent().get_parent().add_child(new_broken)
+
+	await sfx.finished
 	queue_free()
 
 
@@ -59,8 +80,3 @@ func _on_body_entered(body: Node) -> void:
 		return
 
 	trigger_death(true)
-
-
-func _on_shield_hit_box_area_entered(area: Area2D) -> void:
-	if area.is_in_group("pjBullets"):
-		area.queue_free()

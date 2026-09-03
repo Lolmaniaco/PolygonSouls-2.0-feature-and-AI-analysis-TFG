@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/boss_theme.ogg-5a616b66428e6c979aee61f0dea748
 [params]
 
 loop=true
-loop_offset=3.12
-bpm=0.0
+loop_offset=0.0
+bpm=155.0
 beat_count=0
 bar_beats=4

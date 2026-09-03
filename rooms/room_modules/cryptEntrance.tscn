@@ -29,7 +29,8 @@ shape = SubResource("2")
 offset_top = 114.0
 offset_bottom = 114.0
 
+[node name="sfx" type="AudioStreamPlayer" parent="." unique_id=2107635505]
+volume_db = 15.0
+
 [connection signal="body_entered" from="cryptArea" to="." method="_on_cryptArea_body_entered"]
 [connection signal="body_exited" from="cryptArea" to="." method="_on_cryptArea_body_exited"]
-[connection signal="input_event" from="cryptArea" to="." method="_on_cryptArea_input_event"]
-[connection signal="gui_input" from="dialog" to="." method="_on_dialog_gui_input"]

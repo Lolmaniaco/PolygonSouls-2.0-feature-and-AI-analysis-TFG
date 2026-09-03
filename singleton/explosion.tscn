@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bdc7he4vk1evl"]
+
+[ext_resource type="Material" uid="uid://2cga6jf0d2gq" path="res://singleton/assets/common_explosion.tres" id="1_6na6s"]
+
+[node name="Explosion" type="GPUParticles2D" unique_id=1570623980]
+emitting = false
+amount = 500
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.8
+process_material = ExtResource("1_6na6s")

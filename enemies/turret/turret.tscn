@@ -50,7 +50,7 @@ shape = SubResource("1")
 
 [node name="sfx" type="AudioStreamPlayer" parent="." unique_id=742763267]
 stream = ExtResource("4_kodyv")
+volume_db = -2.5
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="area_entered" from="shieldHitBox" to="." method="_on_shield_hit_box_area_entered"]
-[connection signal="body_entered" from="shieldHitBox" to="." method="_on_shield_hit_box_body_entered"]

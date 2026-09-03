@@ -28,8 +28,9 @@ settings/fps/force_fps=60
 
 [display]
 
-window/size/viewport_height=640
 window/size/always_on_top=true
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 

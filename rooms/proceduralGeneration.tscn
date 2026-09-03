@@ -23,7 +23,7 @@ script = ExtResource("3_6nwnb")
 position_smoothing_enabled = true
 
 [node name="zoomCamera" parent="cameras" unique_id=678721618 instance=ExtResource("4_pvp8l")]
-zoom = Vector2(12, 12)
+zoom = Vector2(0.14, 0.14)
 zoomStepAmount = 1.0
 
 [node name="Rooms" type="Node2D" parent="." unique_id=827832661]

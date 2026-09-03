@@ -17,16 +17,22 @@ func setup(pos, rot, direction, new_speed):
 	bullet_speed = new_speed
 
 
-func _on_VisibilityNotifier2D_screen_exited():
+func explode() -> void:
+	Global.create_explosion(global_position)
 	queue_free()
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	explode()
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is TileMapLayer:
-		queue_free()
+		explode()
 		return
-	elif not body is Player:
+
+	if not body is Player:
 		return
 
 	body.receive_damage(15)
-	queue_free()
+	explode()

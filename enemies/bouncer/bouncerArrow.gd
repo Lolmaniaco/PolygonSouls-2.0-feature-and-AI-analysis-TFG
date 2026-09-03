@@ -17,23 +17,28 @@ func setup(pos, rot, direction, new_speed, _typeOfProjectile):
 	bullet_speed = new_speed
 
 
-
-func _on_VisibilityNotifier2D_screen_exited():
+func explode() -> void:
+	Global.create_explosion(global_position)
 	queue_free()
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is TileMapLayer:
-		queue_free()
+		explode()
 		return
+
 	if not body is Player:
 		return
 
 	body.receive_damage(15)
-	queue_free()
+	explode()
 
 
 func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("pjBullets"):
 		area.queue_free()
-		queue_free()
+		explode()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	explode()

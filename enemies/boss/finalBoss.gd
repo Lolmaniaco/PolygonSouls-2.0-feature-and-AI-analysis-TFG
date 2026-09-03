@@ -55,18 +55,16 @@ var can_attack: bool = false
 
 
 func _ready() -> void:
-	player = $"../../../player"
-	UI = $"../../../player/UI"
 	speed *= 3
 	modulate.a = 0
 
 	set_physics_process(false)
 	await get_tree().create_timer(2).timeout
 	Music.play_boss_music()
-	player.change_control(true)
+	Global.player.change_control(true)
 	var tween = get_tree().create_tween()
-	tween.tween_property(player, "position", Vector2(11520 + 200, player.global_position.y), 0.5)
-	tween.tween_property(player, "position", Vector2(11520 + 200, 6720), 0.5)
+	tween.tween_property(Global.player, "position", Vector2(11520 + 200, Global.player.global_position.y), 0.5)
+	tween.tween_property(Global.player, "position", Vector2(11520 + 200, 6720), 0.5)
 	await tween.finished
 
 	var dialog_timer = Timer.new()
@@ -75,17 +73,17 @@ func _ready() -> void:
 	add_child(dialog_timer)
 
 	tween = get_tree().create_tween()
-	tween.tween_property(self, "modulate:a", 1, 1)
+	tween.tween_property(self, "modulate", Color.WHITE, 1)
 
 	dialog_timer.start()
 	await dialog_timer.timeout
 	anim_player.play("talking")
-	boss_dialogs.text = "[center] BIENVENIDO, PALADIN DE LA LUZ"
+	boss_dialogs.text = "BIENVENIDO, PALADIN DE LA LUZ"
 
 	dialog_timer.wait_time = 2
 	dialog_timer.start()
 	await dialog_timer.timeout
-	boss_dialogs.text = "[center] ESTA SERA TU TUMBA DENTRO DE MUY POCO"
+	boss_dialogs.text = "ESTA SERA TU TUMBA DENTRO DE MUY POCO"
 	voice.play()
 
 	dialog_timer.start()
@@ -95,14 +93,14 @@ func _ready() -> void:
 	anim_player.stop(true)
 
 	tween = get_tree().create_tween()
-	tween.tween_property(protective_aura, "scale", Vector2(0.2, 0.2), 1.25)
+	tween.tween_property(protective_aura, "scale", Vector2(0.25, 0.25), 1.25)
 	await tween.finished
 	protective_aura.queue_free()
 	mouth_shield.visible = true
 	skull_shield.visible = true
 
-	await get_tree().create_timer(1).timeout
-	player.change_control(false)
+	Global.player.change_control(false)
+	await get_tree().create_timer(0.5).timeout
 	set_physics_process(true)
 
 
@@ -135,13 +133,13 @@ func _physics_process(delta) -> void:
 			return
 
 		haveToFadeIn = false
-		if player.global_position.x > 12096:
-			if player.global_position.y > 6720:
+		if Global.player.global_position.x > 12096:
+			if Global.player.global_position.y > 6720:
 				position = posibleSpawns[0]
 			else:
 				position = posibleSpawns[1]
 		else:
-			if player.global_position.y > 6720:
+			if Global.player.global_position.y > 6720:
 				position = posibleSpawns[2]
 			else:
 				position = posibleSpawns[3]
@@ -183,7 +181,7 @@ func shoot_at_player() -> void:
 	for i in range(3):
 		var bossArrow: BossProjectile = BOSS_ARROW.instantiate()
 		add_sibling(bossArrow)
-		var direction = global_position.direction_to(player.global_position)
+		var direction = global_position.direction_to(Global.player.global_position)
 		direction *= randf_range(0.7, 1.3)
 		bossArrow.setup(position, direction, randf_range(400, 600))
 
@@ -203,8 +201,8 @@ func pop_invulnerability(seconds: float) -> void:
 	var tween: Tween = get_tree().create_tween()
 	var iterations = seconds / 0.1
 	for i in range(iterations):
-		tween.tween_property(state_body, "modulate:a", 0, 0.1)
-		tween.tween_property(state_body, "modulate:a", 1, 0.1)
+		tween.tween_property(state_body, "modulate", Color.TRANSPARENT, 0.1)
+		tween.tween_property(state_body, "modulate", Color.WHITE, 0.1)
 
 	await tween.finished
 	hitbox.call_deferred("set_monitoring", true)
@@ -227,11 +225,12 @@ func _on_hitbox_area_entered(area):
 			pop_invulnerability(1.0)
 			health_label.text = str(health)
 		elif area is Projectile:
+			area.explode()
 			proyectilesRecibidos += 1
 			if proyectilesRecibidos <= 4:
-				boss_dialogs.text = "[center] TUS PROYECTILES SON INUTILES CONTRA MI"
+				boss_dialogs.text = "TUS PROYECTILES SON INUTILES CONTRA MI"
 			else:
-				boss_dialogs.text = "[center] PERO ES QUE NO TE ENTERAS?! NO SIRVE DE NADA DISPARARME, IMBECIL."
+				boss_dialogs.text = "NO SIRVE DE NADA DISPARARME, IMBECIL."
 			boss_dialogs.visible = true
 			dialog_hide_timer.start()
 
@@ -262,13 +261,14 @@ func _on_hitbox_area_entered(area):
 				haveToFadeOut = false
 				rift.make_rift()
 
-				if player.global_position.x > 12096:
+				if Global.player.global_position.x > 12096:
 					position.x = 120
 				else:
 					position.x = 1050
 				position.y = 150
-				print("PLAYER POSITION: ", player.global_position)
 
+				mouth_shield.visible = false
+				skull_shield.visible = false
 				set_physics_process(false)
 				await get_tree().create_timer(3).timeout
 				$stateBody.visible = true
@@ -287,15 +287,15 @@ func _on_hitbox_area_entered(area):
 	if health <= 0:
 		state = State.END
 		set_physics_process(false)
-		boss_dialogs.text = "[center]IMPOSIBLEEEEE!!\nYO TE MALDIGO"
+		boss_dialogs.text = "IMPOSIBLEEEEE!!\nYO TE MALDIGO"
 		anim_player.set_speed_scale(0.4)
 		anim_player.play("fadeOut")
-		
+
 		Music.fade_out_music()
 		Music.play_fanfare_music()
-		UI.transition_color(Color.WHITE)
+		Global.UI.transition_color(Color.WHITE)
 		await get_tree().create_timer(0.5).timeout
-		UI.gameWon()
+		Global.UI.gameWon()
 
 
 func _on_dialogDeath_timeout():
@@ -321,7 +321,7 @@ func _on_shieldTimer_timeout():
 		change_shield_color(Color.RED)
 		if not enough_damage:
 			boss_dialogs.visible = true
-			boss_dialogs.text = "[center] DISPARANDO TAN LENTO NUNCA ATRAVESARAS MI ESCUDO"
+			boss_dialogs.text = "DISPARANDO TAN LENTO JAMAS ATRAVESARAS MI ESCUDO"
 			dialog_hide_timer.start()
 		enough_damage = false
 
@@ -334,7 +334,7 @@ func _on_lowerDodge_area_entered(area):
 		if movement == Vector2.DOWN:
 			go_up = !go_up
 		boss_dialogs.visible = true
-		boss_dialogs.text = "[center] PREVISIBLE"
+		boss_dialogs.text = "PREVISIBLE"
 		dialog_hide_timer.start()
 
 
@@ -346,7 +346,7 @@ func _on_upperDodge_area_entered(area):
 		if movement == Vector2.UP:
 			go_up = !go_up
 		boss_dialogs.visible = true
-		boss_dialogs.text = "[center] FACIL"
+		boss_dialogs.text = "FACIL"
 		dialog_hide_timer.start()
 
 
@@ -354,4 +354,4 @@ func _on_protective_aura_area_entered(area: Area2D) -> void:
 	if not area.is_in_group("pjBullets"):
 		return
 
-	area.queue_free()
+	area.explode()

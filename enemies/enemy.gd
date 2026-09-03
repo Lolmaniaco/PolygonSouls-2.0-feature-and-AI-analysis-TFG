@@ -3,9 +3,6 @@ extends RigidBody2D
 
 var speed = 100
 
-@onready var player: Player
-@onready var UI: UserInterface
-
 
 func _ready() -> void:
 	_start_delay()
@@ -24,7 +21,7 @@ func take_hit():
 
 
 func updatePlayerSouls(amount):
-	UI.updateSoulsValue(amount)
+	Global.updateSoulsValue(amount)
 
 
 func _start_delay() -> void:

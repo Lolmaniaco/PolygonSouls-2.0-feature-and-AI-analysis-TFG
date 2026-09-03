@@ -22,20 +22,25 @@ func setup(pos, direction, new_speed):
 	bullet_speed = new_speed
 
 
-func _on_VisibilityNotifier2D_screen_exited():
+func explode() -> void:
+	Global.create_explosion(global_position)
 	queue_free()
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	explode()
 
 
 func _on_bossArrowHitbox_body_entered(body):
 	if not body is TileMapLayer:
 		return
 
-	queue_free()
+	explode()
 
 
 func _on_bossArrowHitbox_area_entered(area):
 	if area.name == "pjHitbox":
-		queue_free()
+		explode()
 
 
 func _on_body_entered(body: Node2D) -> void:
