@@ -37,12 +37,18 @@ will stay and not all the code will be refurbished, just the most blatant one.
 
 ## Results
 I'll post lower in the readme a full explanation of the biggest issues I did and fixed (or not), but before that, let me show you my final thoughts to avoid 
-breaking the rythm of the text.  
+breaking the rythm of the text.<br><br>
 I spent about 10 days working on the code, scenes and more and now I can proudly show the project ✨. I know this is not a good game, but I know it's way better than before.  
 So much code was deleted or rewritten, many scenes didn't share node types when they could, the folders were managed to be able to work way better, inheritance and 
-classes were implemented to improve coding... And now it has sound and music! _(I'll credit every sound and sprite I can down below.)_ All in all, everything a newbie project 
-could have. If you want to test it, you can download it here as Polygon Souls 3.0. _(Obviously, I recommend downloading the previous version to compare it!)_ But if you want to 
-know the sins I did in this project, down the rabbit hole we go.
+classes were implemented to improve coding... And now it has sound and music! _(I'll credit every sound and sprite I can down below.)_ 
+<br><br>All in all, every mistake a newbie project could have. If you want to test it, you can download it here as Polygon Souls 3.0. _(Obviously, I recommend 
+downloading the previous version to compare it!)_ But if you want to know the sins I did in this project, down the rabbit hole we go.
+
+## Update: to Spanish, Catalan and English
+The original game was written in spanish and the code in english, like every good spanish game. But I didn't like it to be uploaded like that, even though it's almost certain 
+very few people will read all this text and play these lowly games. Nevertheless, I made a final commit to implement translations to Catalan and English. The first one because 
+I live in Barcelona, and it's a language I like even though I'm not fluent in it (I should learn it once and for all, since I've been here for about 10 years), and the second one is evident, english is the main language of the world, for now... <br>
+This served me to start learning how to localize games, how to translate them and so on, so another win!
 
 # Mistakes
 Probably, my biggest crime is to not know how Godot worked👮🏼‍♀️  
@@ -50,23 +56,28 @@ I didn't even know how to create a proper scene, since I only watched introducti
 the already existing ones and change the nodes as I needed them. To a certain point, it is not that bad of a solution, until you see this:
 
 ## The moving canyon
-<img width="1077" height="942" alt="image" src="https://github.com/user-attachments/assets/605fd721-0bf1-4f8d-80a9-f9cf2b88cb28" />
-This is the boss battle I implemented. Something new and refreshing to the game, but what's wrong? 🧐  
+<img width="1077" height="942" alt="A canyon that should stay in the center, but it just moves up and down along with the boss" src="https://github.com/user-attachments/assets/605fd721-0bf1-4f8d-80a9-f9cf2b88cb28" />
+This is the boss battle I implemented. Something new and refreshing to the game, but what's wrong? 🧐<br><br>
 Well, the thing is that I didn't know how the rooms were created and positioned, since I didn't invest enough time reading and understanding the previous code.
 This shouldn't be that big of an issue, if I didn't want to make a three phase boss battle were, in each one, you must use one of the three attacks you can make.  
 The main problem with that approach is that, in one of the phases, the boss creates a big ass hole (or wall) between it and the player and then it starts moving upwards and
 downward. During that, this rift was supposed to be idle in the center of the room... right? Well, not mine. When this blocks appears in scene, it is attached to the boss, 
-since I didn't know how to put it in the room. Therefore, the "hole in the ground" is constantly moving with the boss and I made it tall enough so the player doesn't see it moving.  
+since I didn't know how to put it in the room. Therefore, the "hole in the ground" is constantly moving with the boss and I made it tall enough so the player doesn't see it moving.<br>
 Definitely, this was the main thing that popped into my head and I wanted to fix 💀
 
+## Difficulty adaptation
+Since I felt the game was kind of clunky and hard, one of the main objectives I set for myself was to adapt the difficulty of the game dinamically, just like famous games like Resident Evil 4. My idea was to track how many mobs the player killed and how many times the player died during the session, and with those two numbers, adapt the game to spawn
+less enemies, or lower their damage for example. But I didn't know how to implement that and didn't put enough effort, so that feature never ended in the final game. <br> 
+These days I've thought about implementing it, but I didn't feel like it was worth it, so this feature ends up in an "what if".
+
 ## Double structures
-<img width="366" height="532" alt="image" src="https://github.com/user-attachments/assets/c7dcf086-d9c5-4bf3-91dc-74861cfa5225" />  <br>
+<img width="366" height="532" alt="Nodes inside nodes without any use at all" src="https://github.com/user-attachments/assets/c7dcf086-d9c5-4bf3-91dc-74861cfa5225" />  <br>
 Other things I reworked was the scene trees. Some of them were because Godot 4 brang many changes, improvements and new functions to the tool, but other ones were because of 
 the poorly implementation I did.  
 For example, having Node2D inside Node2D. Having an Area2D as hitbox instead of detecting things through move_and_collide() or having a ton of timers in scene AND in code.
 
 ## None structures
-<img width="563" height="148" alt="image" src="https://github.com/user-attachments/assets/9e88959c-e442-48fd-9676-7ee29bd2a4aa" />  <br>
+<img width="563" height="148" alt="A node alone being a scene. Something useless" src="https://github.com/user-attachments/assets/9e88959c-e442-48fd-9676-7ee29bd2a4aa" />  <br>
 I had a couple of scenes that were just like this: One or two nodes. No scripts. Just some properties changed. And the big idea of reusing this scene many times. _(I ended 
 up only using this node like twice...)_ 🧍🏼
 
@@ -77,7 +88,7 @@ naming conventions and coding recommendations of Godot 🧠
 Truth to be said, I can see it now this easily also because I've been coding for a couple of years, so this part is natural.
 
 ## Error handling and log reads
-<img width="2125" height="1263" alt="image" src="https://github.com/user-attachments/assets/f07b2a97-8672-455f-9fca-dc93c3fee471" /> <br>
+<img width="2125" height="1263" alt="Old version has a lot of warnings and error, while the new version has zero" src="https://github.com/user-attachments/assets/f07b2a97-8672-455f-9fca-dc93c3fee471" /> <br>
 
 It's incredible how I blatantly ignored many errors and warnings that literally made the executable broken afterwards. And I didn't know where to find logs and didn't looked 
 for them either, so "it worked in my PC". Now, the renewed game have zero warnings and zero error messages (or that's what I think). At least if there's an error it's because it
@@ -87,10 +98,12 @@ fell out of my sight, not because I looked another way.
 I've had a lot of fun doing this little project. I've been working on it like 5-10 hours a day _(some days 2-3h if I had any appointments, played games with friends and so on)_
 and I woke up wanting to jump into the PC to implement new fixes.  
 I know I still have a long and hard way before me. I have little to no experience doing real games, but I'm eager to endure this path and try to live out of making games, or die
-trying 🌹  
+trying 🌹  <br> <br>
 Currently, I'm dedicating myself to learn and develop little things living out of my savings, so one day perhaps I'll be able create great games, the thing that
 always stood with me throughout my life. Some games have marked me with great stories, fun gameplays and so much more, and I'd like to be able to pass that experience 
-onto other people in the future. Because games are not only games, they can be art too! 🥰💖
+onto other people in the future. Because games are not only games, they can be art too! 🥰💖 <br><br>
+If you've reached this far, I reward you with a picture of my coding AI (Animal Interferer) Lily: <br>
+<img width="2048" height="946" alt="Black cat Lily on top of my desktop" src="https://github.com/user-attachments/assets/08fa2e5b-2cce-410b-8767-933defa856eb" />
 
 # Credits
 ## Sound
