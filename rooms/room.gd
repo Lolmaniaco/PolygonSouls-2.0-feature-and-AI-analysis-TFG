@@ -143,6 +143,9 @@ func get_player_deaths():
 	var f = FileAccess.open(user_file, FileAccess.READ)
 	var lastNumberDeaths
 
+	if not f:
+		return 5
+
 	var index = 1
 	while index != 3:
 		if index == 1:
