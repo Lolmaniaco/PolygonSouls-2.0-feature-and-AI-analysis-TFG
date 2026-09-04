@@ -60,13 +60,13 @@ since I didn't know how to put it in the room. Therefore, the "hole in the groun
 Definitely, this was the main thing that popped into my head and I wanted to fix 💀
 
 ## Double structures
-<img width="366" height="532" alt="image" src="https://github.com/user-attachments/assets/c7dcf086-d9c5-4bf3-91dc-74861cfa5225" />
+<img width="366" height="532" alt="image" src="https://github.com/user-attachments/assets/c7dcf086-d9c5-4bf3-91dc-74861cfa5225" />  <br>
 Other things I reworked was the scene trees. Some of them were because Godot 4 brang many changes, improvements and new functions to the tool, but other ones were because of 
 the poorly implementation I did.  
 For example, having Node2D inside Node2D. Having an Area2D as hitbox instead of detecting things through move_and_collide() or having a ton of timers in scene AND in code.
 
 ## None structures
-<img width="563" height="148" alt="image" src="https://github.com/user-attachments/assets/9e88959c-e442-48fd-9676-7ee29bd2a4aa" />
+<img width="563" height="148" alt="image" src="https://github.com/user-attachments/assets/9e88959c-e442-48fd-9676-7ee29bd2a4aa" />  <br>
 I had a couple of scenes that were just like this: One or two nodes. No scripts. Just some properties changed. And the big idea of reusing this scene many times. _(I ended 
 up only using this node like twice...)_ 🧍🏼
 
@@ -77,7 +77,7 @@ naming conventions and coding recommendations of Godot 🧠
 Truth to be said, I can see it now this easily also because I've been coding for a couple of years, so this part is natural.
 
 ## Error handling and log reads
-<img width="2125" height="1263" alt="image" src="https://github.com/user-attachments/assets/f07b2a97-8672-455f-9fca-dc93c3fee471" />
+<img width="2125" height="1263" alt="image" src="https://github.com/user-attachments/assets/f07b2a97-8672-455f-9fca-dc93c3fee471" /> <br>
 
 It's incredible how I blatantly ignored many errors and warnings that literally made the executable broken afterwards. And I didn't know where to find logs and didn't looked 
 for them either, so "it worked in my PC". Now, the renewed game have zero warnings and zero error messages (or that's what I think). At least if there's an error it's because it
