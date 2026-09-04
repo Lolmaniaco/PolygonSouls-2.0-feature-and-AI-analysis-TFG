@@ -14,7 +14,8 @@ config/name="Polygon Souls"
 config/tags=PackedStringArray("github", "learn", "solo")
 run/main_scene="res://rooms/proceduralGeneration.tscn"
 config/features=PackedStringArray("4.7")
-config/icon="res://PolygonSouls.png"
+config/icon="uid://du8n2dt44qspk"
+config/windows_native_icon="res://PolygonSouls.ico"
 
 [autoload]
 
@@ -210,6 +211,10 @@ right={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":14,"pressure":0.0,"pressed":true,"script":null)
 ]
 }
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://localization/Localization.cat.translation", "res://localization/Localization.en.translation", "res://localization/Localization.es.translation")
 
 [rendering]
 

@@ -23,13 +23,13 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_pko1k")
 theme_override_font_sizes/font_size = 25
-text = "0 Almas"
+text = "0 SOULS"
 
 [node name="ClearedRooms" type="Label" parent="VBoxContainer" unique_id=2031932455]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_pko1k")
 theme_override_font_sizes/font_size = 25
-text = "0 Salas"
+text = "0 ROOMS"
 
 [node name="GameTime" type="Label" parent="VBoxContainer" unique_id=1164310466]
 layout_mode = 2
@@ -42,16 +42,23 @@ wait_time = 3.0
 one_shot = true
 
 [node name="VSlider" type="VSlider" parent="." unique_id=262021095]
-offset_left = 9.0
-offset_top = 521.0
-offset_right = 25.0
-offset_bottom = 609.0
+offset_left = 8.0
+offset_top = 526.0
+offset_right = 24.0
+offset_bottom = 614.0
+
+[node name="Button" type="Button" parent="." unique_id=496963206]
+offset_left = 1012.0
+offset_top = 611.0
+offset_right = 1120.0
+offset_bottom = 644.0
+text = "ENGLISH"
 
 [node name="Label" type="Label" parent="." unique_id=107569346]
-offset_left = 9.0
-offset_top = 611.0
-offset_right = 60.0
-offset_bottom = 634.0
+offset_left = 11.0
+offset_top = 618.0
+offset_right = 62.0
+offset_bottom = 641.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
 text = "MUSIC"
@@ -65,6 +72,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [connection signal="timeout" from="WinTimer" to="." method="_on_win_timer_timeout"]
 [connection signal="value_changed" from="VSlider" to="." method="_on_v_slider_value_changed"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

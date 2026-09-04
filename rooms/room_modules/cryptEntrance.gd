@@ -35,9 +35,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			sfx.stream = OPEN_CRYPT
 			sfx.play()
 			access_granted = true
-			dialog.setText("Fantasma de la Cripta:\n\nBuena suerte, paladín de la luz. Eres nuestra última esperanza.\n\nENTRAR A LA CRIPTA (" + actionButton + ")")
+			dialog.setText(
+				TranslationServer.translate("GHOST") + "\n\n" + TranslationServer.translate("READY1") + "\n" + TranslationServer.translate("READY2") + actionButton + ")"
+			)
 		else:
-			dialog.setText("Fantasma de la Cripta:\n\nLo siento, paladín de la luz. Parece que aún no es el momento para combatir.\n\n[color=red]Vuelve cuando hayas superado " + str(target_rooms) + " salas.[/color]")
+			dialog.setText(
+				TranslationServer.translate("GHOST") + "\n\n" + TranslationServer.translate("NOT_READY1") + "\n\n" +
+				TranslationServer.translate("NOT_READY2") + str(target_rooms) + TranslationServer.translate("NOT_READY3")
+			)
 
 
 func _on_cryptArea_body_entered(_body):
@@ -50,12 +55,17 @@ func _on_cryptArea_body_entered(_body):
 	if not access_granted:
 		if Global.getRoomsCleared() < target_rooms:
 			dialog.setText(
-				"Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=red](Limpia " + str(target_rooms) + " salas)[/color]\n\nQUIERO PELEAR(" + actionButton + ")")
+				TranslationServer.translate("GHOST") + "\n\n" + TranslationServer.translate("WARNING1") + "\n" + TranslationServer.translate("ENTRANCE_NOT_READY") + str(target_rooms)
+				+ TranslationServer.translate("WARNING2") + "\n\n" + TranslationServer.translate("WARNING3") + actionButton + ")"
+			)
 		else:
-			dialog.setText("Fantasma de la Cripta:\n\n¿Podrás vencer a la oscuridad que puebla estas tierras?\n[color=#3990d6](Limpia " + str(target_rooms) + " salas)[/color]\n\nQUIERO PELEAR(" + actionButton + ")")
+			dialog.setText(
+				TranslationServer.translate("GHOST") + "\n\n" + TranslationServer.translate("WARNING1") + "\n" + TranslationServer.translate("ENTRANCE_READY") + str(target_rooms)
+				+ TranslationServer.translate("WARNING2") + "\n\n" + TranslationServer.translate("WARNING3") + actionButton + ")"
+			)
 	else:
 		dialog.setText(
-			"Fantasma de la Cripta:\n\nBuena suerte, paladín de la luz.\n\nENTRAR A LA CRIPTA (" + actionButton + ")")
+			TranslationServer.translate("GHOST") + "\n\n" + TranslationServer.translate("READY1") + "\n\n" + TranslationServer.translate("READY2") + actionButton + ")")
 
 
 func _on_cryptArea_body_exited(body):

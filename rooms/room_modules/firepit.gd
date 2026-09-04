@@ -15,6 +15,7 @@ var player: Player = null
 @onready var smoke: GPUParticles2D = $smoke
 @onready var firepit: AnimatedSprite2D = $firepit
 
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not player:
 		return
@@ -51,11 +52,11 @@ func _on_firepitCenterArea_body_entered(body):
 		action_button = "F"
 		action_button_alt = "G"
 
-	var info: String = "Hoguera:\n \nRecuperar vida (" + action_button + ") = " + str(heal_price) + " Almas" + "\n"
+	var info: String = TranslationServer.translate("FIREPIT") + "\n\n" + TranslationServer.translate("HEAL") + action_button + ") = " + str(heal_price) + " " + TranslationServer.translate("SOULS") + "\n"
 	if not player.has_checkpoint():
-		info += "Crear un checkpoint(" + action_button_alt + ") = " + str(spawn_price) + " Almas"
+		info += TranslationServer.translate("CHECKPOINT") + action_button_alt + ") = " + str(spawn_price) + " " + TranslationServer.translate("SOULS")
 	else:
-		info += "Checkpoint creado."
+		info += TranslationServer.translate("CREATED")
 	dialog.setText(info)
 
 

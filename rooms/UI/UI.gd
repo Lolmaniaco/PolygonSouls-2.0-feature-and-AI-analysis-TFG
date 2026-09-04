@@ -1,9 +1,19 @@
 class_name UserInterface
 extends CanvasLayer
 
+const languages: Dictionary = {
+	"en": "ENGLISH",
+	"es": "ESPAÑOL",
+	"cat": "CATALÁN",
+}
+
+var current_language: String = "en"
+
 var controller: bool = false
 var colorIndicator: bool = false
 var start_time: float = 0
+
+@onready var button: Button = $Button
 
 @onready var souls_collected: Label = $VBoxContainer/SoulsCollected
 @onready var cleared_rooms: Label = $VBoxContainer/ClearedRooms
@@ -14,6 +24,13 @@ var start_time: float = 0
 
 
 func _ready():
+	if OS.get_locale_language() in languages.keys():
+		current_language = OS.get_locale_language()
+		button.text = languages[current_language]
+		TranslationServer.set_locale(current_language)
+
+	souls_collected.text = str(0) + " " + TranslationServer.translate("SOULS")
+	cleared_rooms.text = str(0) + " " + TranslationServer.translate("ROOMS")
 	start_time = Time.get_ticks_msec()
 	volume.value = AudioServer.get_bus_volume_linear(0) * 100
 	Global.update_souls_UI.connect(_on_update_souls)
@@ -51,11 +68,11 @@ func transition_color(new_color: Color) -> void:
 
 
 func _on_update_souls(souls: int) -> void:
-	souls_collected.text = str(souls) + " Almas"
+	souls_collected.text = str(souls) + " " + TranslationServer.translate("SOULS")
 
 
 func _on_update_rooms(rooms: int) -> void:
-	cleared_rooms.text = str(rooms) + " Salas"
+	cleared_rooms.text = str(rooms) + " " + TranslationServer.translate("ROOMS")
 	if colorIndicator:
 		if rooms <= (Utils.MAX_ROOMS * 0.7) - 1:
 			cleared_rooms.self_modulate = "#ff0000"
@@ -69,3 +86,15 @@ func _on_win_timer_timeout() -> void:
 
 func _on_v_slider_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_linear(0, value / 100)
+
+
+func _on_button_pressed() -> void:
+	match current_language:
+		"en": current_language = "es"
+		"es": current_language = "cat"
+		"cat": current_language = "en"
+
+	button.text = languages[current_language]
+	TranslationServer.set_locale(current_language)
+	_on_update_souls(Global.soulsCollected)
+	_on_update_rooms(Global.roomsCleared)

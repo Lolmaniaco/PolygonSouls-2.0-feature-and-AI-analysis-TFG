@@ -8,11 +8,150 @@
 
 [node name="proceduralGeneration" type="Node2D" unique_id=1596741187]
 script = ExtResource("1_jny56")
+metadata/_edit_horizontal_guides_ = [122.0]
 
-[node name="controlsVer2" type="Sprite2D" parent="." unique_id=256459446]
-position = Vector2(64, 0)
+[node name="Control" type="Control" parent="." unique_id=926390627]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="controlsVer2" type="TextureRect" parent="Control" unique_id=606671762]
+layout_mode = 0
+offset_left = 64.0
+offset_right = 1088.0
+offset_bottom = 640.0
 texture = ExtResource("2_jny56")
-centered = false
+
+[node name="movement" type="Label" parent="Control/controlsVer2" unique_id=14926474]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 0
+offset_left = 80.0
+offset_top = 65.0
+offset_right = 348.0
+offset_bottom = 147.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 32
+text = "MOVESET"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="attack" type="Label" parent="Control/controlsVer2" unique_id=816890656]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 0
+offset_left = 685.0
+offset_top = 65.0
+offset_right = 953.0
+offset_bottom = 147.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 32
+text = "ATTACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="Control/controlsVer2" unique_id=233494710]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 0
+offset_left = 350.0
+offset_top = 59.0
+offset_right = 679.0
+offset_bottom = 153.0
+
+[node name="priority" type="RichTextLabel" parent="Control/controlsVer2/VBoxContainer3" unique_id=81950764]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "BLACK"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="priority2" type="RichTextLabel" parent="Control/controlsVer2/VBoxContainer3" unique_id=1686551176]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/normal_font_size = 32
+bbcode_enabled = true
+text = "RED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/controlsVer2" unique_id=678062681]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 0
+offset_left = 296.0
+offset_top = 432.0
+offset_right = 442.0
+offset_bottom = 583.0
+
+[node name="previous" type="Label" parent="Control/controlsVer2/VBoxContainer" unique_id=703230279]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 26
+text = "PREVIOUS"
+vertical_alignment = 1
+
+[node name="next" type="Label" parent="Control/controlsVer2/VBoxContainer" unique_id=494706332]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 26
+text = "NEXT"
+vertical_alignment = 1
+
+[node name="restart" type="Label" parent="Control/controlsVer2/VBoxContainer" unique_id=460750355]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 26
+text = "RESTART"
+vertical_alignment = 1
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/controlsVer2" unique_id=1391278569]
+modulate = Color(1, 1, 1, 0.47058824)
+layout_mode = 0
+offset_left = 665.0
+offset_top = 432.0
+offset_right = 811.0
+offset_bottom = 582.0
+
+[node name="action" type="Label" parent="Control/controlsVer2/VBoxContainer2" unique_id=308819369]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 26
+text = "ACTION"
+vertical_alignment = 1
+
+[node name="action2" type="Label" parent="Control/controlsVer2/VBoxContainer2" unique_id=594752856]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 26
+text = "ACTION2"
+vertical_alignment = 1
+
+[node name="map" type="Label" parent="Control/controlsVer2/VBoxContainer2" unique_id=731608332]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 15
+theme_override_font_sizes/font_size = 26
+text = "MAP"
+vertical_alignment = 1
 
 [node name="cameras" type="Node2D" parent="." unique_id=865769756]
 process_mode = 3
@@ -29,4 +168,4 @@ zoomStepAmount = 1.0
 [node name="Rooms" type="Node2D" parent="." unique_id=827832661]
 
 [node name="player" parent="." unique_id=1181376105 instance=ExtResource("5_qednq")]
-position = Vector2(576, 320)
+position = Vector2(581, 486)

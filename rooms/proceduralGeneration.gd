@@ -9,7 +9,7 @@ const FIREPIT = preload("uid://cf1jgsbpl4471")
 
 var roomArray: Array[RoomHandler] = []
 
-@onready var controls: Sprite2D = $controlsVer2
+@onready var controls: TextureRect = $Control/controlsVer2
 @onready var room_node: Node2D = $Rooms
 @onready var cameras: Node2D = $cameras
 

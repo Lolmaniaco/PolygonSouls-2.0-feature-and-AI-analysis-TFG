@@ -48,11 +48,7 @@ theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 48
-text = "Gracias, paladín de la luz
-
-Nos has salvado de un milenio de oscuridad, muerte y desesperación
-Te deseamos suerte en tu proxima aventura y ten mucho cuidado... 
-el mal siempre acecha..."
+text = "GAME_WON"
 horizontal_alignment = 1
 
 [node name="Empty" type="Label" parent="VBoxContainer" unique_id=1116757447]
@@ -71,7 +67,7 @@ theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
 theme_override_fonts/font = ExtResource("2")
 theme_override_font_sizes/font_size = 48
-text = "Has completado PolygonSouls 2.0 en 7:45  minutos"
+text = "Has completado PolygonSouls 3.0 en 7:45  minutos"
 horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1438034518]

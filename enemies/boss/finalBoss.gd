@@ -78,12 +78,12 @@ func _ready() -> void:
 	dialog_timer.start()
 	await dialog_timer.timeout
 	anim_player.play("talking")
-	boss_dialogs.text = "BIENVENIDO, PALADIN DE LA LUZ"
+	boss_dialogs.text = TranslationServer.translate("WELCOME")
 
 	dialog_timer.wait_time = 2
 	dialog_timer.start()
 	await dialog_timer.timeout
-	boss_dialogs.text = "ESTA SERA TU TUMBA DENTRO DE MUY POCO"
+	boss_dialogs.text = TranslationServer.translate("THREAT")
 	voice.play()
 
 	dialog_timer.start()
@@ -228,9 +228,9 @@ func _on_hitbox_area_entered(area):
 			area.explode()
 			proyectilesRecibidos += 1
 			if proyectilesRecibidos <= 4:
-				boss_dialogs.text = "TUS PROYECTILES SON INUTILES CONTRA MI"
+				boss_dialogs.text = TranslationServer.translate("HINT_BULLET")
 			else:
-				boss_dialogs.text = "NO SIRVE DE NADA DISPARARME, IMBECIL."
+				boss_dialogs.text = TranslationServer.translate("JOKE_BULLET")
 			boss_dialogs.visible = true
 			dialog_hide_timer.start()
 
@@ -287,7 +287,7 @@ func _on_hitbox_area_entered(area):
 	if health <= 0:
 		state = State.END
 		set_physics_process(false)
-		boss_dialogs.text = "IMPOSIBLEEEEE!!\nYO TE MALDIGO"
+		boss_dialogs.text = TranslationServer.translate("DEATH")
 		anim_player.set_speed_scale(0.4)
 		anim_player.play("fadeOut")
 
@@ -321,7 +321,7 @@ func _on_shieldTimer_timeout():
 		change_shield_color(Color.RED)
 		if not enough_damage:
 			boss_dialogs.visible = true
-			boss_dialogs.text = "DISPARANDO TAN LENTO JAMAS ATRAVESARAS MI ESCUDO"
+			boss_dialogs.text = TranslationServer.translate("HINT_SHIELD")
 			dialog_hide_timer.start()
 		enough_damage = false
 
@@ -334,7 +334,7 @@ func _on_lowerDodge_area_entered(area):
 		if movement == Vector2.DOWN:
 			go_up = !go_up
 		boss_dialogs.visible = true
-		boss_dialogs.text = "PREVISIBLE"
+		boss_dialogs.text = TranslationServer.translate("PREDICT")
 		dialog_hide_timer.start()
 
 
@@ -346,7 +346,7 @@ func _on_upperDodge_area_entered(area):
 		if movement == Vector2.UP:
 			go_up = !go_up
 		boss_dialogs.visible = true
-		boss_dialogs.text = "FACIL"
+		boss_dialogs.text = TranslationServer.translate("EASY")
 		dialog_hide_timer.start()
 
 

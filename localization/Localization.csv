@@ -1,0 +1,45 @@
+,en,es,cat
+MUSIC,MUSIC,MÚSICA,MÚSICA
+GAME_OVER1,Don't surrender!,¡No puedes rendirte!,No et pots rendir!
+GAME_OVER2,You have to try again,Tienes que volver a intentarlo,Ho has de tornar a intentar.
+GAME_OVER3,Press  [R]  to restart,Pulsa  [R]  para reiniciar,Clica  [R]  per reiniciar
+GAME_WON1,"Thank you, paladin of light","Gracias, paladín de la luz","Gràcies, paladí de la llum"
+GAME_WON2,"You saved us from a millenium of darkness, death and dispair","Nos has salvado de un milenio de oscuridad, muerte y desesperación","Ens heu salvat d'un mil·lenni de foscor, mort i desesperació"
+GAME_WON3,We wish you luck in your next adventure and beware...,Te deseamos suerte en tu proxima aventura y ten mucho cuidado... ,Et desitgem sort en la teva propera aventura i vés amb compte... 
+GAME_WON4,evil is always lurking...,el mal siempre acecha...,el mal sempre aguaita...
+FINISHED,You completed PolygonSouls 3.0 in ,Has completado PolygonSouls 3.0 en ,Has completat PolygonSouls 3.0 en 
+MINUTES, minutes, minutos, minuts
+GHOST,Ghost of the Crypt,Fantasma de la Cripta:,Fantasma de la Cripta
+READY1,"Good luck, paladin of light. You're our last hope.","Buena suerte, paladín de la luz. Eres nuestra última esperanza.","Bona sort, paladí de la llum. Ets la nostra última esperança"
+READY2,ENTER CRYPT (,ENTRAR A LA CRIPTA (,ENTRAR A LA CRIPTA (
+NOT_READY1,"I'm sorry, paladin of light. It seems that it's not time to fight yet.","Lo siento, paladín de la luz. Parece que aún no es el momento para combatir.","Ho sento, paladí de la llum. Sembla que encara no és el momento per pelear."
+NOT_READY2,[color=red]Come back when you've cleared  ,[color=red]Vuelve cuando hayas superado ,[color=red]Torna quan hagis superat 
+WARNING1,Will you defeat the darkness in this lands?,¿Podrás vencer a la oscuridad que puebla estas tierras?,Podràs vèncer la foscor que pobla aquestes terres?
+WARNING2, rooms)[/color], salas)[/color], sales)[/color]
+WARNING3,FIGHT (,PELEAR (,LLUITAR (
+ENTRANCE_NOT_READY,[color=red](Clear ,[color=red](Supera ,[color=red](Supera 
+ENTRANCE_READY,[color=#3990d6](Clear ,[color=#3990d6](Limpia ,[color=#3990d6](Supera 
+WELCOME,"WELCOME, PALADIN OF LIGHT","BIENVENIDO, PALADÍN DE LA LUZ","BENVINGUT, PALADÍ DE LA LLUM"
+THREAT,SOON THIS WILL BE YOUR GRAVE,ESTA SERÁ TU TUMBA DENTRO DE MUY POCO,AQUESTA SERÀ LA TEVA TOMBA DINS DE MOLT POC
+DEATH,IMPOSSIBLEEEE!!! I DAMN YOU,IMPOSIBLEEEEE!! YO TE MALDIGO,IMPOSIBLEEEE!! JO ET MALDIGO
+HINT_BULLET,YOUR BULLETS ARE USELESS AGAINST ME,TUS PROYECTILES SON INÚTILES CONTRA MÍ,ELS TEUS PROJECTILS SON INÚTILS CONTRA MÍ
+JOKE_BULLET,"IT MAKES NO SENSE TO SHOOT ME, IMBECILE","NO SIRVE DE NADA DISPARARME, IMBÉCIL","NO SERVEIX DE RES DISPARAR-ME, IMBÈCIL"
+HINT_SHIELD,YOU WILL NEVER BREACH MY SHIELD SHOOTING THIS SLOW,DISPARANDO TAN LENTO JAMÁS ATRAVESARÁS MI ESCUDO,DISPARANT TAN LENT MAI NO TRAVESSARÀS EL MEU ESCUT
+PREDICT,PREDICTABLE,PREVISIBLE,PREVISIBLE
+EASY,EASY,FÁCIL,FÀCIL
+SOULS,Souls,Almas,Ànimas
+ROOMS,Rooms,Salas,Sales
+FIREPIT,Firepit:,Hoguera:,Foguera:
+HEAL,Heal life (,Recuperar vida (,Recuperar vida (
+CHECKPOINT,Create a checkpoint (,Crear un punto de guardado (,Crear un punt de desament (
+CREATED,Checkpoint creado.,Punto de guardado creado.,Punt de desament creat.
+MOVESET,MOVEMENT,MOVIMIENTO,MOVIMENT
+BLACK,BLACK = WEAK,NEGRO = DÉBIL,NEGRE = FEBLE
+RED,[color=red]RED[/color] = STRONG,[color=red]ROJO[/color] = FUERTE,[color=red]VERMELL[/color] = FORT
+ATTACK,ATTACKS,ATAQUES,ATACS
+PREVIOUS,PREVIOUS WEAPON,ARMA ANTERIOR,ARMA ANTERIOR
+NEXT,NEXT WEAPON,ARMA SIGUIENTE,ARMA SEGÜENT
+RESTART,RESTART LEVEL,REINICIAR NIVEL,REINICIAR NIVELL
+ACTION,ACTION,ACCIÓN,ACCIÓ
+ACTION2,ACTION ALT,ACCIÓN ALT,ACCIÓ ALT
+MAP,MAP,MAPA,MAPA

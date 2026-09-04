@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bwjnr8upy4j35" path="res://player/assets/melee_type.png" id="3_0owmy"]
 [ext_resource type="Texture2D" uid="uid://ct8hk6tgjt503" path="res://player/assets/melee_attack.png" id="5_qek5x"]
 [ext_resource type="PackedScene" uid="uid://p62y243htu3p" path="res://rooms/UI/ui.tscn" id="6_0owmy"]
-[ext_resource type="Texture2D" uid="uid://dqnsy5qabv1ou" path="res://enemies/boss/assets/ringTexture.png" id="6_75vfm"]
+[ext_resource type="Texture2D" uid="uid://dqnsy5qabv1ou" path="res://player/assets/ringTexture.png" id="6_75vfm"]
 [ext_resource type="Texture2D" uid="uid://71dx60cfh6rg" path="res://player/assets/pjCircle.png" id="7"]
 [ext_resource type="AudioStream" uid="uid://r0vhnhhkx4xe" path="res://player/assets/slash.ogg" id="7_boad6"]
 [ext_resource type="AudioStream" uid="uid://bkqu63c8y43np" path="res://player/assets/player_hit.ogg" id="8_rgyib"]

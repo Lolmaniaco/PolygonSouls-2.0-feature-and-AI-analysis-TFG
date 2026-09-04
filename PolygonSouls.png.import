@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dqnsy5qabv1ou"
-path="res://.godot/imported/ringTexture.png-a2ee9cc898d9f9d468d8f05fa7d67ab8.ctex"
+uid="uid://du8n2dt44qspk"
+path="res://.godot/imported/PolygonSouls.png-2a2002fc0a0bb1e2e40f2bf919306d7e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/boss/assets/ringTexture.png"
-dest_files=["res://.godot/imported/ringTexture.png-a2ee9cc898d9f9d468d8f05fa7d67ab8.ctex"]
+source_file="res://PolygonSouls.png"
+dest_files=["res://.godot/imported/PolygonSouls.png-2a2002fc0a0bb1e2e40f2bf919306d7e.ctex"]
 
 [params]
 
